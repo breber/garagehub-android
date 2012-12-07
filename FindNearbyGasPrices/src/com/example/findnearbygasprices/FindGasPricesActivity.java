@@ -84,6 +84,9 @@ public class FindGasPricesActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
+		currentLatitude = 0.0;
+		currentLongitude = 0.0;
+		
 		//create
 		super.onCreate(savedInstanceState);
 		
@@ -163,8 +166,17 @@ public class FindGasPricesActivity extends Activity {
 	 */
 	void updateLocation(Location location) {
 		currentLocation = location;
-		currentLatitude = currentLocation.getLatitude();
-		currentLongitude = currentLocation.getLongitude();
+		
+		double latitude = currentLocation.getLatitude();
+		double longitude = currentLocation.getLongitude();
+		
+		if(latitude != 0.0){
+			currentLatitude = currentLocation.getLatitude();
+		}
+		
+		if(longitude != 0.0){
+			currentLongitude = currentLocation.getLongitude();
+		}
 	}
 
 	/* (non-Javadoc)
@@ -368,6 +380,7 @@ public class FindGasPricesActivity extends Activity {
 					myTable.addView(rowToAdd, new TableLayout.LayoutParams(
 							LayoutParams.WRAP_CONTENT,
 							LayoutParams.WRAP_CONTENT));
+					
 				} else {
 					Display display = getWindowManager().getDefaultDisplay(); 
 					int width = display.getWidth();  // deprecated
