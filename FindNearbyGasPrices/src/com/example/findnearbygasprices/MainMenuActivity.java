@@ -7,8 +7,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 
+/**
+ * @author jamiekujawa
+ *
+ */
 public class MainMenuActivity extends Activity {
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -31,16 +38,6 @@ public class MainMenuActivity extends Activity {
 				Intent aboutButtonClick = new Intent(MainMenuActivity.this,
 						AboutActivity.class);
 				startActivity(aboutButtonClick);
-			}
-		});
-		
-		ImageButton howTo = (ImageButton) findViewById(R.id.howTo);
-		howTo.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent howToButtonClick = new Intent(MainMenuActivity.this,
-						HowToActivity.class);
-				startActivity(howToButtonClick);
 			}
 		});
 		

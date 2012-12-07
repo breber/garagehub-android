@@ -30,6 +30,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,6 +49,10 @@ import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * @author jamiekujawa
+ *
+ */
 @SuppressLint("DefaultLocale")
 public class FindGasPricesActivity extends Activity {
 
@@ -57,33 +62,34 @@ public class FindGasPricesActivity extends Activity {
 	private SharedPreferences sharedPref;
 
 	/**
-	 * 
+	 * A Location object to keep track of the current location
 	 */
 	private Location currentLocation;
 	
 	/**
-	 * 
+	 * A double representing the current latitude
 	 */
 	private double currentLatitude;
 	
 	/**
-	 * 
+	 * A double representing the current longitude
 	 */
 	private double currentLongitude;
 	
 	/**
-	 * 
+	 * A Geocoder object for address translation
 	 */
 	private Geocoder geo;
 	
 	/**
-	 * 
+	 * A listener to update the current location of the Android device
 	 */
 	private LocationListener locationListener;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
+		//initialize
 		currentLatitude = 0.0;
 		currentLongitude = 0.0;
 		
@@ -125,9 +131,16 @@ public class FindGasPricesActivity extends Activity {
 				// not used
 			}
 		};
+		
+		//Update with the last known good location so the user will get search results
+		String locationProvider = LocationManager.NETWORK_PROVIDER;
+		updateLocation(locationManager.getLastKnownLocation(locationProvider));
 
+		//request updates from both the network provider as well as the GPS signal
 		locationManager.requestLocationUpdates(
 				LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+		locationManager.requestLocationUpdates(
+				LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
 		//search button listener
 		Button search = (Button) findViewById(R.id.goButton);
@@ -184,7 +197,8 @@ public class FindGasPricesActivity extends Activity {
 	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle item selection
+		
+		//This will cover the Android menu button press
 		switch (item.getItemId()) {
 		case R.id.menu_settings:
 			Intent settingsButtonClick = new Intent(FindGasPricesActivity.this,
@@ -194,6 +208,7 @@ public class FindGasPricesActivity extends Activity {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+		
 	}
 	
 	/* (non-Javadoc)
@@ -201,6 +216,7 @@ public class FindGasPricesActivity extends Activity {
 	 */
 	@Override
 	protected void onResume(){
+		
 		super.onResume();
 		TableLayout myTable = (TableLayout) FindGasPricesActivity.this
 				.findViewById(R.id.main_table);
@@ -208,6 +224,7 @@ public class FindGasPricesActivity extends Activity {
 		ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
 		pb.setVisibility(View.VISIBLE);
 		getGasPrices();
+		
 	}
 
 	/* (non-Javadoc)
@@ -215,10 +232,15 @@ public class FindGasPricesActivity extends Activity {
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
+		
 	}
 
+	/**
+	 * This method will send a request to myGasFeed to get the gas prices
+	 */
 	@SuppressLint("DefaultLocale")
 	public void getGasPrices() {
 
@@ -267,6 +289,7 @@ public class FindGasPricesActivity extends Activity {
 						+ "/" + lon + "/" + distance + "/"
 						+ fuelType.toLowerCase().trim() + "/"
 						+ sortBy.toLowerCase() + "/zax22arsix.json".trim());
+				
 			} catch (IOException e) {
 				Toast.makeText(this, "Please try search again. Unable to find current location.",
 						Toast.LENGTH_LONG).show();
@@ -282,16 +305,29 @@ public class FindGasPricesActivity extends Activity {
 		}
 	}
 
+	/**
+	 * @author jamiekujawa
+	 *
+	 */
 	class JSONRequest extends AsyncTask<String, Integer, String> {
 
+		/* (non-Javadoc)
+		 * @see android.os.AsyncTask#onProgressUpdate(Progress[])
+		 */
 		protected void onProgressUpdate(Integer... progress) {
 			// not used
 		}
 
+		/* (non-Javadoc)
+		 * @see android.os.AsyncTask#onPreExecute()
+		 */
 		protected void onPreExecute() {
 			// not used
 		}
 
+		/* (non-Javadoc)
+		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+		 */
 		@SuppressWarnings("deprecation")
 		protected void onPostExecute(String r) {
 			Log.e("result:", r.toString());
@@ -490,6 +526,12 @@ public class FindGasPricesActivity extends Activity {
 
 		}
 
+		/* (non-Javadoc)
+		 * @see android.os.AsyncTask#doInBackground(Params[])
+		 */
+		/* (non-Javadoc)
+		 * @see android.os.AsyncTask#doInBackground(Params[])
+		 */
 		@Override
 		protected String doInBackground(String... params) {
 			Log.e("", "---doInBackground---");

@@ -36,25 +36,41 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * @author jamiekujawa
+ * 
+ */
 public class UpdatePriceActivity extends Activity {
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		
+
+		// get the current intent
 		Intent i = this.getIntent();
+
+		// get the string extras passed in
 		String stationName = i.getStringExtra("StationName");
 		String stationAddress = i.getStringExtra("StationAddress");
 		String stationID = i.getStringExtra("StationID");
 
+		// set layout
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.update_price);
 
+		// get the progress bar item
 		ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar2);
 		pb.setVisibility(View.INVISIBLE);
-		
+
 		SharedPreferences sharedPref = this.getSharedPreferences("Preferences",
 				0);
 		Spinner fuelTypeSpinner = (Spinner) findViewById(R.id.spinnerfueltypeUpdate);
+
+		// get the current selected option from the shared preferences
 		if (fuelTypeSpinner != null) {
 			// get the value from shared preferences
 			String fuelType = sharedPref.getString("Fuel Type", "Mid");
@@ -71,13 +87,14 @@ public class UpdatePriceActivity extends Activity {
 			// set the correct position to true
 			fuelTypeSpinner.setSelection(spinnerPosition);
 		}
-		
+
 		if (Util.isDebugBuild) {
 			Toast.makeText(this,
 					stationName + " " + stationAddress + " " + stationID,
 					Toast.LENGTH_SHORT).show();
 		}
 
+		// set the current view fields
 		TextView stationNameTextView = (TextView) findViewById(R.id.stationName);
 		stationNameTextView.setText(stationName);
 
@@ -90,8 +107,10 @@ public class UpdatePriceActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent i = UpdatePriceActivity.this.getIntent();
-				String stationName = i.getStringExtra("StationName");
-				String stationAddress = i.getStringExtra("StationAddress");
+
+				// String stationName = i.getStringExtra("StationName");
+				// String stationAddress = i.getStringExtra("StationAddress");
+
 				String stationID = i.getStringExtra("StationID");
 				EditText newPrice = (EditText) findViewById(R.id.newPrice);
 
@@ -100,10 +119,6 @@ public class UpdatePriceActivity extends Activity {
 							"Please Enter a new price.", Toast.LENGTH_SHORT)
 							.show();
 				} else {
-//					Toast.makeText(
-//							UpdatePriceActivity.this,
-//							stationName + " " + stationAddress + " "
-//									+ stationID, Toast.LENGTH_SHORT).show();
 
 					Spinner fuelTypeSpinner = (Spinner) findViewById(R.id.spinnerfueltypeUpdate);
 
@@ -113,7 +128,7 @@ public class UpdatePriceActivity extends Activity {
 							newPrice.getText().toString(),
 							(String) fuelTypeSpinner.getSelectedItem(),
 							stationID);
-					
+
 					ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar2);
 					pb.setVisibility(View.VISIBLE);
 				}
@@ -122,23 +137,42 @@ public class UpdatePriceActivity extends Activity {
 		});
 	}
 
+	/**
+	 * @author jamiekujawa
+	 * 
+	 */
 	class UpdatePriceRequest extends AsyncTask<String, Integer, String> {
 
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.AsyncTask#onProgressUpdate(Progress[])
+		 */
 		protected void onProgressUpdate(Integer... progress) {
 			// not used
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.AsyncTask#onPreExecute()
+		 */
 		protected void onPreExecute() {
 			// not used
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+		 */
 		@SuppressLint("ShowToast")
 		@SuppressWarnings("deprecation")
 		protected void onPostExecute(String r) {
 
 			ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar2);
 			pb.setVisibility(View.INVISIBLE);
-			
+
 			JSONObject result = null;
 
 			// Convert string to object
@@ -153,7 +187,8 @@ public class UpdatePriceActivity extends Activity {
 					String message = status.getString("message");
 
 					if (status.get("error").equals("NO")) {
-						Toast.makeText(UpdatePriceActivity.this, message + ". Successfully updated price.",
+						Toast.makeText(UpdatePriceActivity.this,
+								message + ". Successfully updated price.",
 								Toast.LENGTH_SHORT).show();
 					} else {
 						Toast.makeText(UpdatePriceActivity.this,
@@ -167,6 +202,11 @@ public class UpdatePriceActivity extends Activity {
 				}
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.AsyncTask#doInBackground(Params[])
+		 */
 		@Override
 		protected String doInBackground(String... params) {
 			Log.e("", "---UpdatePriceInBackground---");

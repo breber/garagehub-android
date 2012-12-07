@@ -8,6 +8,10 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 
+/**
+ * @author jamiekujawa
+ *
+ */
 public class SettingsActivity extends Activity {
 
 	/**
@@ -21,11 +25,29 @@ public class SettingsActivity extends Activity {
 	 */
 	private SharedPreferences.Editor prefsEditor;
 
+	/**
+	 * A Spinner to represent the different distance options
+	 */
 	private Spinner distanceSpinner;
+	
+	/**
+	 * A Spinner to represent the different fuel types
+	 */
 	private Spinner fuelTypeSpinner;
+	
+	/**
+	 * A Spinner to represent the different sorting options
+	 */
 	private Spinner sortBySpinner;
+	
+	/**
+	 * A checkbox to represent the use current location option
+	 */
 	private CheckBox useCurrentLocation;
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -141,6 +163,9 @@ public class SettingsActivity extends Activity {
 		finish();
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_main, menu);

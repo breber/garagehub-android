@@ -25,9 +25,6 @@
             android:name=".SettingsActivity"
             android:screenOrientation="sensorPortrait" />
         <activity
-            android:name=".HowToActivity"
-            android:screenOrientation="sensorPortrait" />
-        <activity
             android:name=".AboutActivity"
             android:screenOrientation="sensorPortrait" />
         <activity
