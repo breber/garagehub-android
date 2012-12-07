@@ -1,0 +1,218 @@
+package com.example.findnearbygasprices;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class UpdatePriceActivity extends Activity {
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		
+		Intent i = this.getIntent();
+		String stationName = i.getStringExtra("StationName");
+		String stationAddress = i.getStringExtra("StationAddress");
+		String stationID = i.getStringExtra("StationID");
+
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.update_price);
+
+		ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar2);
+		pb.setVisibility(View.INVISIBLE);
+		
+		SharedPreferences sharedPref = this.getSharedPreferences("Preferences",
+				0);
+		Spinner fuelTypeSpinner = (Spinner) findViewById(R.id.spinnerfueltypeUpdate);
+		if (fuelTypeSpinner != null) {
+			// get the value from shared preferences
+			String fuelType = sharedPref.getString("Fuel Type", "Mid");
+
+			// make an array adapter of all options specified in the xml
+			@SuppressWarnings("unchecked")
+			ArrayAdapter<String> fuelTypeAdapter = (ArrayAdapter<String>) fuelTypeSpinner
+					.getAdapter();
+
+			// find the current position
+			int spinnerPosition = fuelTypeAdapter.getPosition(fuelType
+					.toString());
+
+			// set the correct position to true
+			fuelTypeSpinner.setSelection(spinnerPosition);
+		}
+		
+		if (Util.isDebugBuild) {
+			Toast.makeText(this,
+					stationName + " " + stationAddress + " " + stationID,
+					Toast.LENGTH_SHORT).show();
+		}
+
+		TextView stationNameTextView = (TextView) findViewById(R.id.stationName);
+		stationNameTextView.setText(stationName);
+
+		TextView stationAddressTextView = (TextView) findViewById(R.id.stationAddress);
+		stationAddressTextView.setText(stationAddress);
+
+		Button updatePrice = (Button) findViewById(R.id.updatePrice);
+		updatePrice.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent i = UpdatePriceActivity.this.getIntent();
+				String stationName = i.getStringExtra("StationName");
+				String stationAddress = i.getStringExtra("StationAddress");
+				String stationID = i.getStringExtra("StationID");
+				EditText newPrice = (EditText) findViewById(R.id.newPrice);
+
+				if (newPrice.getText().toString().isEmpty()) {
+					Toast.makeText(UpdatePriceActivity.this,
+							"Please Enter a new price.", Toast.LENGTH_SHORT)
+							.show();
+				} else {
+//					Toast.makeText(
+//							UpdatePriceActivity.this,
+//							stationName + " " + stationAddress + " "
+//									+ stationID, Toast.LENGTH_SHORT).show();
+
+					Spinner fuelTypeSpinner = (Spinner) findViewById(R.id.spinnerfueltypeUpdate);
+
+					UpdatePriceRequest update = new UpdatePriceRequest();
+					update.execute(
+							"http://api.mygasfeed.com/locations/price/zax22arsix.json",
+							newPrice.getText().toString(),
+							(String) fuelTypeSpinner.getSelectedItem(),
+							stationID);
+					
+					ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar2);
+					pb.setVisibility(View.VISIBLE);
+				}
+
+			}
+		});
+	}
+
+	class UpdatePriceRequest extends AsyncTask<String, Integer, String> {
+
+		protected void onProgressUpdate(Integer... progress) {
+			// not used
+		}
+
+		protected void onPreExecute() {
+			// not used
+		}
+
+		@SuppressLint("ShowToast")
+		@SuppressWarnings("deprecation")
+		protected void onPostExecute(String r) {
+
+			ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar2);
+			pb.setVisibility(View.INVISIBLE);
+			
+			JSONObject result = null;
+
+			// Convert string to object
+			try {
+				result = new JSONObject(r);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			if (result != null)
+				try {
+					JSONObject status = result.getJSONObject("status");
+					String message = status.getString("message");
+
+					if (status.get("error").equals("NO")) {
+						Toast.makeText(UpdatePriceActivity.this, message + ". Successfully updated price.",
+								Toast.LENGTH_SHORT).show();
+					} else {
+						Toast.makeText(UpdatePriceActivity.this,
+								"Could not update price.", Toast.LENGTH_SHORT)
+								.show();
+					}
+
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			Log.e("", "---UpdatePriceInBackground---");
+			StringBuilder builder = new StringBuilder();
+			HttpClient httpclient;
+			HttpPost httppost;
+			ArrayList<NameValuePair> postParameters;
+			httpclient = new DefaultHttpClient();
+			httppost = new HttpPost(params[0]);
+
+			try {
+				Log.e("URL", params[0]);
+				Log.e("Station Price", params[1]);
+				Log.e("Station Fuel Type", params[2]);
+				Log.e("Station ID", params[3]);
+				postParameters = new ArrayList<NameValuePair>();
+				postParameters.add(new BasicNameValuePair("price", params[1]
+						.trim()));
+				postParameters.add(new BasicNameValuePair("fueltype", params[2]
+						.toLowerCase().trim()));
+				postParameters.add(new BasicNameValuePair("stationid",
+						params[3].trim()));
+				httppost.setEntity(new UrlEncodedFormEntity(postParameters));
+				HttpResponse response = httpclient.execute(httppost);
+				StatusLine statusLine = response.getStatusLine();
+
+				Log.e("", "---Status Code 200---");
+				HttpEntity entity = response.getEntity();
+				InputStream content = entity.getContent();
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(content));
+				String line;
+
+				while ((line = reader.readLine()) != null) {
+					builder.append(line);
+				}
+
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			Log.e("---Result---:", builder.toString());
+			return builder.toString();
+		}
+	}
+
+}
