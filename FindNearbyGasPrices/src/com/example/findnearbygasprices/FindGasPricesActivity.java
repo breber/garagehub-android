@@ -56,23 +56,55 @@ public class FindGasPricesActivity extends Activity {
 	 */
 	private SharedPreferences sharedPref;
 
+	/**
+	 * 
+	 */
 	private Location currentLocation;
+	
+	/**
+	 * 
+	 */
 	private double currentLatitude;
+	
+	/**
+	 * 
+	 */
 	private double currentLongitude;
+	
+	/**
+	 * 
+	 */
+	private Geocoder geo;
+	
+	/**
+	 * 
+	 */
+	private LocationListener locationListener;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
+		//create
 		super.onCreate(savedInstanceState);
+		
+		//set view
 		setContentView(R.layout.find_gas_prices);
 
+		//create a new geocoder
+		geo = new Geocoder(FindGasPricesActivity.this);
+		
+		//create a location manager
 		LocationManager locationManager = (LocationManager) this
 				.getSystemService(Context.LOCATION_SERVICE);
 
+		//create a new progress bar to be displayed when the app is searching for
+		//gas prices
 		ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
 		pb.setVisibility(View.INVISIBLE);
 
-		LocationListener locationListener = new LocationListener() {
+		//create a new location listener. This will update the location everytime
+		//the device has a location change
+		locationListener = new LocationListener() {
 			public void onLocationChanged(Location location) {
 				updateLocation(location);
 			}
@@ -94,8 +126,10 @@ public class FindGasPricesActivity extends Activity {
 		locationManager.requestLocationUpdates(
 				LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 
+		//search button listener
 		Button search = (Button) findViewById(R.id.goButton);
 		search.setOnClickListener(new OnClickListener() {
+			
 			@Override
 			public void onClick(View v) {
 				TableLayout myTable = (TableLayout) FindGasPricesActivity.this
@@ -105,8 +139,10 @@ public class FindGasPricesActivity extends Activity {
 				pb.setVisibility(View.VISIBLE);
 				getGasPrices();
 			}
+			
 		});
 		
+		//settings button listener
 		ImageButton settings = (ImageButton)findViewById(R.id.settingsButton);
 		settings.setOnClickListener(new OnClickListener() {
 			
@@ -116,16 +152,24 @@ public class FindGasPricesActivity extends Activity {
 						SettingsActivity.class);
 				startActivity(settingsButtonClick);
 			}
+			
 		});
 
 	}
 
+	/**
+	 * Function to update the latitude and longitude variables
+	 * @param location a location object with the new location
+	 */
 	void updateLocation(Location location) {
 		currentLocation = location;
 		currentLatitude = currentLocation.getLatitude();
 		currentLongitude = currentLocation.getLongitude();
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
@@ -140,6 +184,9 @@ public class FindGasPricesActivity extends Activity {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onResume()
+	 */
 	@Override
 	protected void onResume(){
 		super.onResume();
@@ -151,6 +198,9 @@ public class FindGasPricesActivity extends Activity {
 		getGasPrices();
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
@@ -159,8 +209,6 @@ public class FindGasPricesActivity extends Activity {
 
 	@SuppressLint("DefaultLocale")
 	public void getGasPrices() {
-		// TextView myView = (TextView) findViewById(R.id.textView1);
-		Geocoder geo = new Geocoder(FindGasPricesActivity.this);
 
 		EditText zip = (EditText) findViewById(R.id.editText1);
 		String zipCode = zip.getText().toString();
@@ -337,7 +385,6 @@ public class FindGasPricesActivity extends Activity {
 
 						TextView stationName = new TextView(
 								FindGasPricesActivity.this);
-						//stationName.setMaxWidth(150);
 						stationName.setWidth((int)(width*.25));
 
 						stationName.setId(idCounter++);
@@ -349,7 +396,6 @@ public class FindGasPricesActivity extends Activity {
 
 						TextView stationAddress = new TextView(
 								FindGasPricesActivity.this);
-//						stationAddress.setMaxWidth(210);
 						stationAddress.setWidth((int)(width*.35));
 						stationAddress.setId(idCounter++);
 						stationAddress.setText(row.getString("address"));
