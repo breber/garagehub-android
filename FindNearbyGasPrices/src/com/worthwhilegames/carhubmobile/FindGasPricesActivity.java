@@ -1,4 +1,4 @@
-package com.example.findnearbygasprices;
+package com.worthwhilegames.carhubmobile;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,6 +18,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.worthwhilegames.carhubmobile.R;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

@@ -1,9 +1,9 @@
 <resources>
 
-    <string name="app_name">Find Nearby Gas Prices</string>
+    <string name="app_name">CarHub Mobile</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">Find Gas Prices</string>
+    <string name="title_activity_main">CarHub Mobile</string>
     <string name="zipcodehint">Zip Code</string>
     <string name="pricehint">Enter a new price.</string>
     <string name="search">Search</string>

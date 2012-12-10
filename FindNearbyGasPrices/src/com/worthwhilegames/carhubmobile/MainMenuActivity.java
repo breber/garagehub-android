@@ -1,4 +1,6 @@
-package com.example.findnearbygasprices;
+package com.worthwhilegames.carhubmobile;
+
+import com.worthwhilegames.carhubmobile.R;
 
 import android.app.Activity;
 import android.content.Intent;

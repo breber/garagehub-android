@@ -1,4 +1,4 @@
-package com.example.findnearbygasprices;
+package com.worthwhilegames.carhubmobile;
 
 /**
  * @author jamiekujawa

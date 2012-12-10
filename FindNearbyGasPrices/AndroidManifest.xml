@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.findnearbygasprices"
+    package="com.worthwhilegames.carhubmobile"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.findnearbygasprices.FindGasPricesActivity"
+            android:name="com.worthwhilegames.carhubmobile.FindGasPricesActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="sensorPortrait" >
         </activity>
