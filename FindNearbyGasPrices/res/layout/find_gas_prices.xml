@@ -1,4 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -47,10 +49,10 @@
         android:id="@+id/scrollView1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="49dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="47dp"
-        android:layout_marginBottom="40dp"
         android:gravity="center_horizontal" >
 
         <LinearLayout
@@ -67,16 +69,15 @@
             </TableLayout>
         </LinearLayout>
     </ScrollView>
-	<LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_alignParentBottom="true" >
 
-        <TextView
-            android:id="@+id/ads"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ads go here." />
-    </LinearLayout>
+    <com.google.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="320dip"
+        android:layout_height="50dip"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="8bc25cd8acbc490a"
+        ads:loadAdOnCreate="true" />
+
 </RelativeLayout>

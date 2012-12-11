@@ -19,8 +19,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.worthwhilegames.carhubmobile.R;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -32,7 +30,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -421,8 +418,8 @@ public class FindGasPricesActivity extends Activity {
 					
 				} else {
 					Display display = getWindowManager().getDefaultDisplay(); 
-					int width = display.getWidth();  // deprecated
-					int height = display.getHeight();
+					int width = display.getWidth();
+
 					for (int i = 0; i < stations.length(); i++) {
 						JSONObject row = stations.getJSONObject(i);
 

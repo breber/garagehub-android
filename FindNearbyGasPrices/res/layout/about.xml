@@ -29,13 +29,14 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </TableLayout>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+    <com.google.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="320dip"
+        android:layout_height="50dip"
         android:layout_alignParentBottom="true"
-        android:gravity="center_horizontal" >
-
-        
-    </LinearLayout>
+        android:layout_centerHorizontal="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="8bc25cd8acbc490a"
+        ads:loadAdOnCreate="true" />
 
 </RelativeLayout>

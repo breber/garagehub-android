@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -18,8 +17,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.worthwhilegames.carhubmobile.R;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -169,7 +166,6 @@ public class UpdatePriceActivity extends Activity {
 		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
 		 */
 		@SuppressLint("ShowToast")
-		@SuppressWarnings("deprecation")
 		protected void onPostExecute(String r) {
 
 			ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar2);
@@ -209,6 +205,7 @@ public class UpdatePriceActivity extends Activity {
 		 * 
 		 * @see android.os.AsyncTask#doInBackground(Params[])
 		 */
+		@SuppressLint("DefaultLocale")
 		@Override
 		protected String doInBackground(String... params) {
 			Log.e("", "---UpdatePriceInBackground---");
@@ -233,9 +230,7 @@ public class UpdatePriceActivity extends Activity {
 						params[3].trim()));
 				httppost.setEntity(new UrlEncodedFormEntity(postParameters));
 				HttpResponse response = httpclient.execute(httppost);
-				StatusLine statusLine = response.getStatusLine();
 
-				Log.e("", "---Status Code 200---");
 				HttpEntity entity = response.getEntity();
 				InputStream content = entity.getContent();
 				BufferedReader reader = new BufferedReader(
