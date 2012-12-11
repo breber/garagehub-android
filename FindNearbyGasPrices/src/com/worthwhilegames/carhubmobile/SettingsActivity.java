@@ -1,11 +1,8 @@
 package com.worthwhilegames.carhubmobile;
 
-import com.worthwhilegames.carhubmobile.R;
-
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Spinner;
@@ -164,14 +161,4 @@ public class SettingsActivity extends Activity {
 		// finish the activity
 		finish();
 	}
-
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
-	 */
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
-	}
-
 }

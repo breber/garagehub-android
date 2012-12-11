@@ -40,7 +40,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -156,20 +155,6 @@ public class FindGasPricesActivity extends Activity {
 			}
 			
 		});
-		
-		//settings button listener
-		ImageButton settings = (ImageButton)findViewById(R.id.settingsButton);
-		settings.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Intent settingsButtonClick = new Intent(FindGasPricesActivity.this,
-						SettingsActivity.class);
-				startActivity(settingsButtonClick);
-			}
-			
-		});
-
 	}
 
 	/**
