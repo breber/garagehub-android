@@ -19,21 +19,19 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.worthwhilegames.carhubmobile.FindGasPricesActivity"
-            android:label="@string/title_activity_main"
+            android:label="@string/gasPrices"
             android:screenOrientation="sensorPortrait" >
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:screenOrientation="sensorPortrait" />
+            android:label="@string/menu_settings" />
         <activity
             android:name=".AboutActivity"
-            android:screenOrientation="sensorPortrait" />
+            android:label="@string/about" />
         <activity
             android:name=".UpdatePriceActivity"
-            android:screenOrientation="sensorPortrait" />
-        <activity
-            android:name=".MainMenuActivity"
-            android:screenOrientation="sensorPortrait" >
+            android:label="@string/updatePrice" />
+        <activity android:name=".MainMenuActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
