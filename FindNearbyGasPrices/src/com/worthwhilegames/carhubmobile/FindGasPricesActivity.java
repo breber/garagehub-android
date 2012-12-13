@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -404,6 +405,8 @@ public class FindGasPricesActivity extends Activity {
 				} else {
 					Display display = getWindowManager().getDefaultDisplay(); 
 					int width = display.getWidth();
+					
+					List<TableRow> rows = new ArrayList<TableRow>();
 
 					for (int i = 0; i < stations.length(); i++) {
 						JSONObject row = stations.getJSONObject(i);
@@ -496,7 +499,17 @@ public class FindGasPricesActivity extends Activity {
 							}
 						});
 
-						myTable.addView(rowToAdd, new TableLayout.LayoutParams(
+						if(row.getString("price").equalsIgnoreCase("n/a")){
+							rows.add(rowToAdd);
+						}else{							
+							myTable.addView(rowToAdd, new TableLayout.LayoutParams(
+									LayoutParams.FILL_PARENT,
+									LayoutParams.WRAP_CONTENT));
+						}
+					}
+					
+					for(int j = 0; j < rows.size(); j++){
+						myTable.addView(rows.get(j), new TableLayout.LayoutParams(
 								LayoutParams.FILL_PARENT,
 								LayoutParams.WRAP_CONTENT));
 					}
