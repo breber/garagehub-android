@@ -1,7 +1,5 @@
 package com.worthwhilegames.carhubmobile;
 
-import com.worthwhilegames.carhubmobile.R;
-
 import android.app.Activity;
 import android.os.Bundle;
 

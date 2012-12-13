@@ -1,27 +1,10 @@
 package com.worthwhilegames.carhubmobile;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.worthwhilegames.carhubmobile.FetchGasPricesTask.FetchGasPricesTaskCallback;
-import com.worthwhilegames.carhubmobile.models.GasPriceRecord;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -33,10 +16,8 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,16 +26,16 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TableRow;
 import android.widget.Toast;
+
+import com.worthwhilegames.carhubmobile.FetchGasPricesTask.FetchGasPricesTaskCallback;
+import com.worthwhilegames.carhubmobile.models.GasPriceRecord;
 
 /**
  * @author jamiekujawa
- *
  */
 @SuppressLint("DefaultLocale")
 public class FindGasPricesActivity extends Activity implements FetchGasPricesTaskCallback {
@@ -68,22 +49,22 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 	 * A Location object to keep track of the current location
 	 */
 	private Location currentLocation;
-	
+
 	/**
 	 * A double representing the current latitude
 	 */
 	private double currentLatitude;
-	
+
 	/**
 	 * A double representing the current longitude
 	 */
 	private double currentLongitude;
-	
+
 	/**
 	 * A Geocoder object for address translation
 	 */
 	private Geocoder geo;
-	
+
 	/**
 	 * A listener to update the current location of the Android device
 	 */
@@ -95,16 +76,16 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 		//initialize
 		currentLatitude = 0.0;
 		currentLongitude = 0.0;
-		
+
 		//create
 		super.onCreate(savedInstanceState);
-		
+
 		//set view
 		setContentView(R.layout.find_gas_prices);
 
 		//create a new geocoder
 		geo = new Geocoder(FindGasPricesActivity.this);
-		
+
 		//create a location manager
 		LocationManager locationManager = (LocationManager) this
 				.getSystemService(Context.LOCATION_SERVICE);
@@ -117,29 +98,33 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 		//create a new location listener. This will update the location everytime
 		//the device has a location change
 		locationListener = new LocationListener() {
+			@Override
 			public void onLocationChanged(Location location) {
 				updateLocation(location);
 			}
 
+			@Override
 			public void onStatusChanged(String provider, int status,
 					Bundle extras) {
 				// not used
 			}
 
+			@Override
 			public void onProviderEnabled(String provider) {
 				// not used
 			}
 
+			@Override
 			public void onProviderDisabled(String provider) {
 				// not used
 			}
 		};
-		
+
 		//Update with the last known good location so the user will get search results
 		String locationProvider = LocationManager.NETWORK_PROVIDER;
 		if(locationManager != null){
 			updateLocation(locationManager.getLastKnownLocation(locationProvider));
-	
+
 			//request updates from both the network provider as well as the GPS signal
 			locationManager.requestLocationUpdates(
 					LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
@@ -155,27 +140,27 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 				performUpdate();
 			}
 		});
-		
+
 		ListView myList = (ListView)findViewById(R.id.scrollView1);
 		myList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-	        public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-	         	GasPriceRecord model = (GasPriceRecord) a.getItemAtPosition(position);
-	         	if (Util.isDebugBuild) {
-	         		Toast.makeText(FindGasPricesActivity.this, model.getId().toString(), Toast.LENGTH_LONG).show();
-	         	}
-	         	
-	    		Intent rowClick = new Intent(
-				FindGasPricesActivity.this,
-				UpdatePriceActivity.class);
-	
+			public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+				GasPriceRecord model = (GasPriceRecord) a.getItemAtPosition(position);
+				if (Util.isDebugBuild) {
+					Toast.makeText(FindGasPricesActivity.this, model.getId().toString(), Toast.LENGTH_LONG).show();
+				}
+
+				Intent rowClick = new Intent(
+						FindGasPricesActivity.this,
+						UpdatePriceActivity.class);
+
 				rowClick.putExtra("StationName", model.getStation());
 				rowClick.putExtra("StationAddress",model.getAddress());
 				rowClick.putExtra("StationID", model.getStationId());
-				
+
 				startActivity(rowClick);
-	        }
-        });
+			}
+		});
 
 	}
 
@@ -186,14 +171,14 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 	void updateLocation(Location location) {
 		if(location != null){
 			currentLocation = location;
-			
+
 			double latitude = currentLocation.getLatitude();
 			double longitude = currentLocation.getLongitude();
-			
+
 			if(latitude != 0.0){
 				currentLatitude = currentLocation.getLatitude();
 			}
-			
+
 			if(longitude != 0.0){
 				currentLongitude = currentLocation.getLongitude();
 			}
@@ -215,9 +200,9 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-		
+
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onResume()
 	 */
@@ -249,7 +234,7 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 		}
 		getGasPrices();
 	}
-	
+
 	/**
 	 * This method will send a request to myGasFeed to get the gas prices
 	 */
@@ -328,7 +313,7 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 
 		// Get all GasPriceRecords from the database
 		List<GasPriceRecord> gasRecords = GasPriceRecord.listAll(GasPriceRecord.class);
-			
+
 		List<GasPriceRecord> data = new ArrayList<GasPriceRecord>();
 		List<GasPriceRecord> naData = new ArrayList<GasPriceRecord>();
 		ListView myList = (ListView) FindGasPricesActivity.this.findViewById(R.id.scrollView1);
@@ -340,17 +325,17 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 			for (GasPriceRecord r : gasRecords) {
 				if (r.getPrice().equalsIgnoreCase("n/a")) {
 					naData.add(r);
-				} else {							
+				} else {
 					data.add(r);
 				}
 			}
-								
+
 			data.addAll(naData);
 			GasPriceAdapter adapter = new GasPriceAdapter(FindGasPricesActivity.this, R.layout.gaspricerowlayout, data);
-			
+
 			if (currentAdapter == null) {
 				// TODO: this should probably happen in onCreate (only needed on first time)
-				View header = (View)getLayoutInflater().inflate(R.layout.gaspricerowheader, null);
+				View header = getLayoutInflater().inflate(R.layout.gaspricerowheader, null);
 				myList.addHeaderView(header);
 			}
 

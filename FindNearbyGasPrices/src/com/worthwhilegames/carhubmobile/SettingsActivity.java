@@ -9,7 +9,6 @@ import android.widget.Spinner;
 
 /**
  * @author jamiekujawa
- *
  */
 public class SettingsActivity extends Activity {
 
@@ -28,17 +27,17 @@ public class SettingsActivity extends Activity {
 	 * A Spinner to represent the different distance options
 	 */
 	private Spinner distanceSpinner;
-	
+
 	/**
 	 * A Spinner to represent the different fuel types
 	 */
 	private Spinner fuelTypeSpinner;
-	
+
 	/**
 	 * A Spinner to represent the different sorting options
 	 */
 	private Spinner sortBySpinner;
-	
+
 	/**
 	 * A checkbox to represent the use current location option
 	 */
@@ -70,7 +69,7 @@ public class SettingsActivity extends Activity {
 			// make an array adapter of all options specified in the xml
 			@SuppressWarnings("unchecked")
 			ArrayAdapter<String> distanceAdapter = (ArrayAdapter<String>) distanceSpinner
-					.getAdapter();
+			.getAdapter();
 
 			// find the current position
 			int spinnerPosition = distanceAdapter.getPosition(distanceToSearch
@@ -87,7 +86,7 @@ public class SettingsActivity extends Activity {
 			// make an array adapter of all options specified in the xml
 			@SuppressWarnings("unchecked")
 			ArrayAdapter<String> fuelTypeAdapter = (ArrayAdapter<String>) fuelTypeSpinner
-					.getAdapter();
+			.getAdapter();
 
 			// find the current position
 			int spinnerPosition = fuelTypeAdapter.getPosition(fuelType
@@ -104,7 +103,7 @@ public class SettingsActivity extends Activity {
 			// make an array adapter of all options specified in the xml
 			@SuppressWarnings("unchecked")
 			ArrayAdapter<String> sortByAdapter = (ArrayAdapter<String>) sortBySpinner
-					.getAdapter();
+			.getAdapter();
 
 			// find the current position
 			int spinnerPosition = sortByAdapter.getPosition(sortBy.toString());
@@ -112,10 +111,10 @@ public class SettingsActivity extends Activity {
 			// set the correct position to true
 			sortBySpinner.setSelection(spinnerPosition);
 		}
-		
+
 		if(useCurrentLocation != null){
 			Boolean useLocation = sharedPref.getBoolean("useCurrentLocation", false);
-			
+
 			useCurrentLocation.setChecked(useLocation);
 
 		}
@@ -150,7 +149,7 @@ public class SettingsActivity extends Activity {
 			prefsEditor.putString("Sort By", sortBySpinner.getSelectedItem()
 					.toString());
 		}
-		
+
 		if(useCurrentLocation != null){
 			prefsEditor.putBoolean("useCurrentLocation", useCurrentLocation.isChecked());
 		}

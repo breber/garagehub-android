@@ -37,18 +37,14 @@ import android.widget.Toast;
 
 /**
  * @author jamiekujawa
- * 
  */
 public class UpdatePriceActivity extends Activity {
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-
 		// get the current intent
 		Intent i = this.getIntent();
 
@@ -77,7 +73,7 @@ public class UpdatePriceActivity extends Activity {
 			// make an array adapter of all options specified in the xml
 			@SuppressWarnings("unchecked")
 			ArrayAdapter<String> fuelTypeAdapter = (ArrayAdapter<String>) fuelTypeSpinner
-					.getAdapter();
+			.getAdapter();
 
 			// find the current position
 			int spinnerPosition = fuelTypeAdapter.getPosition(fuelType
@@ -113,12 +109,11 @@ public class UpdatePriceActivity extends Activity {
 				String stationID = i.getStringExtra("StationID");
 				EditText newPrice = (EditText) findViewById(R.id.newPrice);
 
-				if (newPrice.getText().toString().isEmpty()) {
+				if ("".equals(newPrice.getText().toString().trim())) {
 					Toast.makeText(UpdatePriceActivity.this,
 							"Please Enter a new price.", Toast.LENGTH_SHORT)
 							.show();
 				} else {
-
 					Spinner fuelTypeSpinner = (Spinner) findViewById(R.id.spinnerfueltypeUpdate);
 
 					UpdatePriceRequest update = new UpdatePriceRequest();
@@ -131,43 +126,36 @@ public class UpdatePriceActivity extends Activity {
 					ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar2);
 					pb.setVisibility(View.VISIBLE);
 				}
-
 			}
 		});
 	}
 
 	/**
 	 * @author jamiekujawa
-	 * 
 	 */
 	class UpdatePriceRequest extends AsyncTask<String, Integer, String> {
 
-		/*
-		 * (non-Javadoc)
-		 * 
+		/* (non-Javadoc)
 		 * @see android.os.AsyncTask#onProgressUpdate(Progress[])
 		 */
+		@Override
 		protected void onProgressUpdate(Integer... progress) {
 			// not used
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
+		/* (non-Javadoc)
 		 * @see android.os.AsyncTask#onPreExecute()
 		 */
+		@Override
 		protected void onPreExecute() {
 			// not used
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
+		/* (non-Javadoc)
 		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
 		 */
-		@SuppressLint("ShowToast")
+		@Override
 		protected void onPostExecute(String r) {
-
 			ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar2);
 			pb.setVisibility(View.INVISIBLE);
 
@@ -179,7 +167,7 @@ public class UpdatePriceActivity extends Activity {
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			if (result != null)
+			if (result != null) {
 				try {
 					JSONObject status = result.getJSONObject("status");
 					String message = status.getString("message");
@@ -198,11 +186,10 @@ public class UpdatePriceActivity extends Activity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
+		/* (non-Javadoc)
 		 * @see android.os.AsyncTask#doInBackground(Params[])
 		 */
 		@SuppressLint("DefaultLocale")

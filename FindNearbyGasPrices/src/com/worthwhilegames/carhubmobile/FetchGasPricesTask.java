@@ -27,22 +27,23 @@ public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
 	interface FetchGasPricesTaskCallback {
 		void gasPricesDidUpdate();
 	}
-	
+
 	private Context mContext;
 	private FetchGasPricesTaskCallback mDelegate;
-	
+
 	public FetchGasPricesTask(Context ctx) {
 		this.mContext = ctx;
 	}
-	
+
 	public FetchGasPricesTask(Context ctx, FetchGasPricesTaskCallback delegate) {
 		this.mContext = ctx;
 		this.mDelegate = delegate;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see android.os.AsyncTask#onProgressUpdate(Progress[])
 	 */
+	@Override
 	protected void onProgressUpdate(Integer... progress) {
 		// not used
 	}
@@ -50,6 +51,7 @@ public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
 	/* (non-Javadoc)
 	 * @see android.os.AsyncTask#onPreExecute()
 	 */
+	@Override
 	protected void onPreExecute() {
 		// not used
 	}
@@ -57,16 +59,17 @@ public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
 	/* (non-Javadoc)
 	 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
 	 */
+	@Override
 	protected void onPostExecute(String r) {
 		try {
 			JSONObject result = new JSONObject(r);
 			JSONArray stations = result.getJSONArray("stations");
 			Log.e("Number of Stations:", "" + stations.length());
-			
+
 			if (stations.length() > 0) {
 				// Delete all previous records
 				GasPriceRecord.deleteAll(GasPriceRecord.class);
-				
+
 				// Add all records from the current request
 				for (int i = 0; i < stations.length(); i++) {
 					JSONObject row = stations.getJSONObject(i);
@@ -79,7 +82,7 @@ public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
 					newRecord.setDistance(row.getString("distance"));
 					newRecord.setLastUpdated(row.getString("date"));
 					newRecord.save();
-					
+
 					if (Util.isDebugBuild) {
 						Log.e("Station Name:", newRecord.getStation());
 						Log.e("Address:", newRecord.getAddress());
@@ -91,12 +94,12 @@ public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
 		} catch (JSONException ex) {
 			Log.e("Exception:", "Request not completed");
 		}
-		
+
 		if (mDelegate != null) {
 			mDelegate.gasPricesDidUpdate();
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see android.os.AsyncTask#doInBackground(Params[])
 	 */

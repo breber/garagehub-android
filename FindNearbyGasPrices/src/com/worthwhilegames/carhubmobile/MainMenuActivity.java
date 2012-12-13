@@ -1,7 +1,5 @@
 package com.worthwhilegames.carhubmobile;
 
-import com.worthwhilegames.carhubmobile.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,7 +30,7 @@ public class MainMenuActivity extends Activity {
 				startActivity(gasPriceButtonClick);
 			}
 		});
-		
+
 		ImageButton about = (ImageButton) findViewById(R.id.about);
 		about.setOnClickListener(new OnClickListener() {
 			@Override
@@ -42,6 +40,5 @@ public class MainMenuActivity extends Activity {
 				startActivity(aboutButtonClick);
 			}
 		});
-		
 	}
 }
