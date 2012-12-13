@@ -70,18 +70,25 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 	 */
 	private LocationListener locationListener;
 
+	/**
+	 * The ListView containing the gas prices
+	 */
+	private ListView myList;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.find_gas_prices);
 
 		//initialize
 		currentLatitude = 0.0;
 		currentLongitude = 0.0;
 
-		//create
-		super.onCreate(savedInstanceState);
+		myList = (ListView) FindGasPricesActivity.this.findViewById(R.id.scrollView1);
 
-		//set view
-		setContentView(R.layout.find_gas_prices);
+		// Add the header to the listview
+		View header = getLayoutInflater().inflate(R.layout.gaspricerowheader, null);
+		myList.addHeaderView(header);
 
 		//create a new geocoder
 		geo = new Geocoder(FindGasPricesActivity.this);
@@ -141,7 +148,6 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 			}
 		});
 
-		ListView myList = (ListView)findViewById(R.id.scrollView1);
 		myList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> a, View v, int position, long id) {
@@ -168,7 +174,7 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 	 * Function to update the latitude and longitude variables
 	 * @param location a location object with the new location
 	 */
-	void updateLocation(Location location) {
+	private void updateLocation(Location location) {
 		if(location != null){
 			currentLocation = location;
 
@@ -225,7 +231,6 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 	 * Perform all necessary UI updates, then call getGasPrices
 	 */
 	private void performUpdate() {
-		ListView myList = (ListView) FindGasPricesActivity.this.findViewById(R.id.scrollView1);
 		ListAdapter listAdapter = myList.getAdapter();
 		// Only show the progressbar if we don't have any records yet
 		if (listAdapter == null || listAdapter.isEmpty()) {
@@ -316,8 +321,6 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 
 		List<GasPriceRecord> data = new ArrayList<GasPriceRecord>();
 		List<GasPriceRecord> naData = new ArrayList<GasPriceRecord>();
-		ListView myList = (ListView) FindGasPricesActivity.this.findViewById(R.id.scrollView1);
-		ListAdapter currentAdapter = myList.getAdapter();
 
 		if (gasRecords.isEmpty()) {
 			// TODO: show that no prices were found (use myList.setEmptyView)
@@ -332,13 +335,6 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 
 			data.addAll(naData);
 			GasPriceAdapter adapter = new GasPriceAdapter(FindGasPricesActivity.this, R.layout.gaspricerowlayout, data);
-
-			if (currentAdapter == null) {
-				// TODO: this should probably happen in onCreate (only needed on first time)
-				View header = getLayoutInflater().inflate(R.layout.gaspricerowheader, null);
-				myList.addHeaderView(header);
-			}
-
 			myList.setAdapter(adapter);
 		}
 	}
