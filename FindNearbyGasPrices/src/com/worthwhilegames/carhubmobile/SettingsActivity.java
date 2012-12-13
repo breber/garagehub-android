@@ -113,10 +113,9 @@ public class SettingsActivity extends Activity {
 		}
 
 		if(useCurrentLocation != null){
-			Boolean useLocation = sharedPref.getBoolean("useCurrentLocation", false);
+			Boolean useLocation = sharedPref.getBoolean("useCurrentLocation", true);
 
 			useCurrentLocation.setChecked(useLocation);
-
 		}
 
 	}

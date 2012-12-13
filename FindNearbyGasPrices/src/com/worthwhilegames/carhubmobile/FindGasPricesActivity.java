@@ -255,7 +255,7 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 		// create the shared preferences object
 		sharedPref = this.getSharedPreferences("Preferences", 0);
 		Boolean useCurrentLocation = sharedPref.getBoolean(
-				"useCurrentLocation", false);
+				"useCurrentLocation", true);
 
 		if (matcher.matches() || useCurrentLocation) {
 			List<Address> addresses = null;
