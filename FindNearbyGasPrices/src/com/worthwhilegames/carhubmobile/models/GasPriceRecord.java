@@ -12,20 +12,21 @@ public class GasPriceRecord extends SugarRecord {
 	private String mAddress;
 	private String mPrice;
 	private String mDistance;
+	private String mLastUpdated;
 	
 	public GasPriceRecord(Context arg0) {
 		super(arg0);
 	}
 	
 	/**
-	 * @return the mStationId
+	 * @return the stationId
 	 */
-	public String getmStationId() {
+	public String getStationId() {
 		return mStationId;
 	}
 	
 	/**
-	 * @param mStationId the mStationId to set
+	 * @param aStationId the mStation to set
 	 */
 	public void setStationId(String aStationId) {
 		this.mStationId = aStationId;
@@ -41,8 +42,8 @@ public class GasPriceRecord extends SugarRecord {
 	/**
 	 * @param aStationId the mStation to set
 	 */
-	public void setStation(String aStationId) {
-		this.mStation = aStationId;
+	public void setStation(String aStation) {
+		this.mStation = aStation;
 	}
 	
 	/**
@@ -86,5 +87,18 @@ public class GasPriceRecord extends SugarRecord {
 	public void setDistance(String aDistance) {
 		this.mDistance = aDistance;
 	}
-	
+
+	/**
+	 * @return the mLastUpdated
+	 */
+	public String getLastUpdated() {
+		return mLastUpdated;
+	}
+
+	/**
+	 * @param mLastUpdated the mLastUpdated to set
+	 */
+	public void setLastUpdated(String aLastUpdated) {
+		this.mLastUpdated = aLastUpdated;
+	}
 }
