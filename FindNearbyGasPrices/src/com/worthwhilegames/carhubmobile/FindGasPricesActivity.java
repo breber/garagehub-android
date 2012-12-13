@@ -28,7 +28,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -42,13 +41,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TableRow.LayoutParams;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -154,6 +154,43 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 				performUpdate();
 			}
 		});
+		
+		//settings button listener
+		ImageButton settings = (ImageButton)findViewById(R.id.settingsButton);
+		settings.setOnClickListener(new OnClickListener() {
+		
+			@Override
+			public void onClick(View v) {
+				Intent settingsButtonClick = new Intent(FindGasPricesActivity.this,
+				SettingsActivity.class);
+				startActivity(settingsButtonClick);
+			}
+			
+		});
+		
+		ListView myList = (ListView)findViewById(R.id.scrollView1);
+		myList.setOnItemClickListener(new OnItemClickListener() {
+			
+			@Override
+	        public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+	         	GasPriceRecord model = (GasPriceRecord) a.getItemAtPosition(position);
+	         	if (Util.isDebugBuild) {
+	         		Toast.makeText(FindGasPricesActivity.this, model.getId().toString(), Toast.LENGTH_LONG).show();
+	         	}
+	         	
+	    		Intent rowClick = new Intent(
+				FindGasPricesActivity.this,
+				UpdatePriceActivity.class);
+	
+				rowClick.putExtra("StationName", model.getStation());
+				rowClick.putExtra("StationAddress",model.getAddress());
+				rowClick.putExtra("StationID", model.getId());
+				
+				startActivity(rowClick);
+	        }
+			
+        });
+
 	}
 
 	/**
@@ -217,10 +254,8 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 	 * Perform all necessary UI updates, then call getGasPrices
 	 */
 	private void performUpdate() {
-		TableLayout myTable = (TableLayout) FindGasPricesActivity.this.findViewById(R.id.main_table);
-		
 		// Only show the progressbar if we don't have any records yet
-		if (myTable.getChildCount() == 0) {
+		if (true) { // TODO: check to see if results exist
 			ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
 			pb.setVisibility(View.VISIBLE);
 		}
@@ -294,166 +329,35 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 	private void updateUi() {
 		ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
 		pb.setVisibility(View.INVISIBLE);
-		TableLayout myTable = (TableLayout) findViewById(R.id.main_table);
-		myTable.removeAllViews();
-		int idCounter = 1000;
 
 		// Get all GasPriceRecords from the database
 		List<GasPriceRecord> gasRecords = GasPriceRecord.listAll(GasPriceRecord.class);
-		
-		TableRow rowHeading = new TableRow(this);
-		rowHeading.setId(idCounter++);
-		rowHeading.setBackgroundColor(Color.GRAY);
-		rowHeading.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-
-		// Station name
-		TextView labelName = new TextView(this);
-		labelName.setId(idCounter++);
-		labelName.setText("Station");
-		labelName.setTextColor(Color.WHITE);
-		labelName.setPadding(5, 5, 5, 5);
-		rowHeading.addView(labelName);
-
-		// Station address
-		TextView labelAddress = new TextView(this);
-		labelAddress.setId(idCounter++);
-		labelAddress.setText("Address");
-		labelAddress.setTextColor(Color.WHITE);
-		labelAddress.setPadding(5, 5, 5, 5);
-		rowHeading.addView(labelAddress);
-
-		// Station price
-		TextView labelPrice = new TextView(this);
-		labelPrice.setId(idCounter++);
-		labelPrice.setText("Price");
-		labelPrice.setTextColor(Color.WHITE);
-		labelPrice.setPadding(5, 5, 5, 5);
-		rowHeading.addView(labelPrice);
-
-		// Station distance
-		TextView labelDistance = new TextView(this);
-		labelDistance.setId(idCounter++);
-		labelDistance.setText("Distance");
-		labelDistance.setTextColor(Color.WHITE);
-		labelDistance.setPadding(5, 5, 5, 5);
-		rowHeading.addView(labelDistance);
-
-		// Add row
-		myTable.addView(rowHeading, new TableLayout.LayoutParams(
-				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+			
+		List<GasPriceRecord> data = new ArrayList<GasPriceRecord>();
+		List<GasPriceRecord> naData = new ArrayList<GasPriceRecord>();
+		ListView myList = (ListView)FindGasPricesActivity.this.findViewById(R.id.scrollView1);
 
 		if (gasRecords.isEmpty()) {
-			myTable.removeAllViews();
-			TableRow rowToAdd = new TableRow(this);
-			rowToAdd.setId(idCounter++);
-			rowToAdd.setBackgroundColor(Color.WHITE);
-			rowToAdd.setLayoutParams(new LayoutParams(
-					LayoutParams.MATCH_PARENT,
-					LayoutParams.MATCH_PARENT));
-
-			TextView stationName = new TextView(this);
-
-			stationName.setId(idCounter++);
-			stationName.setText("No stations found. Please try searching again.");
-			stationName.setTextColor(Color.BLACK);
-			stationName.setPadding(5, 5, 5, 5);
-			rowToAdd.addView(stationName);
-			myTable.addView(rowToAdd, new TableLayout.LayoutParams(
-					LayoutParams.WRAP_CONTENT,
-					LayoutParams.WRAP_CONTENT));
-			
+			GasPriceRecord model = new GasPriceRecord(this);
 		} else {
-			Display display = getWindowManager().getDefaultDisplay(); 
-			int width = display.getWidth();
-			
 			List<TableRow> rows = new ArrayList<TableRow>();
 
-			for (GasPriceRecord g : gasRecords) {
-				TableRow rowToAdd = new TableRow(this);
-				rowToAdd.setId(idCounter++);
-				rowToAdd.setBackgroundColor(Color.WHITE);
-				rowToAdd.setLayoutParams(new LayoutParams(
-						LayoutParams.MATCH_PARENT,
-						LayoutParams.MATCH_PARENT));
-
-				TextView stationName = new TextView(this);
-				stationName.setWidth((int)(width*.25));
-
-				stationName.setId(idCounter++);
-				stationName.setText(g.getStation());
-				stationName.setTextColor(Color.BLACK);
-				stationName.setPadding(5, 5, 5, 5);
-				rowToAdd.addView(stationName);
-
-				TextView stationAddress = new TextView(this);
-				stationAddress.setWidth((int)(width*.35));
-				stationAddress.setId(idCounter++);
-				stationAddress.setText(g.getAddress());
-				stationAddress.setTextColor(Color.BLACK);
-				stationAddress.setPadding(5, 5, 5, 5);
-				rowToAdd.addView(stationAddress);
-
-				TextView stationPrice = new TextView(this);
-				stationPrice.setId(idCounter++);
-				stationPrice.setText(g.getPrice());
-				stationPrice.setTextColor(Color.BLACK);
-				stationPrice.setPadding(5, 5, 5, 5);
-				stationPrice.setWidth((int)(width*.15));
-				rowToAdd.addView(stationPrice);
-
-				TextView stationDistance = new TextView(this);
-				stationDistance.setId(idCounter++);
-				stationDistance.setText(g.getDistance());
-				stationDistance.setTextColor(Color.BLACK);
-				stationDistance.setPadding(5, 5, 5, 5);
-				stationDistance.setWidth((int)(width*.25));
-				rowToAdd.addView(stationDistance);
-
-				TextView stationID = new TextView(this);
-				stationID.setId(idCounter++);
-				stationID.setText(g.getId().toString());
-				stationID.setTextColor(Color.BLACK);
-				stationID.setPadding(5, 5, 5, 5);
-				rowToAdd.addView(stationID);
-
-				rowToAdd.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						Intent rowClick = new Intent(FindGasPricesActivity.this,
-								UpdatePriceActivity.class);
-						TableRow t = (TableRow) view;
-						TextView firstTextView = (TextView) t.getChildAt(0);
-						TextView secondTextView = (TextView) t.getChildAt(1);
-						TextView fifthTextView = (TextView) t.getChildAt(4);
-						String stationName = firstTextView.getText().toString();
-						String stationAddress = secondTextView.getText().toString();
-						String stationID = fifthTextView.getText().toString();
-
-						rowClick.putExtra("StationName", stationName);
-						rowClick.putExtra("StationAddress",	stationAddress);
-						rowClick.putExtra("StationID", stationID);
-
-						startActivity(rowClick);
-					}
-				});
-
-				if (g.getPrice().equalsIgnoreCase("n/a")) {
-					rows.add(rowToAdd);
+			for (GasPriceRecord r : gasRecords) {
+				if (r.getPrice().equalsIgnoreCase("n/a")) {
+					naData.add(r);
 				} else {							
-					myTable.addView(rowToAdd, new TableLayout.LayoutParams(
-							LayoutParams.MATCH_PARENT,
-							LayoutParams.WRAP_CONTENT));
+					data.add(r);
 				}
 			}
+								
+			data.addAll(naData);
+			GasPriceAdapter adapter = new GasPriceAdapter(FindGasPricesActivity.this, R.layout.gaspricerowlayout, data);
 			
-			for (int j = 0; j < rows.size(); j++) {
-				myTable.addView(rows.get(j), new TableLayout.LayoutParams(
-						LayoutParams.MATCH_PARENT,
-						LayoutParams.WRAP_CONTENT));
-			}
+			View header = (View)getLayoutInflater().inflate(R.layout.gaspricerowheader, null);
+			myList.addHeaderView(header);
+			
+			myList.setAdapter(adapter);
 		}
-
-		myTable.setColumnCollapsed(4, true);
 	}
 
 	@Override
