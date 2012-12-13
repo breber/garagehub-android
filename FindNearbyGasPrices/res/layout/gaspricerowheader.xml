@@ -10,7 +10,7 @@
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
-        android:background="#336699"
+        android:background="#04417d"
         android:gravity="center_vertical"
         android:padding="10dp"
         android:text="@string/results"
