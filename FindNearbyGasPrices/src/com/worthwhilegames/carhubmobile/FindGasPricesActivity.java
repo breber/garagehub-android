@@ -20,6 +20,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.worthwhilegames.carhubmobile.FetchGasPricesTask.FetchGasPricesTaskCallback;
+import com.worthwhilegames.carhubmobile.models.GasPriceRecord;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -53,7 +56,7 @@ import android.widget.Toast;
  *
  */
 @SuppressLint("DefaultLocale")
-public class FindGasPricesActivity extends Activity {
+public class FindGasPricesActivity extends Activity implements FetchGasPricesTaskCallback {
 
 	/**
 	 * A SharedPreferences object to get the preferences set by the user
@@ -146,17 +149,10 @@ public class FindGasPricesActivity extends Activity {
 		//search button listener
 		Button search = (Button) findViewById(R.id.goButton);
 		search.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
-				TableLayout myTable = (TableLayout) FindGasPricesActivity.this
-						.findViewById(R.id.main_table);
-				myTable.removeAllViews();
-				ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
-				pb.setVisibility(View.VISIBLE);
-				getGasPrices();
+				performUpdate();
 			}
-			
 		});
 	}
 
@@ -186,7 +182,6 @@ public class FindGasPricesActivity extends Activity {
 	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		
 		//This will cover the Android menu button press
 		switch (item.getItemId()) {
 		case R.id.menu_settings:
@@ -205,15 +200,8 @@ public class FindGasPricesActivity extends Activity {
 	 */
 	@Override
 	protected void onResume(){
-		
 		super.onResume();
-		TableLayout myTable = (TableLayout) FindGasPricesActivity.this
-				.findViewById(R.id.main_table);
-		myTable.removeAllViews();
-		ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
-		pb.setVisibility(View.VISIBLE);
-		getGasPrices();
-		
+		performUpdate();
 	}
 
 	/* (non-Javadoc)
@@ -221,18 +209,29 @@ public class FindGasPricesActivity extends Activity {
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
-		
 	}
 
+	/**
+	 * Perform all necessary UI updates, then call getGasPrices
+	 */
+	private void performUpdate() {
+		TableLayout myTable = (TableLayout) FindGasPricesActivity.this.findViewById(R.id.main_table);
+		
+		// Only show the progressbar if we don't have any records yet
+		if (myTable.getChildCount() == 0) {
+			ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
+			pb.setVisibility(View.VISIBLE);
+		}
+		getGasPrices();
+	}
+	
 	/**
 	 * This method will send a request to myGasFeed to get the gas prices
 	 */
 	@SuppressLint("DefaultLocale")
 	public void getGasPrices() {
-
 		EditText zip = (EditText) findViewById(R.id.editText1);
 		String zipCode = zip.getText().toString();
 
@@ -246,12 +245,10 @@ public class FindGasPricesActivity extends Activity {
 				"useCurrentLocation", false);
 
 		if (matcher.matches() || useCurrentLocation) {
-
 			List<Address> addresses = null;
 
 			// Convert zip code to address
 			try {
-				
 				Log.e("Longitude: ", "" + currentLongitude);
 				Log.e("Latitude: ", "" + currentLatitude);
 
@@ -259,7 +256,7 @@ public class FindGasPricesActivity extends Activity {
 				String fuelType = sharedPref.getString("Fuel Type", "Mid");
 				String sortBy = sharedPref.getString("Sort By", "Price");
 
-				JSONRequest request = new JSONRequest();
+				FetchGasPricesTask request = new FetchGasPricesTask(this, this);
 
 				double lat;
 				double lon;
@@ -294,281 +291,173 @@ public class FindGasPricesActivity extends Activity {
 		}
 	}
 
-	/**
-	 * @author jamiekujawa
-	 *
-	 */
-	class JSONRequest extends AsyncTask<String, Integer, String> {
+	private void updateUi() {
+		ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
+		pb.setVisibility(View.INVISIBLE);
+		TableLayout myTable = (TableLayout) findViewById(R.id.main_table);
+		myTable.removeAllViews();
+		int idCounter = 1000;
 
-		/* (non-Javadoc)
-		 * @see android.os.AsyncTask#onProgressUpdate(Progress[])
-		 */
-		protected void onProgressUpdate(Integer... progress) {
-			// not used
-		}
+		// Get all GasPriceRecords from the database
+		List<GasPriceRecord> gasRecords = GasPriceRecord.listAll(GasPriceRecord.class);
+		
+		TableRow rowHeading = new TableRow(this);
+		rowHeading.setId(idCounter++);
+		rowHeading.setBackgroundColor(Color.GRAY);
+		rowHeading.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
-		/* (non-Javadoc)
-		 * @see android.os.AsyncTask#onPreExecute()
-		 */
-		protected void onPreExecute() {
-			// not used
-		}
+		// Station name
+		TextView labelName = new TextView(this);
+		labelName.setId(idCounter++);
+		labelName.setText("Station");
+		labelName.setTextColor(Color.WHITE);
+		labelName.setPadding(5, 5, 5, 5);
+		rowHeading.addView(labelName);
 
-		/* (non-Javadoc)
-		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
-		 */
-		@SuppressWarnings("deprecation")
-		protected void onPostExecute(String r) {
-			Log.e("result:", r.toString());
+		// Station address
+		TextView labelAddress = new TextView(this);
+		labelAddress.setId(idCounter++);
+		labelAddress.setText("Address");
+		labelAddress.setTextColor(Color.WHITE);
+		labelAddress.setPadding(5, 5, 5, 5);
+		rowHeading.addView(labelAddress);
 
-			JSONObject result = null;
+		// Station price
+		TextView labelPrice = new TextView(this);
+		labelPrice.setId(idCounter++);
+		labelPrice.setText("Price");
+		labelPrice.setTextColor(Color.WHITE);
+		labelPrice.setPadding(5, 5, 5, 5);
+		rowHeading.addView(labelPrice);
 
-			// Convert string to object
-			try {
-				result = new JSONObject(r);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
+		// Station distance
+		TextView labelDistance = new TextView(this);
+		labelDistance.setId(idCounter++);
+		labelDistance.setText("Distance");
+		labelDistance.setTextColor(Color.WHITE);
+		labelDistance.setPadding(5, 5, 5, 5);
+		rowHeading.addView(labelDistance);
 
-			ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
-			pb.setVisibility(View.INVISIBLE);
-			TableLayout myTable = (TableLayout) FindGasPricesActivity.this
-					.findViewById(R.id.main_table);
+		// Add row
+		myTable.addView(rowHeading, new TableLayout.LayoutParams(
+				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+
+		if (gasRecords.isEmpty()) {
 			myTable.removeAllViews();
-			int idCounter = 1000;
+			TableRow rowToAdd = new TableRow(this);
+			rowToAdd.setId(idCounter++);
+			rowToAdd.setBackgroundColor(Color.WHITE);
+			rowToAdd.setLayoutParams(new LayoutParams(
+					LayoutParams.MATCH_PARENT,
+					LayoutParams.MATCH_PARENT));
 
-			TableRow rowHeading = new TableRow(FindGasPricesActivity.this);
-			rowHeading.setId(idCounter++);
-			rowHeading.setBackgroundColor(Color.GRAY);
-			rowHeading.setLayoutParams(new LayoutParams(
-					LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+			TextView stationName = new TextView(this);
 
-			// Station name
-			TextView labelName = new TextView(FindGasPricesActivity.this);
-			labelName.setId(idCounter++);
-			labelName.setText("Station");
-			labelName.setTextColor(Color.WHITE);
-			labelName.setPadding(5, 5, 5, 5);
-			rowHeading.addView(labelName);
+			stationName.setId(idCounter++);
+			stationName.setText("No stations found. Please try searching again.");
+			stationName.setTextColor(Color.BLACK);
+			stationName.setPadding(5, 5, 5, 5);
+			rowToAdd.addView(stationName);
+			myTable.addView(rowToAdd, new TableLayout.LayoutParams(
+					LayoutParams.WRAP_CONTENT,
+					LayoutParams.WRAP_CONTENT));
+			
+		} else {
+			Display display = getWindowManager().getDefaultDisplay(); 
+			int width = display.getWidth();
+			
+			List<TableRow> rows = new ArrayList<TableRow>();
 
-			// Station address
-			TextView labelAddress = new TextView(FindGasPricesActivity.this);
-			labelAddress.setId(idCounter++);
-			labelAddress.setText("Address");
-			labelAddress.setTextColor(Color.WHITE);
-			labelAddress.setPadding(5, 5, 5, 5);
-			rowHeading.addView(labelAddress);
+			for (GasPriceRecord g : gasRecords) {
+				TableRow rowToAdd = new TableRow(this);
+				rowToAdd.setId(idCounter++);
+				rowToAdd.setBackgroundColor(Color.WHITE);
+				rowToAdd.setLayoutParams(new LayoutParams(
+						LayoutParams.MATCH_PARENT,
+						LayoutParams.MATCH_PARENT));
 
-			// Station price
-			TextView labelPrice = new TextView(FindGasPricesActivity.this);
-			labelPrice.setId(idCounter++);
-			labelPrice.setText("Price");
-			labelPrice.setTextColor(Color.WHITE);
-			labelPrice.setPadding(5, 5, 5, 5);
-			rowHeading.addView(labelPrice);
+				TextView stationName = new TextView(this);
+				stationName.setWidth((int)(width*.25));
 
-			// Station distance
-			TextView labelDistance = new TextView(FindGasPricesActivity.this);
-			labelDistance.setId(idCounter++);
-			labelDistance.setText("Distance");
-			labelDistance.setTextColor(Color.WHITE);
-			labelDistance.setPadding(5, 5, 5, 5);
-			rowHeading.addView(labelDistance);
+				stationName.setId(idCounter++);
+				stationName.setText(g.getStation());
+				stationName.setTextColor(Color.BLACK);
+				stationName.setPadding(5, 5, 5, 5);
+				rowToAdd.addView(stationName);
 
-			// Add row
-			myTable.addView(rowHeading, new TableLayout.LayoutParams(
-					LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+				TextView stationAddress = new TextView(this);
+				stationAddress.setWidth((int)(width*.35));
+				stationAddress.setId(idCounter++);
+				stationAddress.setText(g.getAddress());
+				stationAddress.setTextColor(Color.BLACK);
+				stationAddress.setPadding(5, 5, 5, 5);
+				rowToAdd.addView(stationAddress);
 
-			try {
+				TextView stationPrice = new TextView(this);
+				stationPrice.setId(idCounter++);
+				stationPrice.setText(g.getPrice());
+				stationPrice.setTextColor(Color.BLACK);
+				stationPrice.setPadding(5, 5, 5, 5);
+				stationPrice.setWidth((int)(width*.15));
+				rowToAdd.addView(stationPrice);
 
-				JSONArray stations = result.getJSONArray("stations");
-				Log.e("Number of Stations:", "" + stations.length());
+				TextView stationDistance = new TextView(this);
+				stationDistance.setId(idCounter++);
+				stationDistance.setText(g.getDistance());
+				stationDistance.setTextColor(Color.BLACK);
+				stationDistance.setPadding(5, 5, 5, 5);
+				stationDistance.setWidth((int)(width*.25));
+				rowToAdd.addView(stationDistance);
 
-				if (stations.length() == 0) {
-					myTable.removeAllViews();
-					TableRow rowToAdd = new TableRow(
-							FindGasPricesActivity.this);
-					rowToAdd.setId(idCounter++);
-					rowToAdd.setBackgroundColor(Color.WHITE);
-					rowToAdd.setLayoutParams(new LayoutParams(
-							LayoutParams.FILL_PARENT,
-							LayoutParams.FILL_PARENT));
+				TextView stationID = new TextView(this);
+				stationID.setId(idCounter++);
+				stationID.setText(g.getId().toString());
+				stationID.setTextColor(Color.BLACK);
+				stationID.setPadding(5, 5, 5, 5);
+				rowToAdd.addView(stationID);
 
-					TextView stationName = new TextView(
-							FindGasPricesActivity.this);
+				rowToAdd.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						Intent rowClick = new Intent(FindGasPricesActivity.this,
+								UpdatePriceActivity.class);
+						TableRow t = (TableRow) view;
+						TextView firstTextView = (TextView) t.getChildAt(0);
+						TextView secondTextView = (TextView) t.getChildAt(1);
+						TextView fifthTextView = (TextView) t.getChildAt(4);
+						String stationName = firstTextView.getText().toString();
+						String stationAddress = secondTextView.getText().toString();
+						String stationID = fifthTextView.getText().toString();
 
-					stationName.setId(idCounter++);
-					stationName.setText("No stations found. Please try searching again.");
-					stationName.setTextColor(Color.BLACK);
-					stationName.setPadding(5, 5, 5, 5);
-					rowToAdd.addView(stationName);
+						rowClick.putExtra("StationName", stationName);
+						rowClick.putExtra("StationAddress",	stationAddress);
+						rowClick.putExtra("StationID", stationID);
+
+						startActivity(rowClick);
+					}
+				});
+
+				if (g.getPrice().equalsIgnoreCase("n/a")) {
+					rows.add(rowToAdd);
+				} else {							
 					myTable.addView(rowToAdd, new TableLayout.LayoutParams(
-							LayoutParams.WRAP_CONTENT,
+							LayoutParams.MATCH_PARENT,
 							LayoutParams.WRAP_CONTENT));
-					
-				} else {
-					Display display = getWindowManager().getDefaultDisplay(); 
-					int width = display.getWidth();
-					
-					List<TableRow> rows = new ArrayList<TableRow>();
-
-					for (int i = 0; i < stations.length(); i++) {
-						JSONObject row = stations.getJSONObject(i);
-
-						TableRow rowToAdd = new TableRow(
-								FindGasPricesActivity.this);
-						rowToAdd.setId(idCounter++);
-						rowToAdd.setBackgroundColor(Color.WHITE);
-						rowToAdd.setLayoutParams(new LayoutParams(
-								LayoutParams.FILL_PARENT,
-								LayoutParams.FILL_PARENT));
-
-						TextView stationName = new TextView(
-								FindGasPricesActivity.this);
-						stationName.setWidth((int)(width*.25));
-
-						stationName.setId(idCounter++);
-						stationName.setText(row.getString("station"));
-						Log.e("Station Name:", row.getString("station"));
-						stationName.setTextColor(Color.BLACK);
-						stationName.setPadding(5, 5, 5, 5);
-						rowToAdd.addView(stationName);
-
-						TextView stationAddress = new TextView(
-								FindGasPricesActivity.this);
-						stationAddress.setWidth((int)(width*.35));
-						stationAddress.setId(idCounter++);
-						stationAddress.setText(row.getString("address"));
-						stationAddress.setTextColor(Color.BLACK);
-						stationAddress.setPadding(5, 5, 5, 5);
-						rowToAdd.addView(stationAddress);
-
-						Log.e("Address:", row.getString("address"));
-						TextView stationPrice = new TextView(
-								FindGasPricesActivity.this);
-						stationPrice.setId(idCounter++);
-						stationPrice.setText(row.getString("price"));
-						Log.e("Price:", row.getString("price"));
-						stationPrice.setTextColor(Color.BLACK);
-						stationPrice.setPadding(5, 5, 5, 5);
-						stationPrice.setWidth((int)(width*.15));
-						rowToAdd.addView(stationPrice);
-
-						TextView stationDistance = new TextView(
-								FindGasPricesActivity.this);
-						stationDistance.setId(idCounter++);
-						stationDistance.setText(row.getString("distance"));
-						Log.e("Distance:", row.getString("distance"));
-						stationDistance.setTextColor(Color.BLACK);
-						stationDistance.setPadding(5, 5, 5, 5);
-						stationDistance.setWidth((int)(width*.25));
-						rowToAdd.addView(stationDistance);
-
-						TextView stationID = new TextView(
-								FindGasPricesActivity.this);
-						stationID.setId(idCounter++);
-						stationID.setText(row.getString("id"));
-						Log.e("ID:", row.getString("id"));
-						stationID.setTextColor(Color.BLACK);
-						stationID.setPadding(5, 5, 5, 5);
-						rowToAdd.addView(stationID);
-
-						rowToAdd.setOnClickListener(new OnClickListener() {
-
-							@Override
-							public void onClick(View view) {
-								Intent rowClick = new Intent(
-										FindGasPricesActivity.this,
-										UpdatePriceActivity.class);
-								TableRow t = (TableRow) view;
-								TextView firstTextView = (TextView) t
-										.getChildAt(0);
-								TextView secondTextView = (TextView) t
-										.getChildAt(1);
-								TextView fifthTextView = (TextView) t
-										.getChildAt(4);
-								String stationName = firstTextView.getText()
-										.toString();
-								String stationAddress = secondTextView
-										.getText().toString();
-								String stationID = fifthTextView.getText()
-										.toString();
-
-								rowClick.putExtra("StationName", stationName);
-								rowClick.putExtra("StationAddress",
-										stationAddress);
-								rowClick.putExtra("StationID", stationID);
-
-								startActivity(rowClick);
-							}
-						});
-
-						if(row.getString("price").equalsIgnoreCase("n/a")){
-							rows.add(rowToAdd);
-						}else{							
-							myTable.addView(rowToAdd, new TableLayout.LayoutParams(
-									LayoutParams.FILL_PARENT,
-									LayoutParams.WRAP_CONTENT));
-						}
-					}
-					
-					for(int j = 0; j < rows.size(); j++){
-						myTable.addView(rows.get(j), new TableLayout.LayoutParams(
-								LayoutParams.FILL_PARENT,
-								LayoutParams.WRAP_CONTENT));
-					}
 				}
-
-			} catch (JSONException ex) {
-				Log.e("Exception:", "Request not completed");
 			}
-
-			myTable.setColumnCollapsed(4, true);
-
+			
+			for (int j = 0; j < rows.size(); j++) {
+				myTable.addView(rows.get(j), new TableLayout.LayoutParams(
+						LayoutParams.MATCH_PARENT,
+						LayoutParams.WRAP_CONTENT));
+			}
 		}
 
-		/* (non-Javadoc)
-		 * @see android.os.AsyncTask#doInBackground(Params[])
-		 */
-		/* (non-Javadoc)
-		 * @see android.os.AsyncTask#doInBackground(Params[])
-		 */
-		@Override
-		protected String doInBackground(String... params) {
-			Log.e("", "---doInBackground---");
-			StringBuilder builder = new StringBuilder();
-			HttpClient client = new DefaultHttpClient();
-			HttpGet httpGet = new HttpGet(params[0]);
-			try {
-				Log.e("", params[0]);
-				HttpResponse response = client.execute(httpGet);
-				StatusLine statusLine = response.getStatusLine();
-				int statusCode = statusLine.getStatusCode();
+		myTable.setColumnCollapsed(4, true);
+	}
 
-				// Good code
-				if (statusCode == 200) {
-					Log.e("", "---Status Code 200---");
-					HttpEntity entity = response.getEntity();
-					InputStream content = entity.getContent();
-					BufferedReader reader = new BufferedReader(
-							new InputStreamReader(content));
-					String line;
-
-					while ((line = reader.readLine()) != null) {
-						builder.append(line);
-					}
-
-				} else {
-					Log.e(JSONRequest.class.toString(), "Failed to get request");
-				}
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			Log.e("---Result---:", builder.toString());
-			return builder.toString();
-		}
+	@Override
+	public void gasPricesDidUpdate() {
+		updateUi();
 	}
 }
