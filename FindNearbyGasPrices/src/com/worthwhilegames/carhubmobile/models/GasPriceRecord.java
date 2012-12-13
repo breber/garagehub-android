@@ -7,6 +7,7 @@ import com.orm.SugarRecord;
 @SuppressWarnings("rawtypes")
 public class GasPriceRecord extends SugarRecord {
 
+	private String mStationId;
 	private String mStation;
 	private String mAddress;
 	private String mPrice;
@@ -15,6 +16,20 @@ public class GasPriceRecord extends SugarRecord {
 	
 	public GasPriceRecord(Context arg0) {
 		super(arg0);
+	}
+	
+	/**
+	 * @return the stationId
+	 */
+	public String getStationId() {
+		return mStationId;
+	}
+	
+	/**
+	 * @param aStationId the mStation to set
+	 */
+	public void setStationId(String aStationId) {
+		this.mStationId = aStationId;
 	}
 	
 	/**
@@ -27,8 +42,8 @@ public class GasPriceRecord extends SugarRecord {
 	/**
 	 * @param aStationId the mStation to set
 	 */
-	public void setStation(String aStationId) {
-		this.mStation = aStationId;
+	public void setStation(String aStation) {
+		this.mStation = aStation;
 	}
 	
 	/**

@@ -171,7 +171,7 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 	
 				rowClick.putExtra("StationName", model.getStation());
 				rowClick.putExtra("StationAddress",model.getAddress());
-				rowClick.putExtra("StationID", model.getId());
+				rowClick.putExtra("StationID", model.getStationId());
 				
 				startActivity(rowClick);
 	        }
