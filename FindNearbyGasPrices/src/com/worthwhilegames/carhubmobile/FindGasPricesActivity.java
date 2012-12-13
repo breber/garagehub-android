@@ -149,17 +149,10 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 		//search button listener
 		Button search = (Button) findViewById(R.id.goButton);
 		search.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
-				TableLayout myTable = (TableLayout) FindGasPricesActivity.this
-						.findViewById(R.id.main_table);
-				myTable.removeAllViews();
-				ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
-				pb.setVisibility(View.VISIBLE);
-				getGasPrices();
+				performUpdate();
 			}
-			
 		});
 	}
 
@@ -189,7 +182,6 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		
 		//This will cover the Android menu button press
 		switch (item.getItemId()) {
 		case R.id.menu_settings:
@@ -208,15 +200,8 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 	 */
 	@Override
 	protected void onResume(){
-		
 		super.onResume();
-		TableLayout myTable = (TableLayout) FindGasPricesActivity.this
-				.findViewById(R.id.main_table);
-		myTable.removeAllViews();
-		ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
-		pb.setVisibility(View.VISIBLE);
-		getGasPrices();
-		
+		performUpdate();
 	}
 
 	/* (non-Javadoc)
@@ -224,18 +209,29 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
-		
 	}
 
+	/**
+	 * Perform all necessary UI updates, then call getGasPrices
+	 */
+	private void performUpdate() {
+		TableLayout myTable = (TableLayout) FindGasPricesActivity.this.findViewById(R.id.main_table);
+		
+		// Only show the progressbar if we don't have any records yet
+		if (myTable.getChildCount() == 0) {
+			ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
+			pb.setVisibility(View.VISIBLE);
+		}
+		getGasPrices();
+	}
+	
 	/**
 	 * This method will send a request to myGasFeed to get the gas prices
 	 */
 	@SuppressLint("DefaultLocale")
 	public void getGasPrices() {
-
 		EditText zip = (EditText) findViewById(R.id.editText1);
 		String zipCode = zip.getText().toString();
 
@@ -249,12 +245,10 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 				"useCurrentLocation", false);
 
 		if (matcher.matches() || useCurrentLocation) {
-
 			List<Address> addresses = null;
 
 			// Convert zip code to address
 			try {
-				
 				Log.e("Longitude: ", "" + currentLongitude);
 				Log.e("Latitude: ", "" + currentLatitude);
 
@@ -298,25 +292,22 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 	}
 
 	private void updateUi() {
-		Toast.makeText(this, "Reload data",	Toast.LENGTH_LONG).show();
 		ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
 		pb.setVisibility(View.INVISIBLE);
-		TableLayout myTable = (TableLayout) FindGasPricesActivity.this
-				.findViewById(R.id.main_table);
+		TableLayout myTable = (TableLayout) findViewById(R.id.main_table);
 		myTable.removeAllViews();
 		int idCounter = 1000;
 
 		// Get all GasPriceRecords from the database
 		List<GasPriceRecord> gasRecords = GasPriceRecord.listAll(GasPriceRecord.class);
 		
-		TableRow rowHeading = new TableRow(FindGasPricesActivity.this);
+		TableRow rowHeading = new TableRow(this);
 		rowHeading.setId(idCounter++);
 		rowHeading.setBackgroundColor(Color.GRAY);
-		rowHeading.setLayoutParams(new LayoutParams(
-				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		rowHeading.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
 		// Station name
-		TextView labelName = new TextView(FindGasPricesActivity.this);
+		TextView labelName = new TextView(this);
 		labelName.setId(idCounter++);
 		labelName.setText("Station");
 		labelName.setTextColor(Color.WHITE);
@@ -324,7 +315,7 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 		rowHeading.addView(labelName);
 
 		// Station address
-		TextView labelAddress = new TextView(FindGasPricesActivity.this);
+		TextView labelAddress = new TextView(this);
 		labelAddress.setId(idCounter++);
 		labelAddress.setText("Address");
 		labelAddress.setTextColor(Color.WHITE);
@@ -332,7 +323,7 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 		rowHeading.addView(labelAddress);
 
 		// Station price
-		TextView labelPrice = new TextView(FindGasPricesActivity.this);
+		TextView labelPrice = new TextView(this);
 		labelPrice.setId(idCounter++);
 		labelPrice.setText("Price");
 		labelPrice.setTextColor(Color.WHITE);
@@ -340,7 +331,7 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 		rowHeading.addView(labelPrice);
 
 		// Station distance
-		TextView labelDistance = new TextView(FindGasPricesActivity.this);
+		TextView labelDistance = new TextView(this);
 		labelDistance.setId(idCounter++);
 		labelDistance.setText("Distance");
 		labelDistance.setTextColor(Color.WHITE);
@@ -353,16 +344,14 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 
 		if (gasRecords.isEmpty()) {
 			myTable.removeAllViews();
-			TableRow rowToAdd = new TableRow(
-					FindGasPricesActivity.this);
+			TableRow rowToAdd = new TableRow(this);
 			rowToAdd.setId(idCounter++);
 			rowToAdd.setBackgroundColor(Color.WHITE);
 			rowToAdd.setLayoutParams(new LayoutParams(
 					LayoutParams.MATCH_PARENT,
 					LayoutParams.MATCH_PARENT));
 
-			TextView stationName = new TextView(
-					FindGasPricesActivity.this);
+			TextView stationName = new TextView(this);
 
 			stationName.setId(idCounter++);
 			stationName.setText("No stations found. Please try searching again.");
@@ -380,14 +369,14 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 			List<TableRow> rows = new ArrayList<TableRow>();
 
 			for (GasPriceRecord g : gasRecords) {
-				TableRow rowToAdd = new TableRow(FindGasPricesActivity.this);
+				TableRow rowToAdd = new TableRow(this);
 				rowToAdd.setId(idCounter++);
 				rowToAdd.setBackgroundColor(Color.WHITE);
 				rowToAdd.setLayoutParams(new LayoutParams(
 						LayoutParams.MATCH_PARENT,
 						LayoutParams.MATCH_PARENT));
 
-				TextView stationName = new TextView(FindGasPricesActivity.this);
+				TextView stationName = new TextView(this);
 				stationName.setWidth((int)(width*.25));
 
 				stationName.setId(idCounter++);
@@ -396,7 +385,7 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 				stationName.setPadding(5, 5, 5, 5);
 				rowToAdd.addView(stationName);
 
-				TextView stationAddress = new TextView(FindGasPricesActivity.this);
+				TextView stationAddress = new TextView(this);
 				stationAddress.setWidth((int)(width*.35));
 				stationAddress.setId(idCounter++);
 				stationAddress.setText(g.getAddress());
@@ -404,7 +393,7 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 				stationAddress.setPadding(5, 5, 5, 5);
 				rowToAdd.addView(stationAddress);
 
-				TextView stationPrice = new TextView(FindGasPricesActivity.this);
+				TextView stationPrice = new TextView(this);
 				stationPrice.setId(idCounter++);
 				stationPrice.setText(g.getPrice());
 				stationPrice.setTextColor(Color.BLACK);
@@ -412,7 +401,7 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 				stationPrice.setWidth((int)(width*.15));
 				rowToAdd.addView(stationPrice);
 
-				TextView stationDistance = new TextView(FindGasPricesActivity.this);
+				TextView stationDistance = new TextView(this);
 				stationDistance.setId(idCounter++);
 				stationDistance.setText(g.getDistance());
 				stationDistance.setTextColor(Color.BLACK);
@@ -420,7 +409,7 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 				stationDistance.setWidth((int)(width*.25));
 				rowToAdd.addView(stationDistance);
 
-				TextView stationID = new TextView(FindGasPricesActivity.this);
+				TextView stationID = new TextView(this);
 				stationID.setId(idCounter++);
 				stationID.setText(g.getId().toString());
 				stationID.setTextColor(Color.BLACK);
@@ -448,7 +437,7 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 					}
 				});
 
-				if (g.getPrice().equalsIgnoreCase("n/a")){
+				if (g.getPrice().equalsIgnoreCase("n/a")) {
 					rows.add(rowToAdd);
 				} else {							
 					myTable.addView(rowToAdd, new TableLayout.LayoutParams(
