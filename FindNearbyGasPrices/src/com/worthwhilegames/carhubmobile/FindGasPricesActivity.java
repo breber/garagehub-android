@@ -152,8 +152,7 @@ public class FindGasPricesActivity extends Activity {
 				ListView myList = (ListView)findViewById(R.id.scrollView1);
 				myList.setAdapter(null);
 				
-				ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
-				pb.setVisibility(View.VISIBLE);
+				
 
 				getGasPrices();
 			}
@@ -299,23 +298,37 @@ public class FindGasPricesActivity extends Activity {
 
 				JSONRequest request = new JSONRequest();
 
-				double lat;
-				double lon;
+				double lat = 0.0;
+				double lon = 0.0;
+				boolean executeSearch = true;
 
 				if (useCurrentLocation) {
 					lat = currentLatitude;
 					lon = currentLongitude;
 				} else {
 					addresses = geo.getFromLocationName(zipCode, 1);
-					lat = addresses.get(0).getLatitude();
-					lon = addresses.get(0).getLongitude();
+					
+					if(addresses.size() > 0){
+						lat = addresses.get(0).getLatitude();
+						lon = addresses.get(0).getLongitude();
+					}else{
+						executeSearch = false;
+					}
 				}
 
-				// execute the get request
-				request.execute("http://api.mygasfeed.com/stations/radius/" + lat
-						+ "/" + lon + "/" + distance + "/"
-						+ fuelType.toLowerCase().trim() + "/"
-						+ sortBy.toLowerCase() + "/zax22arsix.json".trim());
+				if(executeSearch){
+					ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
+					pb.setVisibility(View.VISIBLE);
+					
+					// execute the get request
+					request.execute("http://api.mygasfeed.com/stations/radius/" + lat
+							+ "/" + lon + "/" + distance + "/"
+							+ fuelType.toLowerCase().trim() + "/"
+							+ sortBy.toLowerCase() + "/zax22arsix.json".trim());
+				}else{
+					Toast.makeText(this, "Please try search again. Unable to find current location.",
+							Toast.LENGTH_LONG).show();
+				}
 				
 			} catch (IOException e) {
 				Toast.makeText(this, "Please try search again. Unable to find current location.",
@@ -385,8 +398,6 @@ public class FindGasPricesActivity extends Activity {
 					GasPriceRowModel model = new GasPriceRowModel("No stations found. Please try searching again.", "", "", "", "", "");
 					
 				} else {
-					Display display = getWindowManager().getDefaultDisplay(); 
-					int width = display.getWidth();
 					
 					List<TableRow> rows = new ArrayList<TableRow>();
 
