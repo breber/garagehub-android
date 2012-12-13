@@ -2,6 +2,8 @@ package com.worthwhilegames.carhubmobile;
 
 import java.util.List;
 
+import com.worthwhilegames.carhubmobile.models.GasPriceRecord;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,13 +12,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class GasPriceAdapter extends ArrayAdapter<GasPriceRowModel>{
+public class GasPriceAdapter extends ArrayAdapter<GasPriceRecord>{
 
     Context context; 
     int layoutResourceId;
-    List<GasPriceRowModel> data = null;
+    List<GasPriceRecord> data = null;
     
-    public GasPriceAdapter(Context context, int layoutResourceId, List<GasPriceRowModel> data) {
+    public GasPriceAdapter(Context context, int layoutResourceId, List<GasPriceRecord> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -48,11 +50,11 @@ public class GasPriceAdapter extends ArrayAdapter<GasPriceRowModel>{
             holder = (GasPriceHolder)row.getTag();
         }
         
-        GasPriceRowModel station = data.get(position);
-        holder.stationAddress.setText(station.getStationAddress().trim());
-        holder.stationDistance.setText("Distance: " + station.getStationDistance().trim());
-        holder.stationName.setText(station.getStationName().trim() + " - ");
-        holder.stationPrice.setText("Price: " + station.getStationPrice().trim());
+        GasPriceRecord station = data.get(position);
+        holder.stationAddress.setText(station.getAddress().trim());
+        holder.stationDistance.setText("Distance: " + station.getDistance().trim());
+        holder.stationName.setText(station.getStation().trim() + " - ");
+        holder.stationPrice.setText("Price: " + station.getPrice().trim());
         holder.lastUpdated.setText("Last Updated: " + station.getLastUpdated().trim());
         
         return row;

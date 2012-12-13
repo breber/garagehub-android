@@ -76,6 +76,7 @@ public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
 					newRecord.setStation(row.getString("station"));
 					newRecord.setPrice(row.getString("price"));
 					newRecord.setDistance(row.getString("distance"));
+					newRecord.setLastUpdated(row.getString("date"));
 					newRecord.save();
 					
 					if (Util.isDebugBuild) {

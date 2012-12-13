@@ -155,22 +155,8 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 			}
 		});
 		
-		//settings button listener
-		ImageButton settings = (ImageButton)findViewById(R.id.settingsButton);
-		settings.setOnClickListener(new OnClickListener() {
-		
-			@Override
-			public void onClick(View v) {
-				Intent settingsButtonClick = new Intent(FindGasPricesActivity.this,
-				SettingsActivity.class);
-				startActivity(settingsButtonClick);
-			}
-			
-		});
-		
 		ListView myList = (ListView)findViewById(R.id.scrollView1);
 		myList.setOnItemClickListener(new OnItemClickListener() {
-			
 			@Override
 	        public void onItemClick(AdapterView<?> a, View v, int position, long id) {
 	         	GasPriceRecord model = (GasPriceRecord) a.getItemAtPosition(position);
@@ -188,7 +174,6 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 				
 				startActivity(rowClick);
 	        }
-			
         });
 
 	}
@@ -335,13 +320,11 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 			
 		List<GasPriceRecord> data = new ArrayList<GasPriceRecord>();
 		List<GasPriceRecord> naData = new ArrayList<GasPriceRecord>();
-		ListView myList = (ListView)FindGasPricesActivity.this.findViewById(R.id.scrollView1);
+		ListView myList = (ListView) FindGasPricesActivity.this.findViewById(R.id.scrollView1);
 
 		if (gasRecords.isEmpty()) {
-			GasPriceRecord model = new GasPriceRecord(this);
+			// TODO: show that no prices were found
 		} else {
-			List<TableRow> rows = new ArrayList<TableRow>();
-
 			for (GasPriceRecord r : gasRecords) {
 				if (r.getPrice().equalsIgnoreCase("n/a")) {
 					naData.add(r);

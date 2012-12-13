@@ -7,28 +7,14 @@ import com.orm.SugarRecord;
 @SuppressWarnings("rawtypes")
 public class GasPriceRecord extends SugarRecord {
 
-	private String mStationId;
 	private String mStation;
 	private String mAddress;
 	private String mPrice;
 	private String mDistance;
+	private String mLastUpdated;
 	
 	public GasPriceRecord(Context arg0) {
 		super(arg0);
-	}
-	
-	/**
-	 * @return the mStationId
-	 */
-	public String getmStationId() {
-		return mStationId;
-	}
-	
-	/**
-	 * @param mStationId the mStationId to set
-	 */
-	public void setStationId(String aStationId) {
-		this.mStationId = aStationId;
 	}
 	
 	/**
@@ -86,5 +72,18 @@ public class GasPriceRecord extends SugarRecord {
 	public void setDistance(String aDistance) {
 		this.mDistance = aDistance;
 	}
-	
+
+	/**
+	 * @return the mLastUpdated
+	 */
+	public String getLastUpdated() {
+		return mLastUpdated;
+	}
+
+	/**
+	 * @param mLastUpdated the mLastUpdated to set
+	 */
+	public void setLastUpdated(String aLastUpdated) {
+		this.mLastUpdated = aLastUpdated;
+	}
 }
