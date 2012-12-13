@@ -46,6 +46,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TableRow;
@@ -239,8 +240,10 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 	 * Perform all necessary UI updates, then call getGasPrices
 	 */
 	private void performUpdate() {
+		ListView myList = (ListView) FindGasPricesActivity.this.findViewById(R.id.scrollView1);
+		ListAdapter listAdapter = myList.getAdapter();
 		// Only show the progressbar if we don't have any records yet
-		if (true) { // TODO: check to see if results exist
+		if (listAdapter == null || listAdapter.isEmpty()) {
 			ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
 			pb.setVisibility(View.VISIBLE);
 		}
@@ -278,30 +281,38 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 
 				FetchGasPricesTask request = new FetchGasPricesTask(this, this);
 
-				double lat;
-				double lon;
+				double lat = 0;
+				double lon = 0;
+				boolean executeSearch = true;
 
 				if (useCurrentLocation) {
 					lat = currentLatitude;
 					lon = currentLongitude;
 				} else {
 					addresses = geo.getFromLocationName(zipCode, 1);
-					lat = addresses.get(0).getLatitude();
-					lon = addresses.get(0).getLongitude();
+
+					if (!addresses.isEmpty()) {
+						lat = addresses.get(0).getLatitude();
+						lon = addresses.get(0).getLongitude();
+					} else {
+						executeSearch = false;
+					}
 				}
 
-				// execute the get request
-				request.execute("http://api.mygasfeed.com/stations/radius/" + lat
-						+ "/" + lon + "/" + distance + "/"
-						+ fuelType.toLowerCase().trim() + "/"
-						+ sortBy.toLowerCase() + "/zax22arsix.json".trim());
-				
+				if (executeSearch) {
+					// execute the get request
+					request.execute("http://api.mygasfeed.com/stations/radius/" + lat
+							+ "/" + lon + "/" + distance + "/"
+							+ fuelType.toLowerCase().trim() + "/"
+							+ sortBy.toLowerCase() + "/zax22arsix.json".trim());
+				} else {
+					Toast.makeText(this,  "Please try search again. Unable to find current location.", Toast.LENGTH_SHORT).show();
+				}
 			} catch (IOException e) {
 				Toast.makeText(this, "Please try search again. Unable to find current location.",
 						Toast.LENGTH_LONG).show();
 				e.printStackTrace();
 			}
-
 
 		} else {
 			Toast.makeText(this, "Please enter a valid zip code",
@@ -321,9 +332,10 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 		List<GasPriceRecord> data = new ArrayList<GasPriceRecord>();
 		List<GasPriceRecord> naData = new ArrayList<GasPriceRecord>();
 		ListView myList = (ListView) FindGasPricesActivity.this.findViewById(R.id.scrollView1);
+		ListAdapter currentAdapter = myList.getAdapter();
 
 		if (gasRecords.isEmpty()) {
-			// TODO: show that no prices were found
+			// TODO: show that no prices were found (use myList.setEmptyView)
 		} else {
 			for (GasPriceRecord r : gasRecords) {
 				if (r.getPrice().equalsIgnoreCase("n/a")) {
@@ -336,9 +348,12 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 			data.addAll(naData);
 			GasPriceAdapter adapter = new GasPriceAdapter(FindGasPricesActivity.this, R.layout.gaspricerowlayout, data);
 			
-			View header = (View)getLayoutInflater().inflate(R.layout.gaspricerowheader, null);
-			myList.addHeaderView(header);
-			
+			if (currentAdapter == null) {
+				// TODO: this should probably happen in onCreate (only needed on first time)
+				View header = (View)getLayoutInflater().inflate(R.layout.gaspricerowheader, null);
+				myList.addHeaderView(header);
+			}
+
 			myList.setAdapter(adapter);
 		}
 	}
