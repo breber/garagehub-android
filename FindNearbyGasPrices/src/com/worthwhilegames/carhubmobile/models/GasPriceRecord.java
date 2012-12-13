@@ -4,8 +4,7 @@ import android.content.Context;
 
 import com.orm.SugarRecord;
 
-@SuppressWarnings("rawtypes")
-public class GasPriceRecord extends SugarRecord {
+public class GasPriceRecord extends SugarRecord<GasPriceRecord> {
 
 	private String mStationId;
 	private String mStation;
