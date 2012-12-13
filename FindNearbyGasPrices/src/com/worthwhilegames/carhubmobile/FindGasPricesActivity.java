@@ -386,7 +386,7 @@ public class FindGasPricesActivity extends Activity {
 					for (int i = 0; i < stations.length(); i++) {
 						JSONObject row = stations.getJSONObject(i);
 
-						GasPriceRowModel model = new GasPriceRowModel(row.getString("station"), row.getString("id"), row.getString("address"), row.getString("price"), row.getString("distance"), "");
+						GasPriceRowModel model = new GasPriceRowModel(row.getString("station"), row.getString("id"), row.getString("address"), row.getString("price"), row.getString("distance"), row.getString("date"));
 
 						if(row.getString("price").equalsIgnoreCase("n/a")){
 							naData.add(model);
