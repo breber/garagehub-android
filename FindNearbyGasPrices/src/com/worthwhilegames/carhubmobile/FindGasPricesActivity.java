@@ -133,13 +133,15 @@ public class FindGasPricesActivity extends Activity {
 		
 		//Update with the last known good location so the user will get search results
 		String locationProvider = LocationManager.NETWORK_PROVIDER;
-		updateLocation(locationManager.getLastKnownLocation(locationProvider));
-
-		//request updates from both the network provider as well as the GPS signal
-		locationManager.requestLocationUpdates(
-				LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-		locationManager.requestLocationUpdates(
-				LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		if(locationManager != null){
+			updateLocation(locationManager.getLastKnownLocation(locationProvider));
+	
+			//request updates from both the network provider as well as the GPS signal
+			locationManager.requestLocationUpdates(
+					LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+			locationManager.requestLocationUpdates(
+					LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		}
 
 		//search button listener
 		Button search = (Button) findViewById(R.id.goButton);
@@ -163,17 +165,19 @@ public class FindGasPricesActivity extends Activity {
 	 * @param location a location object with the new location
 	 */
 	void updateLocation(Location location) {
-		currentLocation = location;
-		
-		double latitude = currentLocation.getLatitude();
-		double longitude = currentLocation.getLongitude();
-		
-		if(latitude != 0.0){
-			currentLatitude = currentLocation.getLatitude();
-		}
-		
-		if(longitude != 0.0){
-			currentLongitude = currentLocation.getLongitude();
+		if(location != null){
+			currentLocation = location;
+			
+			double latitude = currentLocation.getLatitude();
+			double longitude = currentLocation.getLongitude();
+			
+			if(latitude != 0.0){
+				currentLatitude = currentLocation.getLatitude();
+			}
+			
+			if(longitude != 0.0){
+				currentLongitude = currentLocation.getLongitude();
+			}
 		}
 	}
 
