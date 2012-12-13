@@ -13,7 +13,7 @@
             android:id="@+id/stationName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text=""
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="Text"
+            android:text=""
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
@@ -33,7 +33,7 @@
             android:id="@+id/stationPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,7 +44,7 @@
             android:id="@+id/stationDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="" />
     </LinearLayout>
 
     <LinearLayout
@@ -55,7 +55,7 @@
             android:id="@+id/stationLastUpdated"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="" />
     </LinearLayout>
 
 </LinearLayout>

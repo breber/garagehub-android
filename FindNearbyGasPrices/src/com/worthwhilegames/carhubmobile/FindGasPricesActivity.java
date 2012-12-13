@@ -149,8 +149,12 @@ public class FindGasPricesActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
+				ListView myList = (ListView)findViewById(R.id.scrollView1);
+				myList.setAdapter(null);
+				
 				ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
 				pb.setVisibility(View.VISIBLE);
+
 				getGasPrices();
 			}
 			
@@ -192,6 +196,7 @@ public class FindGasPricesActivity extends Activity {
 			
         });
 
+		
 	}
 
 	/**
@@ -241,6 +246,8 @@ public class FindGasPricesActivity extends Activity {
 	protected void onResume(){
 		
 		super.onResume();
+		ListView myList = (ListView)findViewById(R.id.scrollView1);
+		myList.setAdapter(null);
 		ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
 		pb.setVisibility(View.VISIBLE);
 		getGasPrices();
@@ -395,12 +402,9 @@ public class FindGasPricesActivity extends Activity {
 						}
 						
 					}
-										
+								
 					data.addAll(naData);
 					GasPriceAdapter adapter = new GasPriceAdapter(FindGasPricesActivity.this, R.layout.gaspricerowlayout, data);
-					
-					View header = (View)getLayoutInflater().inflate(R.layout.gaspricerowheader, null);
-					myList.addHeaderView(header);
 					
 					myList.setAdapter(adapter);
 				}
