@@ -30,6 +30,7 @@
             android:id="@+id/goButton"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
             android:layout_weight="1"
             android:text="@string/search" />
     </LinearLayout>
