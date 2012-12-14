@@ -9,20 +9,31 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
-        <TextView
-            android:id="@+id/stationName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
 
-        <TextView
-            android:id="@+id/stationAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text=""
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            <TextView
+                android:id="@+id/gasStationName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="Name"
+                android:layout_alignParentLeft="true"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+            
+            <TextView
+                android:id="@+id/gasStationPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:layout_alignParentRight="true"
+                android:text="Price"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#00a334" />
+
+            
+        </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -30,10 +41,10 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/stationPrice"
+            android:id="@+id/gasStationAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="" />
+            android:text="Address" />
     </LinearLayout>
 
     <LinearLayout
@@ -41,10 +52,10 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/stationDistance"
+            android:id="@+id/gasStationDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="" />
+            android:text="Distance" />
     </LinearLayout>
 
     <LinearLayout
@@ -52,10 +63,10 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/stationLastUpdated"
+            android:id="@+id/gasStationLastUpdated"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="" />
+            android:text="Updated" />
     </LinearLayout>
 
 </LinearLayout>

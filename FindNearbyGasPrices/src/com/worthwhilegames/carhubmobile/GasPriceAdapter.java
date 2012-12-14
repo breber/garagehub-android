@@ -35,11 +35,11 @@ public class GasPriceAdapter extends ArrayAdapter<GasPriceRecord>{
 			row = inflater.inflate(layoutResourceId, parent, false);
 
 			holder = new GasPriceHolder();
-			holder.stationAddress = (TextView)row.findViewById(R.id.stationAddress);
-			holder.stationDistance = (TextView)row.findViewById(R.id.stationDistance);
-			holder.stationName = (TextView)row.findViewById(R.id.stationName);
-			holder.stationPrice = (TextView)row.findViewById(R.id.stationPrice);
-			holder.lastUpdated = (TextView)row.findViewById(R.id.stationLastUpdated);
+			holder.stationAddress = (TextView)row.findViewById(R.id.gasStationAddress);
+			holder.stationDistance = (TextView)row.findViewById(R.id.gasStationDistance);
+			holder.stationName = (TextView)row.findViewById(R.id.gasStationName);
+			holder.stationPrice = (TextView)row.findViewById(R.id.gasStationPrice);
+			holder.lastUpdated = (TextView)row.findViewById(R.id.gasStationLastUpdated);
 
 
 			row.setTag(holder);
@@ -48,10 +48,10 @@ public class GasPriceAdapter extends ArrayAdapter<GasPriceRecord>{
 		}
 
 		GasPriceRecord station = data.get(position);
-		holder.stationAddress.setText(station.getAddress().trim());
+		holder.stationAddress.setText("Address: " + station.getAddress().trim());
 		holder.stationDistance.setText("Distance: " + station.getDistance().trim());
-		holder.stationName.setText(station.getStation().trim() + " - ");
-		holder.stationPrice.setText("Price: " + station.getPrice().trim());
+		holder.stationName.setText(station.getStation().trim());
+		holder.stationPrice.setText(station.getPrice().trim());
 		holder.lastUpdated.setText("Last Updated: " + station.getLastUpdated().trim());
 
 		return row;

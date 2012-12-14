@@ -12,7 +12,7 @@
         android:layout_alignParentTop="true"
         android:background="#04417d"
         android:gravity="center_vertical"
-        android:padding="10dp"
+        android:padding="5dp"
         android:text="@string/results"
         android:textColor="#FFFFFF"
         android:textSize="22sp"
