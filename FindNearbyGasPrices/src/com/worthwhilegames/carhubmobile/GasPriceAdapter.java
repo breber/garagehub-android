@@ -40,7 +40,8 @@ public class GasPriceAdapter extends ArrayAdapter<GasPriceRecord>{
 			holder.stationName = (TextView)row.findViewById(R.id.gasStationName);
 			holder.stationPrice = (TextView)row.findViewById(R.id.gasStationPrice);
 			holder.lastUpdated = (TextView)row.findViewById(R.id.gasStationLastUpdated);
-
+			holder.stationCity = (TextView)row.findViewById(R.id.gasStationAddressCity);
+			holder.stationRegion = (TextView)row.findViewById(R.id.gasStationAddressRegion);
 
 			row.setTag(holder);
 		} else {
@@ -48,11 +49,18 @@ public class GasPriceAdapter extends ArrayAdapter<GasPriceRecord>{
 		}
 
 		GasPriceRecord station = data.get(position);
-		holder.stationAddress.setText("Address: " + station.getAddress().trim());
-		holder.stationDistance.setText("Distance: " + station.getDistance().trim());
+
+		String distance = station.getDistance().trim();
+		int unitStart = distance.indexOf('m');
+		distance = distance.substring(0, unitStart) + " " + distance.substring(unitStart, distance.length());
+
+		holder.stationAddress.setText(station.getAddress().trim());
+		holder.stationDistance.setText(distance);
 		holder.stationName.setText(station.getStation().trim());
 		holder.stationPrice.setText(station.getPrice().trim());
-		holder.lastUpdated.setText("Last Updated: " + station.getLastUpdated().trim());
+		holder.lastUpdated.setText(station.getLastUpdated().trim());
+		holder.stationCity.setText(station.getCity());
+		holder.stationRegion.setText(station.getRegion());
 
 		return row;
 	}
@@ -64,5 +72,7 @@ public class GasPriceAdapter extends ArrayAdapter<GasPriceRecord>{
 		TextView stationPrice;
 		TextView stationDistance;
 		TextView lastUpdated;
+		TextView stationCity;
+		TextView stationRegion;
 	}
 }
