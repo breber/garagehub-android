@@ -50,12 +50,8 @@ public class GasPriceAdapter extends ArrayAdapter<GasPriceRecord>{
 
 		GasPriceRecord station = data.get(position);
 
-		String distance = station.getDistance().trim();
-		int unitStart = distance.indexOf('m');
-		distance = distance.substring(0, unitStart) + " " + distance.substring(unitStart, distance.length());
-
 		holder.stationAddress.setText(station.getAddress().trim());
-		holder.stationDistance.setText(distance);
+		holder.stationDistance.setText(station.getDistance().trim());
 		holder.stationName.setText(station.getStation().trim());
 		holder.stationPrice.setText(station.getPrice().trim());
 		holder.lastUpdated.setText(station.getLastUpdated().trim());
