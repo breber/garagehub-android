@@ -3,6 +3,7 @@ package com.worthwhilegames.carhubmobile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,10 +61,6 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 	 */
 	private double currentLongitude;
 
-	/**
-	 * A Geocoder object for address translation
-	 */
-	private Geocoder geo;
 
 	/**
 	 * A listener to update the current location of the Android device
@@ -87,11 +84,9 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 		myList = (ListView) FindGasPricesActivity.this.findViewById(R.id.scrollView1);
 
 		// Add the header to the listview
-		View header = getLayoutInflater().inflate(R.layout.gaspricerowheader, null);
-		myList.addHeaderView(header);
+		//		View header = getLayoutInflater().inflate(R.layout.gaspricerowheader, null);
+		//		myList.addHeaderView(header);
 
-		//create a new geocoder
-		geo = new Geocoder(FindGasPricesActivity.this);
 
 		//create a location manager
 		LocationManager locationManager = (LocationManager) this
@@ -232,6 +227,8 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 	 */
 	private void performUpdate() {
 		ListAdapter listAdapter = myList.getAdapter();
+		listAdapter = null;
+		myList.setAdapter(null);
 		// Only show the progressbar if we don't have any records yet
 		if (listAdapter == null || listAdapter.isEmpty()) {
 			ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
@@ -274,6 +271,7 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 				double lat = 0;
 				double lon = 0;
 				boolean executeSearch = true;
+				Geocoder geo = new Geocoder(getApplicationContext(), Locale.getDefault());
 
 				if (useCurrentLocation) {
 					lat = currentLatitude;
@@ -281,7 +279,7 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 				} else {
 					addresses = geo.getFromLocationName(zipCode, 1);
 
-					if (!addresses.isEmpty()) {
+					if (!addresses.isEmpty() && addresses != null) {
 						lat = addresses.get(0).getLatitude();
 						lon = addresses.get(0).getLongitude();
 					} else {
@@ -290,15 +288,20 @@ public class FindGasPricesActivity extends Activity implements FetchGasPricesTas
 				}
 
 				if (executeSearch) {
+					Log.e("Searching: ", "Searching for information.");
 					// execute the get request
 					request.execute("http://api.mygasfeed.com/stations/radius/" + lat
 							+ "/" + lon + "/" + distance + "/"
 							+ fuelType.toLowerCase().trim() + "/"
 							+ sortBy.toLowerCase() + "/zax22arsix.json".trim());
 				} else {
+					ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
+					pb.setVisibility(View.INVISIBLE);
 					Toast.makeText(this,  "Please try search again. Unable to find current location.", Toast.LENGTH_SHORT).show();
 				}
 			} catch (IOException e) {
+				ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
+				pb.setVisibility(View.INVISIBLE);
 				Toast.makeText(this, "Please try search again. Unable to find current location.",
 						Toast.LENGTH_LONG).show();
 				e.printStackTrace();

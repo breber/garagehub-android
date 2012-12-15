@@ -8,6 +8,6 @@ public class Util {
 	/**
 	 * A boolean to represent if the current build is a debug build
 	 */
-	public static final boolean isDebugBuild = false;
+	public static final boolean isDebugBuild = true;
 
 }

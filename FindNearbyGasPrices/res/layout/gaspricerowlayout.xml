@@ -30,7 +30,8 @@
                 android:gravity="left"
                 android:text="Price"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#00a334" />
+                android:textColor="#00a334" 
+                android:textStyle="italic"/>
 
             <LinearLayout
                 android:id="@+id/addressLayout"
