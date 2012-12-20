@@ -1,120 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp" >
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dip" >
+
+    <TextView
+        android:id="@+id/gasStationName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:gravity="right"
+        android:text="Name"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/gasStationPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="left"
+        android:text="Price"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#00a334"
+        android:textStyle="italic" />
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:id="@+id/addressLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gasStationName" >
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+        <TextView
+            android:id="@+id/gasStationAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/gasStationName"
+            android:text="Address: " />
 
-            <TextView
-                android:id="@+id/gasStationName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:gravity="right"
-                android:text="Name"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:id="@+id/gasStationAddressSpace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/gasStationName"
+            android:text=" " />
 
-            <TextView
-                android:id="@+id/gasStationPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:gravity="left"
-                android:text="Price"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#00a334" 
-                android:textStyle="italic"/>
+        <TextView
+            android:id="@+id/gasStationAddressCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/gasStationName"
+            android:text="City " />
 
-            <LinearLayout
-                android:id="@+id/addressLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/gasStationName" >
+        <TextView
+            android:id="@+id/gasStationAddressSpace1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/gasStationName"
+            android:text=", " />
 
-                <TextView
-                    android:id="@+id/gasStationAddress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/gasStationName"
-                    android:text="Address: " />
-                
-                <TextView
-                    android:id="@+id/gasStationAddressSpace"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/gasStationName"
-                    android:text=" " />
-                
-                <TextView
-                    android:id="@+id/gasStationAddressCity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/gasStationName"
-                    android:text="City " />
-                
-                <TextView
-                    android:id="@+id/gasStationAddressSpace1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/gasStationName"
-                    android:text=", " />
-                
-                <TextView
-                    android:id="@+id/gasStationAddressRegion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/gasStationName"
-                    android:text="Region" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/distanceLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/addressLayout" >
-
-                <TextView
-                    android:id="@+id/gasStationDistance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Distance" />
-                
-                <TextView
-                    android:id="@+id/gasStationDistance1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" away" />
-
-                
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/updatedLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/distanceLayout" >
-
-                <TextView
-                    android:id="@+id/gasStationLastUpdated1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Updated " />
-
-                <TextView
-                    android:id="@+id/gasStationLastUpdated"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Last updated" />
-            </LinearLayout>
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/gasStationAddressRegion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/gasStationName"
+            android:text="Region" />
     </LinearLayout>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/distanceLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/addressLayout" >
+
+        <TextView
+            android:id="@+id/gasStationDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Distance" />
+
+        <TextView
+            android:id="@+id/gasStationDistance1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" away" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/updatedLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/distanceLayout" >
+
+        <TextView
+            android:id="@+id/gasStationLastUpdated1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Updated " />
+
+        <TextView
+            android:id="@+id/gasStationLastUpdated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Last updated" />
+    </LinearLayout>
+
+</RelativeLayout>
