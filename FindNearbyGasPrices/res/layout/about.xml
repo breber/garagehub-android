@@ -5,21 +5,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TableLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" 
-        android:layout_marginTop="10dip">
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:text="@string/aboutInformation"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </TableLayout>
+        android:layout_above="@+id/adView"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="10dip"
+        android:text="@string/aboutInformation"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <com.google.ads.AdView
         android:id="@+id/adView"
