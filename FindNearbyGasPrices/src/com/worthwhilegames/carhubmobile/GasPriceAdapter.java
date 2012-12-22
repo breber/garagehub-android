@@ -2,8 +2,10 @@ package com.worthwhilegames.carhubmobile;
 
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ public class GasPriceAdapter extends ArrayAdapter<GasPriceRecord>{
 		this.data = data;
 	}
 
+	@SuppressLint("DefaultLocale")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = convertView;
@@ -42,6 +45,7 @@ public class GasPriceAdapter extends ArrayAdapter<GasPriceRecord>{
 			holder.lastUpdated = (TextView)row.findViewById(R.id.gasStationLastUpdated);
 			holder.stationCity = (TextView)row.findViewById(R.id.gasStationAddressCity);
 			holder.stationRegion = (TextView)row.findViewById(R.id.gasStationAddressRegion);
+			holder.stationPriceGrade = (TextView)row.findViewById(R.id.gasStationPriceGrade);
 
 			row.setTag(holder);
 		} else {
@@ -58,6 +62,22 @@ public class GasPriceAdapter extends ArrayAdapter<GasPriceRecord>{
 		holder.stationCity.setText(station.getCity());
 		holder.stationRegion.setText(station.getRegion());
 
+		SharedPreferences sharedPref = this.getContext().getSharedPreferences("Preferences", 0);
+		String grade = sharedPref.getString("Fuel Type", "Mid");
+
+		if(grade.toLowerCase().equals("reg")){
+			holder.stationPriceGrade.setText("Regular");
+		}else if(grade.toLowerCase().equals("mid")){
+			holder.stationPriceGrade.setText("Mid");
+		}else if(grade.toLowerCase().equals("pre")){
+			holder.stationPriceGrade.setText("Premium");
+		}else if(grade.toLowerCase().equals("diesel")){
+			holder.stationPriceGrade.setText("Diesel");
+		}else{
+			holder.stationPriceGrade.setText("");
+		}
+
+
 		return row;
 	}
 
@@ -70,5 +90,6 @@ public class GasPriceAdapter extends ArrayAdapter<GasPriceRecord>{
 		TextView lastUpdated;
 		TextView stationCity;
 		TextView stationRegion;
+		TextView stationPriceGrade;
 	}
 }
