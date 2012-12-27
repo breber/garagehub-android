@@ -49,7 +49,7 @@ public class GasPriceAdapter extends ArrayAdapter<GasPriceRecord>{
 
 			row.setTag(holder);
 		} else {
-			holder = (GasPriceHolder)row.getTag();
+			holder = (GasPriceHolder) row.getTag();
 		}
 
 		GasPriceRecord station = data.get(position);
@@ -65,13 +65,13 @@ public class GasPriceAdapter extends ArrayAdapter<GasPriceRecord>{
 		SharedPreferences sharedPref = this.getContext().getSharedPreferences("Preferences", 0);
 		String grade = sharedPref.getString("Fuel Type", "Mid");
 
-		if (grade.toLowerCase().equals("reg")) {
+		if ("reg".equalsIgnoreCase(grade)) {
 			holder.stationPriceGrade.setText("Fuel Grade: Regular");
-		} else if (grade.toLowerCase().equals("mid")) {
+		} else if ("mid".equalsIgnoreCase(grade)) {
 			holder.stationPriceGrade.setText("Fuel Grade: Mid");
-		} else if (grade.toLowerCase().equals("pre")) {
+		} else if ("pre".equalsIgnoreCase(grade)) {
 			holder.stationPriceGrade.setText("Fuel Grade: Premium");
-		} else if (grade.toLowerCase().equals("diesel")) {
+		} else if ("diesel".equalsIgnoreCase(grade)) {
 			holder.stationPriceGrade.setText("Fuel Grade: Diesel");
 		} else {
 			holder.stationPriceGrade.setText("");
