@@ -34,18 +34,18 @@ public class GasPriceAdapter extends ArrayAdapter<GasPriceRecord>{
 		GasPriceHolder holder = null;
 
 		if (row == null) {
-			LayoutInflater inflater = ((Activity)context).getLayoutInflater();
+			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 			row = inflater.inflate(layoutResourceId, parent, false);
 
 			holder = new GasPriceHolder();
-			holder.stationAddress = (TextView)row.findViewById(R.id.gasStationAddress);
-			holder.stationDistance = (TextView)row.findViewById(R.id.gasStationDistance);
-			holder.stationName = (TextView)row.findViewById(R.id.gasStationName);
-			holder.stationPrice = (TextView)row.findViewById(R.id.gasStationPrice);
-			holder.lastUpdated = (TextView)row.findViewById(R.id.gasStationLastUpdated);
-			holder.stationCity = (TextView)row.findViewById(R.id.gasStationAddressCity);
-			holder.stationRegion = (TextView)row.findViewById(R.id.gasStationAddressRegion);
-			holder.stationPriceGrade = (TextView)row.findViewById(R.id.gasStationPriceGrade);
+			holder.stationAddress = (TextView) row.findViewById(R.id.gasStationAddress);
+			holder.stationDistance = (TextView) row.findViewById(R.id.gasStationDistance);
+			holder.stationName = (TextView) row.findViewById(R.id.gasStationName);
+			holder.stationPrice = (TextView) row.findViewById(R.id.gasStationPrice);
+			holder.lastUpdated = (TextView) row.findViewById(R.id.gasStationLastUpdated);
+			holder.stationCity = (TextView) row.findViewById(R.id.gasStationAddressCity);
+			holder.stationRegion = (TextView) row.findViewById(R.id.gasStationAddressRegion);
+			holder.stationPriceGrade = (TextView) row.findViewById(R.id.gasStationPriceGrade);
 
 			row.setTag(holder);
 		} else {
@@ -54,29 +54,28 @@ public class GasPriceAdapter extends ArrayAdapter<GasPriceRecord>{
 
 		GasPriceRecord station = data.get(position);
 
-		holder.stationAddress.setText(station.getAddress().trim());
-		holder.stationDistance.setText(station.getDistance().trim());
+		holder.stationAddress.setText(station.getAddress().trim() + " ");
+		holder.stationDistance.setText(station.getDistance().trim() + " away - ");
 		holder.stationName.setText(station.getStation().trim());
 		holder.stationPrice.setText(station.getPrice().trim());
-		holder.lastUpdated.setText(station.getLastUpdated().trim());
-		holder.stationCity.setText(station.getCity());
+		holder.lastUpdated.setText("Updated " + station.getLastUpdated().trim());
+		holder.stationCity.setText(station.getCity() + ", ");
 		holder.stationRegion.setText(station.getRegion());
 
 		SharedPreferences sharedPref = this.getContext().getSharedPreferences("Preferences", 0);
 		String grade = sharedPref.getString("Fuel Type", "Mid");
 
-		if(grade.toLowerCase().equals("reg")){
-			holder.stationPriceGrade.setText("Regular");
-		}else if(grade.toLowerCase().equals("mid")){
-			holder.stationPriceGrade.setText("Mid");
-		}else if(grade.toLowerCase().equals("pre")){
-			holder.stationPriceGrade.setText("Premium");
-		}else if(grade.toLowerCase().equals("diesel")){
-			holder.stationPriceGrade.setText("Diesel");
-		}else{
+		if (grade.toLowerCase().equals("reg")) {
+			holder.stationPriceGrade.setText("Fuel Grade: Regular");
+		} else if (grade.toLowerCase().equals("mid")) {
+			holder.stationPriceGrade.setText("Fuel Grade: Mid");
+		} else if (grade.toLowerCase().equals("pre")) {
+			holder.stationPriceGrade.setText("Fuel Grade: Premium");
+		} else if (grade.toLowerCase().equals("diesel")) {
+			holder.stationPriceGrade.setText("Fuel Grade: Diesel");
+		} else {
 			holder.stationPriceGrade.setText("");
 		}
-
 
 		return row;
 	}
