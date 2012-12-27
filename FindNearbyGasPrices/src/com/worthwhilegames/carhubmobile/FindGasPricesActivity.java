@@ -253,7 +253,7 @@ public class FindGasPricesActivity extends ListActivity implements FetchGasPrice
 				Log.e("Searching: ", "Searching for information.");
 				// execute the get request
 				String url = String.format("http://api.mygasfeed.com/stations/radius/%f/%f/%d/%s/%s/zax22arsix.json",
-						lat, lon, distance, fuelType.trim(), sortBy);
+						lat, lon, distance, fuelType.trim().toLowerCase(), sortBy.toLowerCase());
 				request.execute(url);
 			} catch (Exception e) {
 				setProgressBarIndeterminateVisibility(false);
