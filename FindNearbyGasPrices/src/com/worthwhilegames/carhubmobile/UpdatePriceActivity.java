@@ -40,6 +40,10 @@ import android.widget.Toast;
  */
 public class UpdatePriceActivity extends Activity {
 
+	public static final String EXTRA_STATION_NAME = "StationName";
+	public static final String EXTRA_STATION_ADDRESS = "StationAddress";
+	public static final String EXTRA_STATION_ID = "StationID";
+
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -49,9 +53,9 @@ public class UpdatePriceActivity extends Activity {
 		Intent i = this.getIntent();
 
 		// get the string extras passed in
-		String stationName = i.getStringExtra("StationName");
-		String stationAddress = i.getStringExtra("StationAddress");
-		String stationID = i.getStringExtra("StationID");
+		String stationName = i.getStringExtra(EXTRA_STATION_NAME);
+		String stationAddress = i.getStringExtra(EXTRA_STATION_ADDRESS);
+		i.getStringExtra(EXTRA_STATION_ID);
 
 		// set layout
 		super.onCreate(savedInstanceState);
@@ -61,8 +65,7 @@ public class UpdatePriceActivity extends Activity {
 		ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar2);
 		pb.setVisibility(View.INVISIBLE);
 
-		SharedPreferences sharedPref = this.getSharedPreferences("Preferences",
-				0);
+		SharedPreferences sharedPref = getSharedPreferences("Preferences",	0);
 		Spinner fuelTypeSpinner = (Spinner) findViewById(R.id.spinnerfueltypeUpdate);
 
 		// get the current selected option from the shared preferences
@@ -76,17 +79,10 @@ public class UpdatePriceActivity extends Activity {
 			.getAdapter();
 
 			// find the current position
-			int spinnerPosition = fuelTypeAdapter.getPosition(fuelType
-					.toString());
+			int spinnerPosition = fuelTypeAdapter.getPosition(fuelType.toString());
 
 			// set the correct position to true
 			fuelTypeSpinner.setSelection(spinnerPosition);
-		}
-
-		if (Util.isDebugBuild) {
-			Toast.makeText(this,
-					stationName + " " + stationAddress + " " + stationID,
-					Toast.LENGTH_SHORT).show();
 		}
 
 		// set the current view fields
@@ -98,7 +94,6 @@ public class UpdatePriceActivity extends Activity {
 
 		Button updatePrice = (Button) findViewById(R.id.updatePrice);
 		updatePrice.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				Intent i = UpdatePriceActivity.this.getIntent();
@@ -209,19 +204,15 @@ public class UpdatePriceActivity extends Activity {
 				Log.e("Station Fuel Type", params[2]);
 				Log.e("Station ID", params[3]);
 				postParameters = new ArrayList<NameValuePair>();
-				postParameters.add(new BasicNameValuePair("price", params[1]
-						.trim()));
-				postParameters.add(new BasicNameValuePair("fueltype", params[2]
-						.toLowerCase().trim()));
-				postParameters.add(new BasicNameValuePair("stationid",
-						params[3].trim()));
+				postParameters.add(new BasicNameValuePair("price", params[1].trim()));
+				postParameters.add(new BasicNameValuePair("fueltype", params[2].toLowerCase().trim()));
+				postParameters.add(new BasicNameValuePair("stationid", params[3].trim()));
 				httppost.setEntity(new UrlEncodedFormEntity(postParameters));
 				HttpResponse response = httpclient.execute(httppost);
 
 				HttpEntity entity = response.getEntity();
 				InputStream content = entity.getContent();
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(content));
+				BufferedReader reader = new BufferedReader(new InputStreamReader(content));
 				String line;
 
 				while ((line = reader.readLine()) != null) {
