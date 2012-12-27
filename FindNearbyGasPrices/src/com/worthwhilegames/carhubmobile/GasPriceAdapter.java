@@ -62,7 +62,7 @@ public class GasPriceAdapter extends ArrayAdapter<GasPriceRecord>{
 		holder.stationCity.setText(station.getCity() + ", ");
 		holder.stationRegion.setText(station.getRegion());
 
-		SharedPreferences sharedPref = this.getContext().getSharedPreferences("Preferences", 0);
+		SharedPreferences sharedPref = Util.getSharedPrefs(context);
 		String grade = sharedPref.getString("Fuel Type", "Mid");
 
 		if ("reg".equalsIgnoreCase(grade)) {

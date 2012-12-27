@@ -65,7 +65,7 @@ public class UpdatePriceActivity extends Activity {
 		ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar2);
 		pb.setVisibility(View.INVISIBLE);
 
-		SharedPreferences sharedPref = getSharedPreferences("Preferences",	0);
+		SharedPreferences sharedPref = Util.getSharedPrefs(this);
 		Spinner fuelTypeSpinner = (Spinner) findViewById(R.id.spinnerfueltypeUpdate);
 
 		// get the current selected option from the shared preferences

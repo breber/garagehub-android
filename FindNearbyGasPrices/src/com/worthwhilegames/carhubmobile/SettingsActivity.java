@@ -52,7 +52,7 @@ public class SettingsActivity extends Activity {
 		setContentView(R.layout.settings);
 
 		// create the shared preferences object
-		sharedPref = this.getSharedPreferences("Preferences", 0);
+		sharedPref = Util.getSharedPrefs(this);
 
 		// create the preferences editor for editing the preferences
 		prefsEditor = sharedPref.edit();

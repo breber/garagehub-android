@@ -39,11 +39,6 @@ import com.worthwhilegames.carhubmobile.models.GasPriceRecord;
 public class FindGasPricesActivity extends ListActivity implements FetchGasPricesTaskCallback {
 
 	/**
-	 * A SharedPreferences object to get the preferences set by the user
-	 */
-	private SharedPreferences sharedPref;
-
-	/**
 	 * A Location object to keep track of the current location
 	 */
 	private Location currentLocation;
@@ -215,7 +210,7 @@ public class FindGasPricesActivity extends ListActivity implements FetchGasPrice
 		Matcher matcher = pattern.matcher(zipCode);
 
 		// create the shared preferences object
-		sharedPref = this.getSharedPreferences("Preferences", 0);
+		SharedPreferences sharedPref = Util.getSharedPrefs(this);
 		Boolean useCurrentLocation = sharedPref.getBoolean("useCurrentLocation", true);
 
 		if (matcher.matches() || useCurrentLocation) {
