@@ -1,6 +1,5 @@
 package com.worthwhilegames.carhubmobile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -208,11 +207,11 @@ public class FindGasPricesActivity extends ListActivity implements FetchGasPrice
 	 */
 	@SuppressLint("DefaultLocale")
 	public void getGasPrices() {
-		EditText zip = (EditText) findViewById(R.id.editText1);
+		EditText zip = (EditText) findViewById(R.id.zipCode);
 		String zipCode = zip.getText().toString();
 
 		// pattern to match for the zip code
-		Pattern pattern = Pattern.compile("[0-9][0-9][0-9][0-9][0-9]");
+		Pattern pattern = Pattern.compile("[0-9]{5}");
 		Matcher matcher = pattern.matcher(zipCode);
 
 		// create the shared preferences object
@@ -235,7 +234,6 @@ public class FindGasPricesActivity extends ListActivity implements FetchGasPrice
 
 				double lat = 0;
 				double lon = 0;
-				boolean executeSearch = true;
 				Geocoder geo = new Geocoder(getApplicationContext(), Locale.getDefault());
 
 				if (useCurrentLocation) {
@@ -244,26 +242,21 @@ public class FindGasPricesActivity extends ListActivity implements FetchGasPrice
 				} else {
 					addresses = geo.getFromLocationName(zipCode, 1);
 
-					if (!addresses.isEmpty() && addresses != null) {
+					if (addresses != null && !addresses.isEmpty()) {
 						lat = addresses.get(0).getLatitude();
 						lon = addresses.get(0).getLongitude();
 					} else {
-						executeSearch = false;
+						throw new Exception("Unable to find location");
 					}
 				}
 
-				if (executeSearch) {
-					Log.e("Searching: ", "Searching for information.");
-					// execute the get request
-					request.execute("http://api.mygasfeed.com/stations/radius/" + lat
-							+ "/" + lon + "/" + distance + "/"
-							+ fuelType.toLowerCase().trim() + "/"
-							+ sortBy.toLowerCase() + "/zax22arsix.json".trim());
-				} else {
-					setProgressBarIndeterminateVisibility(false);
-					Toast.makeText(this,  "Please try search again. Unable to find current location.", Toast.LENGTH_SHORT).show();
-				}
-			} catch (IOException e) {
+				Log.e("Searching: ", "Searching for information.");
+				// execute the get request
+				request.execute("http://api.mygasfeed.com/stations/radius/" + lat
+						+ "/" + lon + "/" + distance + "/"
+						+ fuelType.toLowerCase().trim() + "/"
+						+ sortBy.toLowerCase() + "/zax22arsix.json".trim());
+			} catch (Exception e) {
 				setProgressBarIndeterminateVisibility(false);
 				Toast.makeText(this, "Please try search again. Unable to find current location.", Toast.LENGTH_LONG).show();
 				e.printStackTrace();

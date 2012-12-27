@@ -14,7 +14,7 @@
         android:gravity="center_horizontal|top" >
 
         <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/zipCode"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
