@@ -8,6 +8,9 @@
 * Add what changed to the `Recent Changes` section on the Developer Console
 * Copy the signed APK to the `Releases` folder in Dropbox
 * Tag the release in git
-  # Use the same tag name as the versionName
-  git tag v1.1.1
-  git push --tags
+    
+    # Use the same tag name as the versionName
+
+    git tag v1.1.1
+
+    git push --tags
