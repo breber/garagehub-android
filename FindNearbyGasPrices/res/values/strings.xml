@@ -26,6 +26,8 @@
     <string name="howTo">How To</string>
     <string name="howToInformation">To use this application please select the Find Nearby Gas Prices from the main menu. By clicking on the Android menu button a user will be able to change their search options. To search for nearby gas prices select the Find Stations button. A table will be shown with the station information.</string>
     <string name="noGasPrices">No gas prices available</string>
+    <string name="navigate">Navigate</string>
+    <string name="viewMap">View Map</string>
 
     <string-array name="fueltype_array">
         <item>Reg</item>

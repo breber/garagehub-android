@@ -28,10 +28,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,23 +52,24 @@ public class UpdatePriceActivity extends Activity {
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
 		// get the current intent
 		Intent i = this.getIntent();
 
 		// get the string extras passed in
-		String stationName = i.getStringExtra(EXTRA_STATION_NAME);
+		final String stationName = i.getStringExtra(EXTRA_STATION_NAME);
 		String stationAddress = i.getStringExtra(EXTRA_STATION_ADDRESS);
 		final String stationLat = i.getStringExtra(EXTRA_STATION_LAT);
 		final String stationLng = i.getStringExtra(EXTRA_STATION_LNG);
 		i.getStringExtra(EXTRA_STATION_ID);
 
+
 		// set layout
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.update_price);
 
-		// get the progress bar item
-		ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar2);
-		pb.setVisibility(View.INVISIBLE);
+		setProgressBarIndeterminateVisibility(false);
 
 		SharedPreferences sharedPref = Util.getSharedPrefs(this);
 		Spinner fuelTypeSpinner = (Spinner) findViewById(R.id.spinnerfueltypeUpdate);
@@ -109,6 +110,18 @@ public class UpdatePriceActivity extends Activity {
 			}
 		});
 
+		Button viewMap = (Button) findViewById(R.id.viewMap);
+		viewMap.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				String uri = "geo:0,0?q="+ stationLat + "," + stationLng;
+				startActivity(new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri)));
+
+			}
+		});
+
 		Button updatePrice = (Button) findViewById(R.id.updatePrice);
 		updatePrice.setOnClickListener(new OnClickListener() {
 			@Override
@@ -135,8 +148,12 @@ public class UpdatePriceActivity extends Activity {
 							(String) fuelTypeSpinner.getSelectedItem(),
 							stationID);
 
-					ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar2);
-					pb.setVisibility(View.VISIBLE);
+					//ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar2);
+					//pb.setVisibility(View.VISIBLE);
+					Toast.makeText(UpdatePriceActivity.this,
+							"Sending Request.", Toast.LENGTH_SHORT)
+							.show();
+					setProgressBarIndeterminateVisibility(true);
 				}
 			}
 		});
@@ -168,8 +185,6 @@ public class UpdatePriceActivity extends Activity {
 		 */
 		@Override
 		protected void onPostExecute(String r) {
-			ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar2);
-			pb.setVisibility(View.INVISIBLE);
 
 			JSONObject result = null;
 
@@ -183,7 +198,7 @@ public class UpdatePriceActivity extends Activity {
 				try {
 					JSONObject status = result.getJSONObject("status");
 					String message = status.getString("message");
-
+					setProgressBarIndeterminateVisibility(false);
 					if (status.get("error").equals("NO")) {
 						Toast.makeText(UpdatePriceActivity.this,
 								message + ". Successfully updated price.",
