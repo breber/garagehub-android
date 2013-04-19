@@ -22,6 +22,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,6 +44,8 @@ public class UpdatePriceActivity extends Activity {
 	public static final String EXTRA_STATION_NAME = "StationName";
 	public static final String EXTRA_STATION_ADDRESS = "StationAddress";
 	public static final String EXTRA_STATION_ID = "StationID";
+	public static final String EXTRA_STATION_LAT = "StationLat";
+	public static final String EXTRA_STATION_LNG = "StationLng";
 
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -55,6 +58,8 @@ public class UpdatePriceActivity extends Activity {
 		// get the string extras passed in
 		String stationName = i.getStringExtra(EXTRA_STATION_NAME);
 		String stationAddress = i.getStringExtra(EXTRA_STATION_ADDRESS);
+		final String stationLat = i.getStringExtra(EXTRA_STATION_LAT);
+		final String stationLng = i.getStringExtra(EXTRA_STATION_LNG);
 		i.getStringExtra(EXTRA_STATION_ID);
 
 		// set layout
@@ -91,6 +96,18 @@ public class UpdatePriceActivity extends Activity {
 
 		TextView stationAddressTextView = (TextView) findViewById(R.id.stationAddress);
 		stationAddressTextView.setText(stationAddress);
+
+		Button gps = (Button) findViewById(R.id.gps);
+		gps.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + stationLat + "," + stationLng));
+				startActivity(myIntent);
+
+			}
+		});
 
 		Button updatePrice = (Button) findViewById(R.id.updatePrice);
 		updatePrice.setOnClickListener(new OnClickListener() {

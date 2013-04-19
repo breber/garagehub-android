@@ -14,7 +14,24 @@ public class GasPriceRecord extends SugarRecord<GasPriceRecord> {
 	private String mLastUpdated;
 	private String mCity;
 	private String mRegion;
+	private String mLat;
+	private String mLng;
 
+	public String getLat(){
+		return mLat;
+	}
+
+	public void setLat(String mLat){
+		this.mLat = mLat;
+	}
+
+	public String getLng(){
+		return mLng;
+	}
+
+	public void setLng(String mLng){
+		this.mLng = mLng;
+	}
 
 	public String getCity() {
 		return mCity;

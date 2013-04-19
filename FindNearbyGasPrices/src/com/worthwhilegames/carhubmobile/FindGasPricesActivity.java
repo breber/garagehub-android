@@ -127,6 +127,8 @@ public class FindGasPricesActivity extends ListActivity implements FetchGasPrice
 				rowClick.putExtra(UpdatePriceActivity.EXTRA_STATION_NAME, model.getStation());
 				rowClick.putExtra(UpdatePriceActivity.EXTRA_STATION_ADDRESS, model.getAddress());
 				rowClick.putExtra(UpdatePriceActivity.EXTRA_STATION_ID, model.getStationId());
+				rowClick.putExtra(UpdatePriceActivity.EXTRA_STATION_LAT, model.getLat());
+				rowClick.putExtra(UpdatePriceActivity.EXTRA_STATION_LNG, model.getLng());
 
 				startActivity(rowClick);
 			}
