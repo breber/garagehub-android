@@ -1,13 +1,9 @@
 package com.worthwhilegames.carhubmobile;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -20,6 +16,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.brianreber.library.HttpUtils;
 import com.worthwhilegames.carhubmobile.models.GasPriceRecord;
 
 public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
@@ -61,6 +58,17 @@ public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
 	 */
 	@Override
 	protected void onPostExecute(String r) {
+		if (mDelegate != null) {
+			mDelegate.gasPricesDidUpdate();
+		}
+	}
+
+	/**
+	 * Process data on background thread
+	 * 
+	 * @param r
+	 */
+	private void processData(String r) {
 		try {
 			JSONObject result = new JSONObject(r);
 			JSONArray stations = result.getJSONArray("stations");
@@ -98,10 +106,6 @@ public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
 		} catch (JSONException ex) {
 			Log.e("Exception:", "Request not completed");
 		}
-
-		if (mDelegate != null) {
-			mDelegate.gasPricesDidUpdate();
-		}
 	}
 
 	/* (non-Javadoc)
@@ -109,29 +113,15 @@ public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
 	 */
 	@Override
 	protected String doInBackground(String... params) {
-		StringBuilder builder = new StringBuilder();
+		String result = null;
 		HttpClient client = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(params[0]);
 		try {
-			Log.e("", params[0]);
 			HttpResponse response = client.execute(httpGet);
-			StatusLine statusLine = response.getStatusLine();
-			int statusCode = statusLine.getStatusCode();
 
-			// Good code
-			if (statusCode == 200) {
-				HttpEntity entity = response.getEntity();
-				InputStream content = entity.getContent();
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(content));
-				String line;
-
-				while ((line = reader.readLine()) != null) {
-					builder.append(line);
-				}
-
-			} else {
-				Log.e(FetchGasPricesTask.class.toString(), "Failed to get request");
+			if (HttpURLConnection.HTTP_OK == response.getStatusLine().getStatusCode()) {
+				result = HttpUtils.readStreamAsString(response.getEntity().getContent());
+				processData(result);
 			}
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -139,6 +129,6 @@ public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
 			e.printStackTrace();
 		}
 
-		return builder.toString();
+		return result;
 	}
 }
