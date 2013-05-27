@@ -38,9 +38,7 @@ import com.worthwhilegames.carhubmobile.models.GasPriceRecord;
  * @author jamiekujawa
  */
 @SuppressLint("DefaultLocale")
-public class FindGasPricesActivity extends ListActivity implements FetchGasPricesTaskCallback,
-GooglePlayServicesClient.ConnectionCallbacks,
-GooglePlayServicesClient.OnConnectionFailedListener {
+public class FindGasPricesActivity extends ListActivity implements FetchGasPricesTaskCallback, GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener {
 
 	private LocationClient mLocationClient;
 
@@ -102,12 +100,12 @@ GooglePlayServicesClient.OnConnectionFailedListener {
 	protected void onStart() {
 		super.onStart();
 
-		// Connect the client.
-		mLocationClient.connect();
-
 		// While we are waiting for location services,
 		// just show our cached results
 		updateUi();
+
+		// Connect the client.
+		mLocationClient.connect();
 	}
 
 	/*
@@ -215,13 +213,9 @@ GooglePlayServicesClient.OnConnectionFailedListener {
 		String url = String.format("http://api.mygasfeed.com/stations/radius/%f/%f/%d/%s/%s/zax22arsix.json",
 				lat, lon, distance, fuelType.trim().toLowerCase(), sortBy.toLowerCase());
 		request.execute(url);
-
-		setProgressBarIndeterminateVisibility(false);
 	}
 
 	private void updateUi() {
-		setProgressBarIndeterminateVisibility(false);
-
 		// Get all GasPriceRecords from the database
 		List<GasPriceRecord> gasRecords = GasPriceRecord.listAll(GasPriceRecord.class);
 
@@ -238,6 +232,8 @@ GooglePlayServicesClient.OnConnectionFailedListener {
 
 		data.addAll(naData);
 		setListAdapter(new GasPriceAdapter(FindGasPricesActivity.this, R.layout.gaspricerowlayout, data));
+
+		setProgressBarIndeterminateVisibility(false);
 	}
 
 	@Override
