@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.worthwhilegames.carhubmobile"
-    android:installLocation="auto"
-    android:versionCode="4"
-    android:versionName="1.0.3" >
+          package="com.worthwhilegames.carhubmobile"
+          android:installLocation="auto"
+          android:versionCode="4"
+          android:versionName="1.0.3" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
     <application
         android:name="com.orm.SugarApp"
@@ -21,8 +22,20 @@
         android:theme="@style/CarHub" >
         <activity
             android:name=".FindGasPricesActivity"
-            android:label="@string/gasPrices" >
-        </activity>
+            android:label="@string/gasPrices" />
+        <activity
+            android:name=".UserVehicleListActivity"
+            android:label="@string/userVehicleList" />
+        <activity android:name=".UserVehicleActivity" />
+        <activity
+            android:name=".UserMaintenanceListActivity"
+            android:label="@string/maintenanceRecords" />
+        <activity
+            android:name=".UserExpenseManagerActivity"
+            android:label="@string/expenseManager" />
+        <activity
+            android:name=".UserFuelListActivity"
+            android:label="@string/fuelRecords" />
         <activity
             android:name=".SettingsActivity"
             android:label="@string/menu_settings" />
@@ -45,13 +58,13 @@
             android:value="carhub.db" />
         <meta-data
             android:name="VERSION"
-            android:value="5" />
+            android:value="4" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
-            android:value="com.worthwhilegames.carhubmobile" />
+            android:value="com.worthwhilegames.carhubmobile.models" />
 
         <activity
             android:name="com.google.ads.AdActivity"
