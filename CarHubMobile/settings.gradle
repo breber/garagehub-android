@@ -1,1 +1,1 @@
-include ':CarHub', ':android_auth', ':google-play-services_lib'
+include ':CarHub', ':android_auth'
