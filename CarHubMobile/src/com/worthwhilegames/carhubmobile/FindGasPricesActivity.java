@@ -149,7 +149,11 @@ public class FindGasPricesActivity extends ListActivity implements FetchGasPrice
 	private String getLocationFromGoogle() {
 		if (mLocationClient != null) {
 			Location l = mLocationClient.getLastLocation();
-			return l.getLatitude() + "~~" + l.getLongitude();
+			if (l != null) {
+				return l.getLatitude() + "~~" + l.getLongitude();
+			} else {
+				return "";
+			}
 		} else {
 			return "";
 		}
