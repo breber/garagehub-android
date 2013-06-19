@@ -100,25 +100,19 @@ public class UpdatePriceActivity extends Activity {
 
 		Button gps = (Button) findViewById(R.id.gps);
 		gps.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-
 				Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + stationLat + "," + stationLng));
 				startActivity(myIntent);
-
 			}
 		});
 
 		Button viewMap = (Button) findViewById(R.id.viewMap);
 		viewMap.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-
 				String uri = "geo:0,0?q="+ stationLat + "," + stationLng;
 				startActivity(new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri)));
-
 			}
 		});
 
@@ -150,9 +144,7 @@ public class UpdatePriceActivity extends Activity {
 
 					//ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar2);
 					//pb.setVisibility(View.VISIBLE);
-					Toast.makeText(UpdatePriceActivity.this,
-							"Sending Request.", Toast.LENGTH_SHORT)
-							.show();
+					Toast.makeText(UpdatePriceActivity.this, "Sending Request.", Toast.LENGTH_SHORT).show();
 					setProgressBarIndeterminateVisibility(true);
 				}
 			}
@@ -185,34 +177,25 @@ public class UpdatePriceActivity extends Activity {
 		 */
 		@Override
 		protected void onPostExecute(String r) {
-
 			JSONObject result = null;
 
 			// Convert string to object
 			try {
 				result = new JSONObject(r);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			if (result != null) {
-				try {
+
+				if (result != null) {
 					JSONObject status = result.getJSONObject("status");
 					String message = status.getString("message");
 					setProgressBarIndeterminateVisibility(false);
 					if (status.get("error").equals("NO")) {
-						Toast.makeText(UpdatePriceActivity.this,
-								message + ". Successfully updated price.",
-								Toast.LENGTH_SHORT).show();
+						Toast.makeText(UpdatePriceActivity.this, message + ". Successfully updated price.", Toast.LENGTH_SHORT).show();
+						UpdatePriceActivity.this.finish();
 					} else {
-						Toast.makeText(UpdatePriceActivity.this,
-								"Could not update price.", Toast.LENGTH_SHORT)
-								.show();
+						Toast.makeText(UpdatePriceActivity.this, "Could not update price.", Toast.LENGTH_SHORT).show();
 					}
-
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
 		}
 

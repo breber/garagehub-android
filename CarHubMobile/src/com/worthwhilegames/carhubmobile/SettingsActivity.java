@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.Spinner;
 
 /**
@@ -16,12 +15,6 @@ public class SettingsActivity extends Activity {
 	 * A SharedPreferences object to get the preferences set by the user
 	 */
 	private SharedPreferences sharedPref;
-
-	/**
-	 * A SharedPreferences editor for changing the game preferences based on
-	 * user input
-	 */
-	private SharedPreferences.Editor prefsEditor;
 
 	/**
 	 * A Spinner to represent the different distance options
@@ -38,11 +31,6 @@ public class SettingsActivity extends Activity {
 	 */
 	private Spinner sortBySpinner;
 
-	/**
-	 * A checkbox to represent the use current location option
-	 */
-	private CheckBox useCurrentLocation;
-
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -54,13 +42,9 @@ public class SettingsActivity extends Activity {
 		// create the shared preferences object
 		sharedPref = Util.getSharedPrefs(this);
 
-		// create the preferences editor for editing the preferences
-		prefsEditor = sharedPref.edit();
-
 		distanceSpinner = (Spinner) findViewById(R.id.spinnerradius);
 		fuelTypeSpinner = (Spinner) findViewById(R.id.spinnerfueltype);
 		sortBySpinner = (Spinner) findViewById(R.id.spinnersortby);
-		useCurrentLocation = (CheckBox)findViewById(R.id.useCurrentLocation);
 
 		if (distanceSpinner != null) {
 			// get the value from shared preferences
@@ -111,13 +95,6 @@ public class SettingsActivity extends Activity {
 			// set the correct position to true
 			sortBySpinner.setSelection(spinnerPosition);
 		}
-
-		if(useCurrentLocation != null){
-			Boolean useLocation = sharedPref.getBoolean("useCurrentLocation", true);
-
-			useCurrentLocation.setChecked(useLocation);
-		}
-
 	}
 
 	/*
@@ -127,9 +104,10 @@ public class SettingsActivity extends Activity {
 	 */
 	@Override
 	public void onBackPressed() {
-
 		// set the result of the activity
 		setResult(RESULT_OK);
+
+		SharedPreferences.Editor prefsEditor = sharedPref.edit();
 
 		// set number of computers
 		if (distanceSpinner != null) {
@@ -147,10 +125,6 @@ public class SettingsActivity extends Activity {
 		if (sortBySpinner != null) {
 			prefsEditor.putString("Sort By", sortBySpinner.getSelectedItem()
 					.toString());
-		}
-
-		if(useCurrentLocation != null){
-			prefsEditor.putBoolean("useCurrentLocation", useCurrentLocation.isChecked());
 		}
 
 		// commit the changes to the shared preferences
