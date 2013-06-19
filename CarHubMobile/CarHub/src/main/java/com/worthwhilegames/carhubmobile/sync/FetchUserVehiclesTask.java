@@ -1,40 +1,51 @@
 package com.worthwhilegames.carhubmobile.sync;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import android.content.Context;
+import android.util.Log;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.services.carhub.model.*;
+import com.google.api.services.carhub.*;
+import com.orm.StringUtil;
+import com.worthwhilegames.carhubmobile.models.SyncableRecord;
+import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
+import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
-import android.util.Log;
-
-import com.brianreber.library.AuthenticatedHttpRequest;
-import com.orm.StringUtil;
-import com.worthwhilegames.carhubmobile.Constants;
-import com.worthwhilegames.carhubmobile.models.SyncableRecord;
-import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class FetchUserVehiclesTask extends AuthenticatedHttpRequest {
 
-	public FetchUserVehiclesTask(Context ctx) {
-		this(ctx, null);
+	public FetchUserVehiclesTask(Context ctx, Carhub service) {
+		this(ctx, service, null);
 	}
 
-	public FetchUserVehiclesTask(Context ctx, AuthenticatedHttpRequestCallback delegate) {
-		super(ctx, delegate);
+	public FetchUserVehiclesTask(Context ctx, Carhub service, AuthenticatedHttpRequestCallback delegate) {
+		super(ctx, service, delegate);
 	}
 
-	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
+    @Override
+    public String doInBackground(Void ... unused) {
+        UserVehicleCollection vehicles;
 
-		this.isPost = false;
-		// TODO: update to only get changes since last sync
-		this.url = Constants.WEBSITE_URL + "api/vehicles/list";
-	}
+        try {
+            vehicles = mService.vehicles().list().execute();
+//            if (vehicles != null) {
+//                for (UserVehicle v : vehicles.getItems()) {
+//                    Log.d("USERVEHICLE", v.toString());
+//                }
+//            }
+        } catch (IOException e) {
+            Log.d("VehicleList", e.getMessage(), e);
+        }
+
+        return "";
+    }
 
 	@Override
 	protected void processData(String r) {
@@ -98,7 +109,7 @@ public class FetchUserVehiclesTask extends AuthenticatedHttpRequest {
 	}
 
 	@Override
-	protected void onPostExecute(String r) {
+	protected void onPostExecute(Object r) {
 		super.onPostExecute(r);
 
 		if (mDelegate != null) {

@@ -1,28 +1,36 @@
 package com.worthwhilegames.carhubmobile;
 
+import android.accounts.AccountManager;
 import android.app.ListActivity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.TextView;
-
-import com.brianreber.library.AuthUtil;
-import com.brianreber.library.AuthenticatedHttpRequest.AuthenticatedHttpRequestCallback;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.services.carhub.*;
+import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 /**
  * @author breber
  */
-public abstract class AppEngineListActivity extends ListActivity implements AuthenticatedHttpRequestCallback {
+public abstract class AppEngineListActivity extends ListActivity implements AuthenticatedHttpRequest.AuthenticatedHttpRequestCallback {
 
-	private BroadcastReceiver receiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			performUpdate();
-		}
-	};
+    private static final String PREF_ACCOUNT_NAME = "accountName";
+
+    private static final int REQUEST_ACCOUNT_PICKER = 2;
+
+    /**
+     * Current credentials
+     */
+    protected GoogleAccountCredential mCreds;
+
+    /**
+     * The Carhub service for interacting with AppEngine
+     */
+    protected Carhub mService;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,39 +47,49 @@ public abstract class AppEngineListActivity extends ListActivity implements Auth
 		TextView tv = (TextView) findViewById(android.R.id.empty);
 		tv.setText(emptyResource);
 
-		if (!AuthUtil.isLoggedIn(this)) {
-			AuthUtil.startLogin(this);
-		} else if (AuthUtil.hasInvalidAuthToken(this)) {
-			AuthUtil.performLoginFromPrefs(this, Constants.WEBSITE_URL);
-		} else {
-			taskDidFinish();
-		}
+        // Inside your Activity class onCreate method
+        SharedPreferences settings = getSharedPreferences("CarHubMobile", 0);
+        mCreds = GoogleAccountCredential.usingAudience(this,
+                "server:client_id:280486107933-fkp13pk6dv84vdkumqu1vj5hh0o74he3.apps.googleusercontent.com");
+        setAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
+
+        Carhub.Builder bl = new Carhub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCreds);
+        mService = bl.build();
+
+        if (mCreds.getSelectedAccountName() != null) {
+            // Already signed in, begin app!
+            performUpdate();
+        } else {
+            // Not signed in, show login window or request an account.
+            chooseAccount();
+        }
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-		registerReceiver(receiver, new IntentFilter(com.brianreber.library.Constants.TOKEN_INVALIDATED));
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-
-		try {
-			unregisterReceiver(receiver);
-		} catch (IllegalArgumentException e) {
-			// We didn't get far enough to register the receiver
-		}
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == com.brianreber.library.Constants.ACCOUNT_CHOOSER_REQUEST && resultCode == RESULT_OK) {
-			AuthUtil.performLoginFromResult(this, data, Constants.WEBSITE_URL);
-		} else if (requestCode == com.brianreber.library.Constants.USER_RECOVERY_INTENT) {
-			AuthUtil.performLoginFromPrefs(this, Constants.WEBSITE_URL);
-		}
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_ACCOUNT_PICKER:
+                if (data != null && data.getExtras() != null) {
+                    String accountName = data.getExtras().getString(AccountManager.KEY_ACCOUNT_NAME);
+                    if (accountName != null) {
+                        setAccountName(accountName);
+
+                        performUpdate();
+                    }
+                }
+                break;
+        }
 	}
 
 	/* (non-Javadoc)
@@ -80,8 +98,24 @@ public abstract class AppEngineListActivity extends ListActivity implements Auth
 	@Override
 	protected void onResume() {
 		super.onResume();
-		performUpdate();
+        if (mCreds.getSelectedAccountName() != null) {
+            // Already signed in, begin app!
+            performUpdate();
+        }
 	}
+
+    private void chooseAccount() {
+        startActivityForResult(mCreds.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+    }
+
+    // setAccountName definition
+    private void setAccountName(String accountName) {
+        SharedPreferences settings = getSharedPreferences("CarHubMobile", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(PREF_ACCOUNT_NAME, accountName);
+        editor.commit();
+        mCreds.setSelectedAccountName(accountName);
+    }
 
 	/**
 	 * Perform all necessary UI updates, then call execute request

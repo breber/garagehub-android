@@ -1,8 +1,9 @@
 package com.worthwhilegames.carhubmobile;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-
+import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
+import com.worthwhilegames.carhubmobile.models.GasPriceRecord;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -12,12 +13,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
-import android.os.AsyncTask;
-import android.util.Log;
-
-import com.brianreber.library.HttpUtils;
-import com.worthwhilegames.carhubmobile.models.GasPriceRecord;
+import java.io.IOException;
+import java.net.HttpURLConnection;
 
 public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
 

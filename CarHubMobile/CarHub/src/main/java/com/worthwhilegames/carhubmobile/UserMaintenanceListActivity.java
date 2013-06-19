@@ -1,23 +1,22 @@
 package com.worthwhilegames.carhubmobile;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
+import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
-
 import com.worthwhilegames.carhubmobile.models.UserMaintenanceRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
-import com.worthwhilegames.carhubmobile.sync.FetchUserMaintenanceRecordsTask;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * @author breber
  */
-public class UserMaintenanceListActivity extends AppEngineListActivity {
+public class UserMaintenanceListActivity extends ListActivity {
 
 	private UserVehicleRecord mVehicle;
 
@@ -33,7 +32,7 @@ public class UserMaintenanceListActivity extends AppEngineListActivity {
 			return;
 		}
 
-		super.onCreate(savedInstanceState, R.string.noMaintRecords);
+		super.onCreate(savedInstanceState);
 
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -49,15 +48,13 @@ public class UserMaintenanceListActivity extends AppEngineListActivity {
 	/**
 	 * Perform all necessary UI updates, then call execute request
 	 */
-	@Override
 	protected void performUpdate() {
 		setProgressBarIndeterminateVisibility(true);
 
-		FetchUserMaintenanceRecordsTask request = new FetchUserMaintenanceRecordsTask(this, mVehicle, this);
-		request.execute();
+//		FetchUserMaintenanceRecordsTask request = new FetchUserMaintenanceRecordsTask(this, mVehicle, this);
+//		request.execute();
 	}
 
-	@Override
 	public void taskDidFinish() {
 		// Get all GasPriceRecords from the database
 		List<UserMaintenanceRecord> maintRecords = UserMaintenanceRecord.getRecordsForVehicle(UserMaintenanceRecord.class, mVehicle);
