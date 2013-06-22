@@ -35,13 +35,17 @@ public class FetchUserVehiclesTask extends AuthenticatedHttpRequest {
 
         try {
             vehicles = mService.vehicles().list().execute();
-//            if (vehicles != null) {
-//                for (UserVehicle v : vehicles.getItems()) {
-//                    Log.d("USERVEHICLE", v.toString());
-//                }
-//            }
+            if (vehicles != null) {
+                for (UserVehicle v : vehicles.getItems()) {
+                    Log.d("USERVEHICLE", v.toString());
+                    // TODO: perform syncing
+                    UserVehicleRecord toStore = new UserVehicleRecord(mContext);
+                    toStore.fromUserVehicle(v);
+                    toStore.save();
+                }
+            }
         } catch (IOException e) {
-            Log.d("VehicleList", e.getMessage(), e);
+            e.printStackTrace();
         }
 
         return "";

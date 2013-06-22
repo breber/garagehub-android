@@ -3,6 +3,8 @@ package com.worthwhilegames.carhubmobile.models;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.api.services.carhub.model.UserVehicle;
+
 import android.content.Context;
 
 public class UserVehicleRecord extends SyncableRecord {
@@ -16,6 +18,14 @@ public class UserVehicleRecord extends SyncableRecord {
 	public UserVehicleRecord(Context arg0) {
 		super(arg0);
 	}
+
+    public void fromUserVehicle(UserVehicle veh) {
+        mMake = veh.getMake();
+        mModel = veh.getModel();
+        mYear = veh.getYear();
+        mColor = veh.getColor();
+        mPlates = veh.getPlates();
+    }
 
 	/**
 	 * @return the mMake
