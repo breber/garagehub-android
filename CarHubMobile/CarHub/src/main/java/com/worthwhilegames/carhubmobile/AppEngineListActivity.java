@@ -56,10 +56,7 @@ public abstract class AppEngineListActivity extends AdListActivity implements Au
         Carhub.Builder bl = new Carhub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCreds);
         mService = bl.build();
 
-        if (mCreds.getSelectedAccountName() != null) {
-            // Already signed in, begin app!
-            performUpdate();
-        } else {
+        if (mCreds.getSelectedAccountName() == null) {
             // Not signed in, show login window or request an account.
             chooseAccount();
         }

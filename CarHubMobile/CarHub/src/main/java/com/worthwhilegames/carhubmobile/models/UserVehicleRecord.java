@@ -19,7 +19,8 @@ public class UserVehicleRecord extends SyncableRecord {
 		super(arg0);
 	}
 
-    public void fromUserVehicle(UserVehicle veh) {
+    public void fromAPI(UserVehicle veh) {
+        mRemoteId = veh.getAppengineId();
         mMake = veh.getMake();
         mModel = veh.getModel();
         mYear = veh.getYear();

@@ -1,8 +1,10 @@
 package com.worthwhilegames.carhubmobile.models;
 
 import android.content.Context;
-
+import com.orm.StringUtil;
 import com.orm.SugarRecord;
+
+import java.util.List;
 
 /**
  * An abstract class representing an AppEngine syncable record
@@ -11,7 +13,7 @@ import com.orm.SugarRecord;
  */
 public abstract class SyncableRecord extends SugarRecord<SyncableRecord> {
 
-	private String mRemoteId;
+	protected String mRemoteId;
 	protected boolean mDirty;
 	protected long mLastUpdated;
 
@@ -60,4 +62,21 @@ public abstract class SyncableRecord extends SugarRecord<SyncableRecord> {
 	public void setLastUpdated(long aLastUpdated) {
 		this.mLastUpdated = aLastUpdated;
 	}
+
+    /**
+     * Convenience method for finding by AppEngine remote id
+     *
+     * @param type
+     * @param remoteId
+     * @param <T>
+     * @return
+     */
+    public static <T extends SyncableRecord> T findByRemoteId(Class<T> type, String remoteId) {
+        List<T> found = T.find(type, StringUtil.toSQLName("mRemoteId") + " = ? LIMIT 1", remoteId);
+        if (!found.isEmpty()) {
+            return found.get(0);
+        }
+
+        return null;
+    }
 }
