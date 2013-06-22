@@ -1,13 +1,12 @@
 package com.worthwhilegames.carhubmobile;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 /**
  * @author jamiekujawa
  *
  */
-public class AboutActivity extends Activity {
+public class AboutActivity extends AdActivity {
 
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)

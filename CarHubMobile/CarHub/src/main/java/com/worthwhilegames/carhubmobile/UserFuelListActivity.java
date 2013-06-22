@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * @author breber
  */
-public class UserFuelListActivity extends ListActivity {
+public class UserFuelListActivity extends AdListActivity {
 
 	private UserVehicleRecord mVehicle;
 

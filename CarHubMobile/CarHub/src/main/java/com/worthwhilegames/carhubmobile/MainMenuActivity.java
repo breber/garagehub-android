@@ -1,19 +1,17 @@
 package com.worthwhilegames.carhubmobile;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-
 import com.worthwhilegames.carhubmobile.MenuImageAdapter.ImageTextWrapper;
 
 /**
  * @author jamiekujawa
  */
-public class MainMenuActivity extends Activity {
+public class MainMenuActivity extends AdActivity {
 
 	private ImageTextWrapper[] mImageTextWrappers = {
 			new MenuImageAdapter.ImageTextWrapper(R.drawable.ic_action_search, R.string.findNearbyGasPrices, FindGasPricesActivity.class),

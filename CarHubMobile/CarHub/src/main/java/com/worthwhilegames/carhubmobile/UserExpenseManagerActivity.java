@@ -1,6 +1,5 @@
 package com.worthwhilegames.carhubmobile;
 
-import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,7 +17,7 @@ import java.util.List;
 /**
  * @author breber
  */
-public class UserExpenseManagerActivity extends ListActivity {
+public class UserExpenseManagerActivity extends AdListActivity {
 
 	private UserVehicleRecord mVehicle;
 

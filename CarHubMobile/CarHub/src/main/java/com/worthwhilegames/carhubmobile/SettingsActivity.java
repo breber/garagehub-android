@@ -9,7 +9,7 @@ import android.widget.Spinner;
 /**
  * @author jamiekujawa
  */
-public class SettingsActivity extends Activity {
+public class SettingsActivity extends AdActivity {
 
 	/**
 	 * A SharedPreferences object to get the preferences set by the user

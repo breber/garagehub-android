@@ -39,7 +39,7 @@ import android.widget.Toast;
 /**
  * @author jamiekujawa
  */
-public class UpdatePriceActivity extends Activity {
+public class UpdatePriceActivity extends AdActivity {
 
 	public static final String EXTRA_STATION_NAME = "StationName";
 	public static final String EXTRA_STATION_ADDRESS = "StationAddress";

@@ -16,7 +16,7 @@ import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 /**
  * @author breber
  */
-public abstract class AppEngineListActivity extends ListActivity implements AuthenticatedHttpRequest.AuthenticatedHttpRequestCallback {
+public abstract class AppEngineListActivity extends AdListActivity implements AuthenticatedHttpRequest.AuthenticatedHttpRequestCallback {
 
     private static final String PREF_ACCOUNT_NAME = "accountName";
 
