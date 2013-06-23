@@ -5,6 +5,7 @@ import com.google.api.services.carhub.model.FuelRecord;
 import com.orm.StringUtil;
 
 import java.sql.Date;
+import java.text.ParseException;
 import java.util.List;
 
 public class UserFuelRecord extends UserBaseExpenseRecord {
@@ -25,7 +26,11 @@ public class UserFuelRecord extends UserBaseExpenseRecord {
         FuelRecord oth = (FuelRecord) rec;
         mRemoteId = oth.getServerId();
         mVehicle = UserVehicleRecord.findByRemoteId(UserVehicleRecord.class, "" + oth.getVehicle());
-        mDate = Date.valueOf(oth.getDate()).getTime();
+        try {
+            mDate = cDateFormat.parse(oth.getDate()).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         mCategoryId = oth.getCategoryid();
         mLocation = oth.getLocation();
         mDescription = oth.getDescription();

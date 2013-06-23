@@ -1,8 +1,5 @@
 package com.worthwhilegames.carhubmobile;
 
-import java.util.Date;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.text.format.DateFormat;
@@ -11,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
 import com.worthwhilegames.carhubmobile.models.UserFuelRecord;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author breber
@@ -47,7 +46,7 @@ public class UserFuelAdapter extends ArrayAdapter<UserFuelRecord> {
 
 		UserFuelRecord fuelRecord = getItem(position);
 
-		holder.bottomLeft.setText(DateFormat.format("MM/dd/yyyy", new Date(fuelRecord.getDate() * 1000)));
+		holder.bottomLeft.setText(DateFormat.format("MM/dd/yyyy", new Date(fuelRecord.getDate())));
 		holder.topLeft.setText(fuelRecord.getLocation());
 		if (fuelRecord.getOdometerStart() != -1) {
 			holder.topRight.setText(fuelRecord.getOdometerStart() + " - " + fuelRecord.getOdometerEnd());

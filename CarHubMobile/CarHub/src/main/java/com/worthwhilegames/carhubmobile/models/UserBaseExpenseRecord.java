@@ -1,16 +1,22 @@
 package com.worthwhilegames.carhubmobile.models;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.api.services.carhub.model.BaseExpense;
-
 import android.content.Context;
-
+import android.util.Log;
+import com.google.api.services.carhub.model.BaseExpense;
 import com.orm.StringUtil;
+import com.orm.dsl.Ignore;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
 
 public class UserBaseExpenseRecord extends SyncableRecord {
+
+    @Ignore
+    protected static final SimpleDateFormat cDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 	protected UserVehicleRecord mVehicle;
     protected long mDate;
@@ -22,6 +28,7 @@ public class UserBaseExpenseRecord extends SyncableRecord {
 
 	public UserBaseExpenseRecord(Context arg0) {
 		super(arg0);
+        cDateFormat.setTimeZone(TimeZone.getDefault());
 	}
 
     @Override
@@ -29,7 +36,11 @@ public class UserBaseExpenseRecord extends SyncableRecord {
         BaseExpense oth = (BaseExpense) exp;
         mRemoteId = oth.getServerId();
         mVehicle = UserVehicleRecord.findByRemoteId(UserVehicleRecord.class, "" + oth.getVehicle());
-        mDate = Date.valueOf(oth.getDate()).getTime();
+        try {
+            mDate = cDateFormat.parse(oth.getDate()).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         mCategoryId = oth.getCategoryid();
         mLocation = oth.getLocation();
         mDescription = oth.getDescription();
