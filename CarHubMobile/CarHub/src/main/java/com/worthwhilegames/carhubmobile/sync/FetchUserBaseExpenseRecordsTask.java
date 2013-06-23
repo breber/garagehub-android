@@ -2,24 +2,24 @@ package com.worthwhilegames.carhubmobile.sync;
 
 import android.content.Context;
 import com.google.api.services.carhub.Carhub;
-import com.google.api.services.carhub.model.MaintenanceRecord;
-import com.google.api.services.carhub.model.MaintenanceRecordCollection;
-import com.worthwhilegames.carhubmobile.models.UserMaintenanceRecord;
+import com.google.api.services.carhub.model.BaseExpense;
+import com.google.api.services.carhub.model.BaseExpenseCollection;
+import com.worthwhilegames.carhubmobile.models.UserBaseExpenseRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 import java.io.IOException;
 import java.util.List;
 
-public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
+public class FetchUserBaseExpenseRecordsTask extends AuthenticatedHttpRequest {
 
     private UserVehicleRecord mVehicle;
 
-	public FetchUserMaintenanceRecordsTask(Context ctx, Carhub service, UserVehicleRecord vehicle) {
+	public FetchUserBaseExpenseRecordsTask(Context ctx, Carhub service, UserVehicleRecord vehicle) {
 		this(ctx, service, null, vehicle);
 	}
 
-	public FetchUserMaintenanceRecordsTask(Context ctx, Carhub service, AuthenticatedHttpRequestCallback delegate, UserVehicleRecord vehicle) {
+	public FetchUserBaseExpenseRecordsTask(Context ctx, Carhub service, AuthenticatedHttpRequestCallback delegate, UserVehicleRecord vehicle) {
 		super(ctx, service, delegate);
 
         mVehicle = vehicle;
@@ -27,18 +27,18 @@ public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
 
     @Override
     public String doInBackground(Void ... unused) {
-        MaintenanceRecordCollection maintenanceRecords;
+        BaseExpenseCollection records;
         long currentTime = System.currentTimeMillis();
 
         try {
             // Send all records that are dirty
-            List<UserMaintenanceRecord> dirtyRecords = UserMaintenanceRecord.findAllDirty(UserMaintenanceRecord.class);
-            for (UserMaintenanceRecord rec : dirtyRecords) {
+            List<UserBaseExpenseRecord> dirtyRecords = UserBaseExpenseRecord.findAllDirty(UserBaseExpenseRecord.class);
+            for (UserBaseExpenseRecord rec : dirtyRecords) {
                 // Convert to UserVehicle
-                MaintenanceRecord toSend = rec.toAPI();
+                BaseExpense toSend = (BaseExpense) rec.toAPI();
 
                 // Send to AppEngine
-                MaintenanceRecord sent = mService.maintenance().store(toSend).execute();
+                BaseExpense sent = mService.expense().store(toSend).execute();
 
                 // Update our local copy (last updated, remote id, etc)
                 rec.fromAPI(sent);
@@ -50,15 +50,15 @@ public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
             }
 
             // Get a list of all records currently on the server
-            maintenanceRecords = mService.maintenance().list(Integer.parseInt(mVehicle.getRemoteId())).execute();
-            if (maintenanceRecords != null) {
-                for (MaintenanceRecord r : maintenanceRecords.getItems()) {
+            records = mService.expense().list(Integer.parseInt(mVehicle.getRemoteId())).execute();
+            if (records != null) {
+                for (BaseExpense r : records.getItems()) {
                     // Try and find a record locally to update
-                    UserMaintenanceRecord toUpdate = UserMaintenanceRecord.findByRemoteId(UserMaintenanceRecord.class, r.getServerId());
+                    UserBaseExpenseRecord toUpdate = UserBaseExpenseRecord.findByRemoteId(UserBaseExpenseRecord.class, r.getServerId());
 
                     // If one can't be found, create a new one
                     if (toUpdate == null) {
-                        toUpdate = new UserMaintenanceRecord(mContext);
+                        toUpdate = new UserBaseExpenseRecord(mContext);
                     }
 
                     // Update the local copy with the server information

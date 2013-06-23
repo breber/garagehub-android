@@ -9,6 +9,9 @@ import com.worthwhilegames.carhubmobile.models.UserBaseExpenseRecord;
 import com.worthwhilegames.carhubmobile.models.UserFuelRecord;
 import com.worthwhilegames.carhubmobile.models.UserMaintenanceRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
+import com.worthwhilegames.carhubmobile.sync.FetchUserBaseExpenseRecordsTask;
+import com.worthwhilegames.carhubmobile.sync.FetchUserFuelRecordsTask;
+import com.worthwhilegames.carhubmobile.sync.FetchUserMaintenanceRecordsTask;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,7 +20,7 @@ import java.util.List;
 /**
  * @author breber
  */
-public class UserExpenseManagerActivity extends AdListActivity {
+public class UserExpenseManagerActivity extends AppEngineListActivity {
 
 	private UserVehicleRecord mVehicle;
 
@@ -33,7 +36,7 @@ public class UserExpenseManagerActivity extends AdListActivity {
 			return;
 		}
 
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState, R.string.noExpenseRecords);
 
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -52,17 +55,17 @@ public class UserExpenseManagerActivity extends AdListActivity {
 	protected void performUpdate() {
 		setProgressBarIndeterminateVisibility(true);
 
-//		// Fetch Base Expense
-//		FetchUserBaseExpenseRecordsTask request = new FetchUserBaseExpenseRecordsTask(this, mVehicle, this);
-//		request.execute();
-//
-//		// Fetch Maintenance
-//		FetchUserMaintenanceRecordsTask requestMaint = new FetchUserMaintenanceRecordsTask(this, mVehicle, this);
-//		requestMaint.execute();
-//
-//		// Fetch Fuel
-//		FetchUserFuelRecordsTask requestFuel = new FetchUserFuelRecordsTask(this, mVehicle, this);
-//		requestFuel.execute();
+		// Fetch Base Expense
+		FetchUserBaseExpenseRecordsTask request = new FetchUserBaseExpenseRecordsTask(this, mService, this, mVehicle);
+		request.execute();
+
+		// Fetch Maintenance
+        FetchUserMaintenanceRecordsTask requestMaint = new FetchUserMaintenanceRecordsTask(this, mService, this, mVehicle);
+        requestMaint.execute();
+
+		// Fetch Fuel
+		FetchUserFuelRecordsTask requestFuel = new FetchUserFuelRecordsTask(this, mService, this, mVehicle);
+		requestFuel.execute();
 	}
 
 	public void taskDidFinish() {

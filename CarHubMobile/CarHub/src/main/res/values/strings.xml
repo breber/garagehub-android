@@ -39,6 +39,7 @@
     <string name="fuelRecords">Fuel Records</string>
     <string name="navigate">Navigate</string>
     <string name="viewMap">View Map</string>
+    <string name="noExpenseRecords">No expenses</string>
 
     <string-array name="fueltype_array">
         <item>Reg</item>

@@ -32,7 +32,7 @@ public class UserMaintenanceListActivity extends AppEngineListActivity {
 			return;
 		}
 
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState, R.string.noMaintRecords);
 
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -52,7 +52,7 @@ public class UserMaintenanceListActivity extends AppEngineListActivity {
 		setProgressBarIndeterminateVisibility(true);
 
 		FetchUserMaintenanceRecordsTask request = new FetchUserMaintenanceRecordsTask(this, mService, this, mVehicle);
-		request.execute();
+        request.execute();
 	}
 
 	public void taskDidFinish() {

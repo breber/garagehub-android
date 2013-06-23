@@ -2,24 +2,24 @@ package com.worthwhilegames.carhubmobile.sync;
 
 import android.content.Context;
 import com.google.api.services.carhub.Carhub;
-import com.google.api.services.carhub.model.MaintenanceRecord;
-import com.google.api.services.carhub.model.MaintenanceRecordCollection;
-import com.worthwhilegames.carhubmobile.models.UserMaintenanceRecord;
+import com.google.api.services.carhub.model.FuelRecord;
+import com.google.api.services.carhub.model.FuelRecordCollection;
+import com.worthwhilegames.carhubmobile.models.UserFuelRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 import java.io.IOException;
 import java.util.List;
 
-public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
+public class FetchUserFuelRecordsTask extends AuthenticatedHttpRequest {
 
     private UserVehicleRecord mVehicle;
 
-	public FetchUserMaintenanceRecordsTask(Context ctx, Carhub service, UserVehicleRecord vehicle) {
+	public FetchUserFuelRecordsTask(Context ctx, Carhub service, UserVehicleRecord vehicle) {
 		this(ctx, service, null, vehicle);
 	}
 
-	public FetchUserMaintenanceRecordsTask(Context ctx, Carhub service, AuthenticatedHttpRequestCallback delegate, UserVehicleRecord vehicle) {
+	public FetchUserFuelRecordsTask(Context ctx, Carhub service, AuthenticatedHttpRequestCallback delegate, UserVehicleRecord vehicle) {
 		super(ctx, service, delegate);
 
         mVehicle = vehicle;
@@ -27,18 +27,18 @@ public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
 
     @Override
     public String doInBackground(Void ... unused) {
-        MaintenanceRecordCollection maintenanceRecords;
+        FuelRecordCollection records;
         long currentTime = System.currentTimeMillis();
 
         try {
             // Send all records that are dirty
-            List<UserMaintenanceRecord> dirtyRecords = UserMaintenanceRecord.findAllDirty(UserMaintenanceRecord.class);
-            for (UserMaintenanceRecord rec : dirtyRecords) {
+            List<UserFuelRecord> dirtyRecords = UserFuelRecord.findAllDirty(UserFuelRecord.class);
+            for (UserFuelRecord rec : dirtyRecords) {
                 // Convert to UserVehicle
-                MaintenanceRecord toSend = rec.toAPI();
+                FuelRecord toSend = (FuelRecord) rec.toAPI();
 
                 // Send to AppEngine
-                MaintenanceRecord sent = mService.maintenance().store(toSend).execute();
+                FuelRecord sent = mService.fuel().store(toSend).execute();
 
                 // Update our local copy (last updated, remote id, etc)
                 rec.fromAPI(sent);
@@ -50,15 +50,15 @@ public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
             }
 
             // Get a list of all records currently on the server
-            maintenanceRecords = mService.maintenance().list(Integer.parseInt(mVehicle.getRemoteId())).execute();
-            if (maintenanceRecords != null) {
-                for (MaintenanceRecord r : maintenanceRecords.getItems()) {
+            records = mService.fuel().list(Integer.parseInt(mVehicle.getRemoteId())).setOrder("-odometerEnd").execute();
+            if (records != null) {
+                for (FuelRecord r : records.getItems()) {
                     // Try and find a record locally to update
-                    UserMaintenanceRecord toUpdate = UserMaintenanceRecord.findByRemoteId(UserMaintenanceRecord.class, r.getServerId());
+                    UserFuelRecord toUpdate = UserFuelRecord.findByRemoteId(UserFuelRecord.class, r.getServerId());
 
                     // If one can't be found, create a new one
                     if (toUpdate == null) {
-                        toUpdate = new UserMaintenanceRecord(mContext);
+                        toUpdate = new UserFuelRecord(mContext);
                     }
 
                     // Update the local copy with the server information

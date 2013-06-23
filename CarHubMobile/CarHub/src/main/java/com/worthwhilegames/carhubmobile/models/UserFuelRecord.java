@@ -1,10 +1,11 @@
 package com.worthwhilegames.carhubmobile.models;
 
-import java.util.List;
-
 import android.content.Context;
-
+import com.google.api.services.carhub.model.FuelRecord;
 import com.orm.StringUtil;
+
+import java.sql.Date;
+import java.util.List;
 
 public class UserFuelRecord extends UserBaseExpenseRecord {
 
@@ -19,6 +20,44 @@ public class UserFuelRecord extends UserBaseExpenseRecord {
 		super(arg0);
 	}
 
+    @Override
+    public void fromAPI(Object rec) {
+        FuelRecord oth = (FuelRecord) rec;
+        mRemoteId = oth.getServerId();
+        mVehicle = UserVehicleRecord.findByRemoteId(UserVehicleRecord.class, "" + oth.getVehicle());
+        mDate = Date.valueOf(oth.getDate()).getTime();
+        mCategoryId = oth.getCategoryid();
+        mLocation = oth.getLocation();
+        mDescription = oth.getDescription();
+        mAmount = (float) ((double) oth.getAmount());
+        mPictureUrl = oth.getPictureurl();
+        mMpg = oth.getMpg().floatValue();
+        mOdometerStart = oth.getOdometerStart();
+        mOdometerEnd = oth.getOdometerEnd();
+        mGallons = oth.getGallons().floatValue();
+        mCostPerGallon = oth.getCostPerGallon().floatValue();
+        mFuelGrade = oth.getFuelGrade();
+    }
+
+    @Override
+    public FuelRecord toAPI() {
+        FuelRecord toRet = new FuelRecord();
+        toRet.setServerId(mRemoteId);
+        toRet.setDate(new Date(mDate).toString());
+        toRet.setCategoryid(mCategoryId);
+        toRet.setLocation(mLocation);
+        toRet.setDescription(mDescription);
+        toRet.setAmount((double) mAmount);
+        toRet.setPictureurl(mPictureUrl);
+        toRet.setMpg((double) mMpg);
+        toRet.setOdometerStart(mOdometerStart);
+        toRet.setOdometerEnd(mOdometerEnd);
+        toRet.setGallons((double) mGallons);
+        toRet.setCostPerGallon((double) mCostPerGallon);
+        toRet.setFuelGrade(mFuelGrade);
+        return toRet;
+    }
+
 	/**
 	 * @return the mMpg
 	 */
@@ -27,7 +66,7 @@ public class UserFuelRecord extends UserBaseExpenseRecord {
 	}
 
 	/**
-	 * @param mMpg the mMpg to set
+	 * @param aMpg the mMpg to set
 	 */
 	public void setMpg(float aMpg) {
 		this.mMpg = aMpg;
@@ -41,7 +80,7 @@ public class UserFuelRecord extends UserBaseExpenseRecord {
 	}
 
 	/**
-	 * @param mOdometerStart the mOdometerStart to set
+	 * @param aOdometerStart the mOdometerStart to set
 	 */
 	public void setOdometerStart(int aOdometerStart) {
 		this.mOdometerStart = aOdometerStart;
@@ -55,7 +94,7 @@ public class UserFuelRecord extends UserBaseExpenseRecord {
 	}
 
 	/**
-	 * @param mOdometerEnd the mOdometerEnd to set
+	 * @param aOdometerEnd the mOdometerEnd to set
 	 */
 	public void setOdometerEnd(int aOdometerEnd) {
 		this.mOdometerEnd = aOdometerEnd;
@@ -69,7 +108,7 @@ public class UserFuelRecord extends UserBaseExpenseRecord {
 	}
 
 	/**
-	 * @param mGallons the mGallons to set
+	 * @param aGallons the mGallons to set
 	 */
 	public void setGallons(float aGallons) {
 		this.mGallons = aGallons;
@@ -83,7 +122,7 @@ public class UserFuelRecord extends UserBaseExpenseRecord {
 	}
 
 	/**
-	 * @param mCostPerGallon the mCostPerGallon to set
+	 * @param aCostPerGallon the mCostPerGallon to set
 	 */
 	public void setCostPerGallon(float aCostPerGallon) {
 		this.mCostPerGallon = aCostPerGallon;
@@ -97,7 +136,7 @@ public class UserFuelRecord extends UserBaseExpenseRecord {
 	}
 
 	/**
-	 * @param mFuelGrade the mFuelGrade to set
+	 * @param aFuelGrade the mFuelGrade to set
 	 */
 	public void setFuelGrade(String aFuelGrade) {
 		this.mFuelGrade = aFuelGrade;

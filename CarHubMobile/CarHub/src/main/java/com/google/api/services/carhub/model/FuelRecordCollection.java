@@ -19,7 +19,7 @@
 package com.google.api.services.carhub.model;
 
 /**
- * Model definition for UserVehicleCollection.
+ * Model definition for FuelRecordCollection.
  *
  * <p> This is the Java data model class that specifies how to parse/serialize into the JSON that is
  * transmitted over HTTP when working with the . For a detailed explanation see:
@@ -29,18 +29,18 @@ package com.google.api.services.carhub.model;
  * @author Google, Inc.
  */
 @SuppressWarnings("javadoc")
-public final class UserVehicleCollection extends com.google.api.client.json.GenericJson {
+public final class FuelRecordCollection extends com.google.api.client.json.GenericJson {
 
   /**
    * The value may be {@code null}.
    */
   @com.google.api.client.util.Key
-  private java.util.List<UserVehicle> items;
+  private java.util.List<FuelRecord> items;
 
   static {
-    // hack to force ProGuard to consider UserVehicle used, since otherwise it would be stripped out
+    // hack to force ProGuard to consider FuelRecord used, since otherwise it would be stripped out
     // see http://code.google.com/p/google-api-java-client/issues/detail?id=528
-    com.google.api.client.util.Data.nullOf(UserVehicle.class);
+    com.google.api.client.util.Data.nullOf(FuelRecord.class);
   }
 
   /**
@@ -52,14 +52,14 @@ public final class UserVehicleCollection extends com.google.api.client.json.Gene
   /**
    * @return value or {@code null} for none
    */
-  public java.util.List<UserVehicle> getItems() {
+  public java.util.List<FuelRecord> getItems() {
     return items;
   }
 
   /**
    * @param items items or {@code null} for none
    */
-  public UserVehicleCollection setItems(java.util.List<UserVehicle> items) {
+  public FuelRecordCollection setItems(java.util.List<FuelRecord> items) {
     this.items = items;
     return this;
   }
@@ -74,19 +74,19 @@ public final class UserVehicleCollection extends com.google.api.client.json.Gene
   /**
    * @param nextPageToken nextPageToken or {@code null} for none
    */
-  public UserVehicleCollection setNextPageToken(java.lang.String nextPageToken) {
+  public FuelRecordCollection setNextPageToken(java.lang.String nextPageToken) {
     this.nextPageToken = nextPageToken;
     return this;
   }
 
   @Override
-  public UserVehicleCollection set(String fieldName, Object value) {
-    return (UserVehicleCollection) super.set(fieldName, value);
+  public FuelRecordCollection set(String fieldName, Object value) {
+    return (FuelRecordCollection) super.set(fieldName, value);
   }
 
   @Override
-  public UserVehicleCollection clone() {
-    return (UserVehicleCollection) super.clone();
+  public FuelRecordCollection clone() {
+    return (FuelRecordCollection) super.clone();
   }
 
 }

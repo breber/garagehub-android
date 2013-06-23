@@ -1,15 +1,13 @@
 package com.worthwhilegames.carhubmobile;
 
-import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.json.gson.GsonFactory;
 import com.worthwhilegames.carhubmobile.models.UserFuelRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
+import com.worthwhilegames.carhubmobile.sync.FetchUserFuelRecordsTask;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,7 +16,7 @@ import java.util.List;
 /**
  * @author breber
  */
-public class UserFuelListActivity extends AdListActivity {
+public class UserFuelListActivity extends AppEngineListActivity {
 
 	private UserVehicleRecord mVehicle;
 
@@ -34,7 +32,7 @@ public class UserFuelListActivity extends AdListActivity {
 			return;
 		}
 
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState, R.string.noFuelRecords);
 
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -53,10 +51,9 @@ public class UserFuelListActivity extends AdListActivity {
 	protected void performUpdate() {
 		setProgressBarIndeterminateVisibility(true);
 
-        com.google.api.services.carhub.Carhub.Builder bl = new com.google.api.services.carhub.Carhub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), null);
-        bl.build();
+        FetchUserFuelRecordsTask request = new FetchUserFuelRecordsTask(this, mService, this, mVehicle);
+        request.execute();
 	}
-
 
 	public void taskDidFinish() {
 		// Get all GasPriceRecords from the database

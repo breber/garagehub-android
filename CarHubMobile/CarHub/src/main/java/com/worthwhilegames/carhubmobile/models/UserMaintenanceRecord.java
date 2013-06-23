@@ -1,12 +1,11 @@
 package com.worthwhilegames.carhubmobile.models;
 
-import java.sql.Date;
-import java.util.List;
-
 import android.content.Context;
-
 import com.google.api.services.carhub.model.MaintenanceRecord;
 import com.orm.StringUtil;
+
+import java.sql.Date;
+import java.util.List;
 
 public class UserMaintenanceRecord extends UserBaseExpenseRecord {
 
@@ -25,7 +24,7 @@ public class UserMaintenanceRecord extends UserBaseExpenseRecord {
         mCategoryId = oth.getCategoryid();
         mLocation = oth.getLocation();
         mDescription = oth.getDescription();
-        mAmount = (float) ((double) oth.getAmount());
+        mAmount = oth.getAmount().floatValue();
         mPictureUrl = oth.getPictureurl();
         mOdometer = oth.getOdometer();
     }
@@ -52,7 +51,7 @@ public class UserMaintenanceRecord extends UserBaseExpenseRecord {
 	}
 
 	/**
-	 * @param mOdometer the mOdometer to set
+	 * @param aOdometer the mOdometer to set
 	 */
 	public void setOdometer(int aOdometer) {
 		this.mOdometer = aOdometer;

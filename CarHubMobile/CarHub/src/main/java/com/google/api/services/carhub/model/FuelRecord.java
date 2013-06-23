@@ -19,7 +19,7 @@
 package com.google.api.services.carhub.model;
 
 /**
- * Model definition for BaseExpense.
+ * Model definition for FuelRecord.
  *
  * <p> This is the Java data model class that specifies how to parse/serialize into the JSON that is
  * transmitted over HTTP when working with the . For a detailed explanation see:
@@ -29,7 +29,7 @@ package com.google.api.services.carhub.model;
  * @author Google, Inc.
  */
 @SuppressWarnings("javadoc")
-public final class BaseExpense extends com.google.api.client.json.GenericJson {
+public final class FuelRecord extends com.google.api.client.json.GenericJson {
 
   /**
    * The value may be {@code null}.
@@ -47,6 +47,12 @@ public final class BaseExpense extends com.google.api.client.json.GenericJson {
    * The value may be {@code null}.
    */
   @com.google.api.client.util.Key
+  private java.lang.Double costPerGallon;
+
+  /**
+   * The value may be {@code null}.
+   */
+  @com.google.api.client.util.Key
   private java.lang.String date;
 
   /**
@@ -59,6 +65,18 @@ public final class BaseExpense extends com.google.api.client.json.GenericJson {
    * The value may be {@code null}.
    */
   @com.google.api.client.util.Key
+  private java.lang.String fuelGrade;
+
+  /**
+   * The value may be {@code null}.
+   */
+  @com.google.api.client.util.Key
+  private java.lang.Double gallons;
+
+  /**
+   * The value may be {@code null}.
+   */
+  @com.google.api.client.util.Key
   private java.lang.String lastmodified;
 
   /**
@@ -66,6 +84,24 @@ public final class BaseExpense extends com.google.api.client.json.GenericJson {
    */
   @com.google.api.client.util.Key
   private java.lang.String location;
+
+  /**
+   * The value may be {@code null}.
+   */
+  @com.google.api.client.util.Key
+  private java.lang.Double mpg;
+
+  /**
+   * The value may be {@code null}.
+   */
+  @com.google.api.client.util.Key
+  private java.lang.Integer odometerEnd;
+
+  /**
+   * The value may be {@code null}.
+   */
+  @com.google.api.client.util.Key
+  private java.lang.Integer odometerStart;
 
   /**
    * The value may be {@code null}.
@@ -95,7 +131,7 @@ public final class BaseExpense extends com.google.api.client.json.GenericJson {
   /**
    * @param amount amount or {@code null} for none
    */
-  public BaseExpense setAmount(java.lang.Double amount) {
+  public FuelRecord setAmount(java.lang.Double amount) {
     this.amount = amount;
     return this;
   }
@@ -110,8 +146,23 @@ public final class BaseExpense extends com.google.api.client.json.GenericJson {
   /**
    * @param categoryid categoryid or {@code null} for none
    */
-  public BaseExpense setCategoryid(java.lang.Integer categoryid) {
+  public FuelRecord setCategoryid(java.lang.Integer categoryid) {
     this.categoryid = categoryid;
+    return this;
+  }
+
+  /**
+   * @return value or {@code null} for none
+   */
+  public java.lang.Double getCostPerGallon() {
+    return costPerGallon;
+  }
+
+  /**
+   * @param costPerGallon costPerGallon or {@code null} for none
+   */
+  public FuelRecord setCostPerGallon(java.lang.Double costPerGallon) {
+    this.costPerGallon = costPerGallon;
     return this;
   }
 
@@ -125,7 +176,7 @@ public final class BaseExpense extends com.google.api.client.json.GenericJson {
   /**
    * @param date date or {@code null} for none
    */
-  public BaseExpense setDate(java.lang.String date) {
+  public FuelRecord setDate(java.lang.String date) {
     this.date = date;
     return this;
   }
@@ -140,8 +191,38 @@ public final class BaseExpense extends com.google.api.client.json.GenericJson {
   /**
    * @param description description or {@code null} for none
    */
-  public BaseExpense setDescription(java.lang.String description) {
+  public FuelRecord setDescription(java.lang.String description) {
     this.description = description;
+    return this;
+  }
+
+  /**
+   * @return value or {@code null} for none
+   */
+  public java.lang.String getFuelGrade() {
+    return fuelGrade;
+  }
+
+  /**
+   * @param fuelGrade fuelGrade or {@code null} for none
+   */
+  public FuelRecord setFuelGrade(java.lang.String fuelGrade) {
+    this.fuelGrade = fuelGrade;
+    return this;
+  }
+
+  /**
+   * @return value or {@code null} for none
+   */
+  public java.lang.Double getGallons() {
+    return gallons;
+  }
+
+  /**
+   * @param gallons gallons or {@code null} for none
+   */
+  public FuelRecord setGallons(java.lang.Double gallons) {
+    this.gallons = gallons;
     return this;
   }
 
@@ -155,7 +236,7 @@ public final class BaseExpense extends com.google.api.client.json.GenericJson {
   /**
    * @param lastmodified lastmodified or {@code null} for none
    */
-  public BaseExpense setLastmodified(java.lang.String lastmodified) {
+  public FuelRecord setLastmodified(java.lang.String lastmodified) {
     this.lastmodified = lastmodified;
     return this;
   }
@@ -170,8 +251,53 @@ public final class BaseExpense extends com.google.api.client.json.GenericJson {
   /**
    * @param location location or {@code null} for none
    */
-  public BaseExpense setLocation(java.lang.String location) {
+  public FuelRecord setLocation(java.lang.String location) {
     this.location = location;
+    return this;
+  }
+
+  /**
+   * @return value or {@code null} for none
+   */
+  public java.lang.Double getMpg() {
+    return mpg;
+  }
+
+  /**
+   * @param mpg mpg or {@code null} for none
+   */
+  public FuelRecord setMpg(java.lang.Double mpg) {
+    this.mpg = mpg;
+    return this;
+  }
+
+  /**
+   * @return value or {@code null} for none
+   */
+  public java.lang.Integer getOdometerEnd() {
+    return odometerEnd;
+  }
+
+  /**
+   * @param odometerEnd odometerEnd or {@code null} for none
+   */
+  public FuelRecord setOdometerEnd(java.lang.Integer odometerEnd) {
+    this.odometerEnd = odometerEnd;
+    return this;
+  }
+
+  /**
+   * @return value or {@code null} for none
+   */
+  public java.lang.Integer getOdometerStart() {
+    return odometerStart;
+  }
+
+  /**
+   * @param odometerStart odometerStart or {@code null} for none
+   */
+  public FuelRecord setOdometerStart(java.lang.Integer odometerStart) {
+    this.odometerStart = odometerStart;
     return this;
   }
 
@@ -185,7 +311,7 @@ public final class BaseExpense extends com.google.api.client.json.GenericJson {
   /**
    * @param pictureurl pictureurl or {@code null} for none
    */
-  public BaseExpense setPictureurl(java.lang.String pictureurl) {
+  public FuelRecord setPictureurl(java.lang.String pictureurl) {
     this.pictureurl = pictureurl;
     return this;
   }
@@ -200,7 +326,7 @@ public final class BaseExpense extends com.google.api.client.json.GenericJson {
   /**
    * @param serverId serverId or {@code null} for none
    */
-  public BaseExpense setServerId(java.lang.String serverId) {
+  public FuelRecord setServerId(java.lang.String serverId) {
     this.serverId = serverId;
     return this;
   }
@@ -215,19 +341,19 @@ public final class BaseExpense extends com.google.api.client.json.GenericJson {
   /**
    * @param vehicle vehicle or {@code null} for none
    */
-  public BaseExpense setVehicle(java.lang.Integer vehicle) {
+  public FuelRecord setVehicle(java.lang.Integer vehicle) {
     this.vehicle = vehicle;
     return this;
   }
 
   @Override
-  public BaseExpense set(String fieldName, Object value) {
-    return (BaseExpense) super.set(fieldName, value);
+  public FuelRecord set(String fieldName, Object value) {
+    return (FuelRecord) super.set(fieldName, value);
   }
 
   @Override
-  public BaseExpense clone() {
-    return (BaseExpense) super.clone();
+  public FuelRecord clone() {
+    return (FuelRecord) super.clone();
   }
 
 }
