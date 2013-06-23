@@ -64,6 +64,17 @@ public abstract class SyncableRecord extends SugarRecord<SyncableRecord> {
 	}
 
     /**
+     * Convenience method for finding all dirty records
+     *
+     * @param type
+     * @param <T>
+     * @return
+     */
+    public static <T extends SyncableRecord> List<T> findAllDirty(Class<T> type) {
+        return T.find(type, StringUtil.toSQLName("mDirty") + " = 1");
+    }
+
+    /**
      * Convenience method for finding by AppEngine remote id
      *
      * @param type

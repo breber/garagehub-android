@@ -52,6 +52,4 @@ public abstract class AuthenticatedHttpRequest extends AsyncTask<Void, Void, Obj
 	protected void onPostExecute(Object r) {
 		Log.e(AuthenticatedHttpRequest.class.getName(), "Result: " + r);
 	}
-
-	protected abstract void processData(String data);
 }

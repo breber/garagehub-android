@@ -28,6 +28,16 @@ public class UserVehicleRecord extends SyncableRecord {
         mPlates = veh.getPlates();
     }
 
+    public UserVehicle toUserVehicle() {
+        UserVehicle veh = new UserVehicle();
+        veh.setMake(mMake);
+        veh.setModel(mModel);
+        veh.setYear(mYear);
+        veh.setColor(mColor);
+        veh.setPlates(mPlates);
+        return veh;
+    }
+
 	/**
 	 * @return the mMake
 	 */
