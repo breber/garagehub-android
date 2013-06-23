@@ -1,6 +1,5 @@
 package com.worthwhilegames.carhubmobile;
 
-import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -8,6 +7,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 import com.worthwhilegames.carhubmobile.models.UserMaintenanceRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
+import com.worthwhilegames.carhubmobile.sync.FetchUserMaintenanceRecordsTask;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * @author breber
  */
-public class UserMaintenanceListActivity extends AdListActivity {
+public class UserMaintenanceListActivity extends AppEngineListActivity {
 
 	private UserVehicleRecord mVehicle;
 
@@ -51,8 +51,8 @@ public class UserMaintenanceListActivity extends AdListActivity {
 	protected void performUpdate() {
 		setProgressBarIndeterminateVisibility(true);
 
-//		FetchUserMaintenanceRecordsTask request = new FetchUserMaintenanceRecordsTask(this, mVehicle, this);
-//		request.execute();
+		FetchUserMaintenanceRecordsTask request = new FetchUserMaintenanceRecordsTask(this, mService, this, mVehicle);
+		request.execute();
 	}
 
 	public void taskDidFinish() {

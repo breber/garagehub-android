@@ -1,7 +1,10 @@
 package com.worthwhilegames.carhubmobile.models;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.api.services.carhub.model.BaseExpense;
 
 import android.content.Context;
 
@@ -9,19 +12,45 @@ import com.orm.StringUtil;
 
 public class UserBaseExpenseRecord extends SyncableRecord {
 
-	private UserVehicleRecord mVehicle;
-	private long mDate;
-	private String mCategoryId; // TODO: change to category when we sync that
-	private String mLocation;
-	private String mDescription;
-	private float mAmount;
-	private String mPictureUrl;
+	protected UserVehicleRecord mVehicle;
+    protected long mDate;
+    protected Integer mCategoryId; // TODO: change to category when we sync that
+    protected String mLocation;
+    protected String mDescription;
+    protected float mAmount;
+    protected String mPictureUrl;
 
 	public UserBaseExpenseRecord(Context arg0) {
 		super(arg0);
 	}
 
-	/**
+    @Override
+    public void fromAPI(Object exp) {
+        BaseExpense oth = (BaseExpense) exp;
+        mRemoteId = oth.getServerId();
+        mVehicle = UserVehicleRecord.findByRemoteId(UserVehicleRecord.class, "" + oth.getVehicle());
+        mDate = Date.valueOf(oth.getDate()).getTime();
+        mCategoryId = oth.getCategoryid();
+        mLocation = oth.getLocation();
+        mDescription = oth.getDescription();
+        mAmount = (float) ((double) oth.getAmount());
+        mPictureUrl = oth.getPictureurl();
+    }
+
+    @Override
+    public Object toAPI() {
+        BaseExpense toRet = new BaseExpense();
+        toRet.setServerId(mRemoteId);
+        toRet.setDate(new Date(mDate).toString());
+        toRet.setCategoryid(mCategoryId);
+        toRet.setLocation(mLocation);
+        toRet.setDescription(mDescription);
+        toRet.setAmount((double) mAmount);
+        toRet.setPictureurl(mPictureUrl);
+        return toRet;
+    }
+
+    /**
 	 * @return the mVehicle
 	 */
 	public UserVehicleRecord getVehicle() {
@@ -43,7 +72,7 @@ public class UserBaseExpenseRecord extends SyncableRecord {
 	}
 
 	/**
-	 * @param mlong the mlong to set
+	 * @param aDate the mlong to set
 	 */
 	public void setDate(long aDate) {
 		this.mDate = aDate;
@@ -52,14 +81,14 @@ public class UserBaseExpenseRecord extends SyncableRecord {
 	/**
 	 * @return the mCategoryId
 	 */
-	public String getCategoryId() {
+	public Integer getCategoryId() {
 		return mCategoryId;
 	}
 
 	/**
-	 * @param mCategoryId the mCategoryId to set
+	 * @param aCategoryId the mCategoryId to set
 	 */
-	public void setCategoryId(String aCategoryId) {
+	public void setCategoryId(Integer aCategoryId) {
 		this.mCategoryId = aCategoryId;
 	}
 

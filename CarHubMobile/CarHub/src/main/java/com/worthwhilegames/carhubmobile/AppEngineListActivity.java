@@ -65,6 +65,7 @@ public abstract class AppEngineListActivity extends AdListActivity implements Au
 	@Override
 	protected void onStart() {
 		super.onStart();
+        taskDidFinish();
 	}
 
 	@Override

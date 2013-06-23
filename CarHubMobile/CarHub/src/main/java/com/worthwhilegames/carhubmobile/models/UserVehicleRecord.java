@@ -19,8 +19,10 @@ public class UserVehicleRecord extends SyncableRecord {
 		super(arg0);
 	}
 
-    public void fromAPI(UserVehicle veh) {
-        mRemoteId = veh.getAppengineId();
+    @Override
+    public void fromAPI(Object oth) {
+        UserVehicle veh = (UserVehicle) oth;
+        mRemoteId = veh.getServerId();
         mMake = veh.getMake();
         mModel = veh.getModel();
         mYear = veh.getYear();
@@ -28,8 +30,10 @@ public class UserVehicleRecord extends SyncableRecord {
         mPlates = veh.getPlates();
     }
 
-    public UserVehicle toUserVehicle() {
+    @Override
+    public UserVehicle toAPI() {
         UserVehicle veh = new UserVehicle();
+        veh.setServerId(mRemoteId);
         veh.setMake(mMake);
         veh.setModel(mModel);
         veh.setYear(mYear);

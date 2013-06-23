@@ -21,6 +21,10 @@ public abstract class SyncableRecord extends SugarRecord<SyncableRecord> {
 		super(arg0);
 	}
 
+    public abstract void fromAPI(Object veh);
+
+    public abstract Object toAPI();
+
 	/**
 	 * @return the mRemoteId
 	 */
@@ -29,7 +33,7 @@ public abstract class SyncableRecord extends SugarRecord<SyncableRecord> {
 	}
 
 	/**
-	 * @param mRemoteId the mRemoteId to set
+	 * @param aRemoteId the mRemoteId to set
 	 */
 	public void setRemoteId(String aRemoteId) {
 		this.mRemoteId = aRemoteId;
@@ -43,7 +47,7 @@ public abstract class SyncableRecord extends SugarRecord<SyncableRecord> {
 	}
 
 	/**
-	 * @param mDirty the mDirty to set
+	 * @param aDirty the mDirty to set
 	 */
 	public void setDirty(boolean aDirty) {
 		this.mDirty = aDirty;
@@ -57,7 +61,7 @@ public abstract class SyncableRecord extends SugarRecord<SyncableRecord> {
 	}
 
 	/**
-	 * @param mLastUpdated the mLastUpdated to set
+	 * @param aLastUpdated the mLastUpdated to set
 	 */
 	public void setLastUpdated(long aLastUpdated) {
 		this.mLastUpdated = aLastUpdated;
@@ -83,11 +87,12 @@ public abstract class SyncableRecord extends SugarRecord<SyncableRecord> {
      * @return
      */
     public static <T extends SyncableRecord> T findByRemoteId(Class<T> type, String remoteId) {
-        List<T> found = T.find(type, StringUtil.toSQLName("mRemoteId") + " = ? LIMIT 1", remoteId);
-        if (!found.isEmpty()) {
-            return found.get(0);
+        if (remoteId != null) {
+            List<T> found = T.find(type, StringUtil.toSQLName("mRemoteId") + " = ? LIMIT 1", remoteId);
+            if (!found.isEmpty()) {
+                return found.get(0);
+            }
         }
-
         return null;
     }
 }
