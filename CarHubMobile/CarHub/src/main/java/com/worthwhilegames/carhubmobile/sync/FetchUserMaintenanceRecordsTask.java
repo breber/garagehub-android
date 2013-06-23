@@ -50,7 +50,7 @@ public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
             }
 
             // Get a list of all records currently on the server
-            maintenanceRecords = mService.maintenance().list().execute();
+            maintenanceRecords = mService.maintenance().list(Integer.parseInt(mVehicle.getRemoteId())).execute();
             if (maintenanceRecords != null) {
                 for (MaintenanceRecord r : maintenanceRecords.getItems()) {
                     Log.d("MAINT", r.toString());
