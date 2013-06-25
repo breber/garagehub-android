@@ -1,7 +1,6 @@
 package com.worthwhilegames.carhubmobile.models;
 
 import android.content.Context;
-import android.util.Log;
 import com.google.api.services.carhub.model.BaseExpense;
 import com.orm.StringUtil;
 import com.orm.dsl.Ignore;
@@ -20,7 +19,7 @@ public class UserBaseExpenseRecord extends SyncableRecord {
 
 	protected UserVehicleRecord mVehicle;
     protected long mDate;
-    protected Integer mCategoryId; // TODO: change to category when we sync that
+    protected int mCategoryId; // TODO: change to category when we sync that
     protected String mLocation;
     protected String mDescription;
     protected float mAmount;
@@ -69,7 +68,7 @@ public class UserBaseExpenseRecord extends SyncableRecord {
 	}
 
 	/**
-	 * @param mVehicle the mVehicle to set
+	 * @param aVehicle the mVehicle to set
 	 */
 	public void setVehicle(UserVehicleRecord aVehicle) {
 		this.mVehicle = aVehicle;
@@ -78,14 +77,14 @@ public class UserBaseExpenseRecord extends SyncableRecord {
 	/**
 	 * @return the mDate
 	 */
-	public long getDate() {
+	public Long getDate() {
 		return mDate;
 	}
 
 	/**
 	 * @param aDate the mlong to set
 	 */
-	public void setDate(long aDate) {
+	public void setDate(Long aDate) {
 		this.mDate = aDate;
 	}
 
@@ -111,7 +110,7 @@ public class UserBaseExpenseRecord extends SyncableRecord {
 	}
 
 	/**
-	 * @param mLocation the mLocation to set
+	 * @param aLocation the mLocation to set
 	 */
 	public void setLocation(String aLocation) {
 		this.mLocation = aLocation;
@@ -125,7 +124,7 @@ public class UserBaseExpenseRecord extends SyncableRecord {
 	}
 
 	/**
-	 * @param mDescription the mDescription to set
+	 * @param aDescription the mDescription to set
 	 */
 	public void setDescription(String aDescription) {
 		this.mDescription = aDescription;
@@ -139,7 +138,7 @@ public class UserBaseExpenseRecord extends SyncableRecord {
 	}
 
 	/**
-	 * @param mAmount the mAmount to set
+	 * @param aAmount the mAmount to set
 	 */
 	public void setAmount(float aAmount) {
 		this.mAmount = aAmount;
@@ -153,7 +152,7 @@ public class UserBaseExpenseRecord extends SyncableRecord {
 	}
 
 	/**
-	 * @param mPictureUrl the mPictureUrl to set
+	 * @param aPictureUrl the mPictureUrl to set
 	 */
 	public void setPictureUrl(String aPictureUrl) {
 		this.mPictureUrl = aPictureUrl;

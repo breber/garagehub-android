@@ -74,11 +74,11 @@ public class UserExpenseManagerActivity extends AppEngineListActivity {
 		expenseRecords.addAll(UserFuelRecord.getRecordsForVehicle(UserFuelRecord.class, mVehicle));
 		expenseRecords.addAll(UserMaintenanceRecord.getRecordsForVehicle(UserMaintenanceRecord.class, mVehicle));
 		Collections.sort(expenseRecords, new Comparator<UserBaseExpenseRecord>() {
-			@Override
-			public int compare(UserBaseExpenseRecord lhs, UserBaseExpenseRecord rhs) {
-				return (int) (rhs.getDate() - lhs.getDate());
-			}
-		});
+            @Override
+            public int compare(UserBaseExpenseRecord lhs, UserBaseExpenseRecord rhs) {
+                return rhs.getDate().compareTo(lhs.getDate());
+            }
+        });
 
 		UserExpenseAdapter adapter = new UserExpenseAdapter(UserExpenseManagerActivity.this, R.layout.fouritemrow, expenseRecords);
 		setListAdapter(adapter);
