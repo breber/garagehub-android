@@ -10,7 +10,6 @@ import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 import java.io.IOException;
-import java.util.List;
 
 public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
 
@@ -24,14 +23,13 @@ public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
 
     @Override
     public String doInBackground(Void ... unused) {
-        MaintenanceRecordCollection maintenanceRecords;
+        MaintenanceRecordCollection records;
         long prevLastModified = Util.getSharedPrefs(mContext).getLong(FetchUserMaintenanceRecordsTask.class.getSimpleName() + "_lastUpdate", 0);
         long currentTime = System.currentTimeMillis();
 
         try {
             // Send all records that are dirty
-            List<UserMaintenanceRecord> dirtyRecords = UserMaintenanceRecord.findAllDirty(UserMaintenanceRecord.class);
-            for (UserMaintenanceRecord rec : dirtyRecords) {
+            for (UserMaintenanceRecord rec : UserMaintenanceRecord.findAllDirty(UserMaintenanceRecord.class)) {
                 // Convert to UserVehicle
                 MaintenanceRecord toSend = rec.toAPI();
 
@@ -47,27 +45,38 @@ public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
                 rec.save();
             }
 
-            // Get a list of all records currently on the server
-            maintenanceRecords = mService.maintenance().list(Integer.parseInt(mVehicle.getRemoteId())).setModifiedSince(prevLastModified + "").execute();
-            if (maintenanceRecords != null) {
-                for (MaintenanceRecord r : maintenanceRecords.getItems()) {
-                    // Try and find a record locally to update
-                    UserMaintenanceRecord toUpdate = UserMaintenanceRecord.findByRemoteId(UserMaintenanceRecord.class, r.getServerId());
+            String pageToken = null;
 
-                    // If one can't be found, create a new one
-                    if (toUpdate == null) {
-                        toUpdate = new UserMaintenanceRecord(mContext);
+            do {
+                Carhub.Maintenance.List query = mService.maintenance().list(Integer.parseInt(mVehicle.getRemoteId()));
+                if (prevLastModified != 0) {
+                    query = query.setModifiedSince(prevLastModified + "");
+                }
+                query = query.setPageToken(pageToken);
+
+                // Get a list of all records currently on the server
+                records = query.execute();
+                if (records != null) {
+                    for (MaintenanceRecord r : records.getItems()) {
+                        // Try and find a record locally to update
+                        UserMaintenanceRecord toUpdate = UserMaintenanceRecord.findByRemoteId(UserMaintenanceRecord.class, r.getServerId());
+
+                        // If one can't be found, create a new one
+                        if (toUpdate == null) {
+                            toUpdate = new UserMaintenanceRecord(mContext);
+                        }
+
+                        // Update the local copy with the server information
+                        toUpdate.fromAPI(r);
+                        toUpdate.setLastUpdated(currentTime);
+                        toUpdate.save();
                     }
 
-                    // Update the local copy with the server information
-                    toUpdate.fromAPI(r);
-                    toUpdate.setLastUpdated(currentTime);
-                    toUpdate.save();
+                    pageToken = records.getNextPageToken();
                 }
+            } while (pageToken != null);
 
-                // TODO: go through all records that we have locally, but not remotely and delete them
-
-            }
+            // TODO: go through all records that we have locally, but not remotely and delete them
 
             Util.getSharedPrefs(mContext).edit().putLong(FetchUserMaintenanceRecordsTask.class.getSimpleName() + "_lastUpdate", currentTime).commit();
         } catch (IOException e) {

@@ -10,7 +10,6 @@ import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 import java.io.IOException;
-import java.util.List;
 
 public class FetchUserFuelRecordsTask extends AuthenticatedHttpRequest {
 
@@ -30,10 +29,9 @@ public class FetchUserFuelRecordsTask extends AuthenticatedHttpRequest {
 
         try {
             // Send all records that are dirty
-            List<UserFuelRecord> dirtyRecords = UserFuelRecord.findAllDirty(UserFuelRecord.class);
-            for (UserFuelRecord rec : dirtyRecords) {
+            for (UserFuelRecord rec : UserFuelRecord.findAllDirty(UserFuelRecord.class)) {
                 // Convert to UserVehicle
-                FuelRecord toSend = (FuelRecord) rec.toAPI();
+                FuelRecord toSend = rec.toAPI();
 
                 // Send to AppEngine
                 FuelRecord sent = mService.fuel().store(toSend).execute();
@@ -47,27 +45,39 @@ public class FetchUserFuelRecordsTask extends AuthenticatedHttpRequest {
                 rec.save();
             }
 
-            // Get a list of all records currently on the server
-            records = mService.fuel().list(Integer.parseInt(mVehicle.getRemoteId())).setModifiedSince(prevLastModified + "").setOrder("-odometerEnd").execute();
-            if (records != null) {
-                for (FuelRecord r : records.getItems()) {
-                    // Try and find a record locally to update
-                    UserFuelRecord toUpdate = UserFuelRecord.findByRemoteId(UserFuelRecord.class, r.getServerId());
+            String pageToken = null;
 
-                    // If one can't be found, create a new one
-                    if (toUpdate == null) {
-                        toUpdate = new UserFuelRecord(mContext);
+            do {
+                Carhub.Fuel.List query = mService.fuel().list(Integer.parseInt(mVehicle.getRemoteId()));
+                if (prevLastModified != 0) {
+                    query = query.setModifiedSince(prevLastModified + "");
+                }
+                query = query.setOrder("-odometerEnd");
+                query = query.setPageToken(pageToken);
+
+                // Get a list of all records currently on the server
+                records = query.execute();
+                if (records != null) {
+                    for (FuelRecord r : records.getItems()) {
+                        // Try and find a record locally to update
+                        UserFuelRecord toUpdate = UserFuelRecord.findByRemoteId(UserFuelRecord.class, r.getServerId());
+
+                        // If one can't be found, create a new one
+                        if (toUpdate == null) {
+                            toUpdate = new UserFuelRecord(mContext);
+                        }
+
+                        // Update the local copy with the server information
+                        toUpdate.fromAPI(r);
+                        toUpdate.setLastUpdated(currentTime);
+                        toUpdate.save();
                     }
 
-                    // Update the local copy with the server information
-                    toUpdate.fromAPI(r);
-                    toUpdate.setLastUpdated(currentTime);
-                    toUpdate.save();
+                    pageToken = records.getNextPageToken();
                 }
+            } while (pageToken != null);
 
-                // TODO: go through all records that we have locally, but not remotely and delete them
-
-            }
+            // TODO: go through all records that we have locally, but not remotely and delete them
 
             Util.getSharedPrefs(mContext).edit().putLong(FetchUserFuelRecordsTask.class.getSimpleName() + "_lastUpdate", currentTime).commit();
         } catch (IOException e) {

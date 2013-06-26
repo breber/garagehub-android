@@ -10,7 +10,6 @@ import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 import java.io.IOException;
-import java.util.List;
 
 public class FetchUserBaseExpenseRecordsTask extends AuthenticatedHttpRequest {
 
@@ -30,8 +29,7 @@ public class FetchUserBaseExpenseRecordsTask extends AuthenticatedHttpRequest {
 
         try {
             // Send all records that are dirty
-            List<UserBaseExpenseRecord> dirtyRecords = UserBaseExpenseRecord.findAllDirty(UserBaseExpenseRecord.class);
-            for (UserBaseExpenseRecord rec : dirtyRecords) {
+            for (UserBaseExpenseRecord rec : UserBaseExpenseRecord.findAllDirty(UserBaseExpenseRecord.class)) {
                 // Convert to UserVehicle
                 BaseExpense toSend = (BaseExpense) rec.toAPI();
 
@@ -47,27 +45,38 @@ public class FetchUserBaseExpenseRecordsTask extends AuthenticatedHttpRequest {
                 rec.save();
             }
 
-            // Get a list of all records currently on the server
-            records = mService.expense().list(Integer.parseInt(mVehicle.getRemoteId())).setModifiedSince(prevLastModified + "").execute();
-            if (records != null) {
-                for (BaseExpense r : records.getItems()) {
-                    // Try and find a record locally to update
-                    UserBaseExpenseRecord toUpdate = UserBaseExpenseRecord.findByRemoteId(UserBaseExpenseRecord.class, r.getServerId());
+            String pageToken = null;
 
-                    // If one can't be found, create a new one
-                    if (toUpdate == null) {
-                        toUpdate = new UserBaseExpenseRecord(mContext);
+            do {
+                Carhub.Expense.List query = mService.expense().list(Integer.parseInt(mVehicle.getRemoteId()));
+                if (prevLastModified != 0) {
+                    query = query.setModifiedSince(prevLastModified + "");
+                }
+                query = query.setPageToken(pageToken);
+
+                // Get a list of all records currently on the server
+                records = query.execute();
+                if (records != null) {
+                    for (BaseExpense r : records.getItems()) {
+                        // Try and find a record locally to update
+                        UserBaseExpenseRecord toUpdate = UserBaseExpenseRecord.findByRemoteId(UserBaseExpenseRecord.class, r.getServerId());
+
+                        // If one can't be found, create a new one
+                        if (toUpdate == null) {
+                            toUpdate = new UserBaseExpenseRecord(mContext);
+                        }
+
+                        // Update the local copy with the server information
+                        toUpdate.fromAPI(r);
+                        toUpdate.setLastUpdated(currentTime);
+                        toUpdate.save();
                     }
 
-                    // Update the local copy with the server information
-                    toUpdate.fromAPI(r);
-                    toUpdate.setLastUpdated(currentTime);
-                    toUpdate.save();
+                    pageToken = records.getNextPageToken();
                 }
+            } while (pageToken != null);
 
-                // TODO: go through all records that we have locally, but not remotely and delete them
-
-            }
+            // TODO: go through all records that we have locally, but not remotely and delete them
 
             Util.getSharedPrefs(mContext).edit().putLong(FetchUserBaseExpenseRecordsTask.class.getSimpleName() + "_lastUpdate", currentTime).commit();
         } catch (IOException e) {
