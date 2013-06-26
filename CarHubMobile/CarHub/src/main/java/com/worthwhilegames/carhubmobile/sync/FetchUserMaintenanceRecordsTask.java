@@ -4,6 +4,7 @@ import android.content.Context;
 import com.google.api.services.carhub.Carhub;
 import com.google.api.services.carhub.model.MaintenanceRecord;
 import com.google.api.services.carhub.model.MaintenanceRecordCollection;
+import com.worthwhilegames.carhubmobile.Util;
 import com.worthwhilegames.carhubmobile.models.UserMaintenanceRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
@@ -15,10 +16,6 @@ public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
 
     private UserVehicleRecord mVehicle;
 
-	public FetchUserMaintenanceRecordsTask(Context ctx, Carhub service, UserVehicleRecord vehicle) {
-		this(ctx, service, null, vehicle);
-	}
-
 	public FetchUserMaintenanceRecordsTask(Context ctx, Carhub service, AuthenticatedHttpRequestCallback delegate, UserVehicleRecord vehicle) {
 		super(ctx, service, delegate);
 
@@ -28,6 +25,7 @@ public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
     @Override
     public String doInBackground(Void ... unused) {
         MaintenanceRecordCollection maintenanceRecords;
+        long prevLastModified = Util.getSharedPrefs(mContext).getLong(FetchUserMaintenanceRecordsTask.class.getSimpleName() + "_lastUpdate", 0);
         long currentTime = System.currentTimeMillis();
 
         try {
@@ -50,7 +48,7 @@ public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
             }
 
             // Get a list of all records currently on the server
-            maintenanceRecords = mService.maintenance().list(Integer.parseInt(mVehicle.getRemoteId())).execute();
+            maintenanceRecords = mService.maintenance().list(Integer.parseInt(mVehicle.getRemoteId())).setModifiedSince(prevLastModified + "").execute();
             if (maintenanceRecords != null) {
                 for (MaintenanceRecord r : maintenanceRecords.getItems()) {
                     // Try and find a record locally to update
@@ -70,6 +68,8 @@ public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
                 // TODO: go through all records that we have locally, but not remotely and delete them
 
             }
+
+            Util.getSharedPrefs(mContext).edit().putLong(FetchUserMaintenanceRecordsTask.class.getSimpleName() + "_lastUpdate", currentTime).commit();
         } catch (IOException e) {
             e.printStackTrace();
         }

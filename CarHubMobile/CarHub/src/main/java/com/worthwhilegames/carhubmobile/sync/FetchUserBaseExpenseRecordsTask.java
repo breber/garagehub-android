@@ -4,6 +4,7 @@ import android.content.Context;
 import com.google.api.services.carhub.Carhub;
 import com.google.api.services.carhub.model.BaseExpense;
 import com.google.api.services.carhub.model.BaseExpenseCollection;
+import com.worthwhilegames.carhubmobile.Util;
 import com.worthwhilegames.carhubmobile.models.UserBaseExpenseRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
@@ -15,10 +16,6 @@ public class FetchUserBaseExpenseRecordsTask extends AuthenticatedHttpRequest {
 
     private UserVehicleRecord mVehicle;
 
-	public FetchUserBaseExpenseRecordsTask(Context ctx, Carhub service, UserVehicleRecord vehicle) {
-		this(ctx, service, null, vehicle);
-	}
-
 	public FetchUserBaseExpenseRecordsTask(Context ctx, Carhub service, AuthenticatedHttpRequestCallback delegate, UserVehicleRecord vehicle) {
 		super(ctx, service, delegate);
 
@@ -28,6 +25,7 @@ public class FetchUserBaseExpenseRecordsTask extends AuthenticatedHttpRequest {
     @Override
     public String doInBackground(Void ... unused) {
         BaseExpenseCollection records;
+        long prevLastModified = Util.getSharedPrefs(mContext).getLong(FetchUserBaseExpenseRecordsTask.class.getSimpleName() + "_lastUpdate", 0);
         long currentTime = System.currentTimeMillis();
 
         try {
@@ -50,7 +48,7 @@ public class FetchUserBaseExpenseRecordsTask extends AuthenticatedHttpRequest {
             }
 
             // Get a list of all records currently on the server
-            records = mService.expense().list(Integer.parseInt(mVehicle.getRemoteId())).execute();
+            records = mService.expense().list(Integer.parseInt(mVehicle.getRemoteId())).setModifiedSince(prevLastModified + "").execute();
             if (records != null) {
                 for (BaseExpense r : records.getItems()) {
                     // Try and find a record locally to update
@@ -70,6 +68,8 @@ public class FetchUserBaseExpenseRecordsTask extends AuthenticatedHttpRequest {
                 // TODO: go through all records that we have locally, but not remotely and delete them
 
             }
+
+            Util.getSharedPrefs(mContext).edit().putLong(FetchUserBaseExpenseRecordsTask.class.getSimpleName() + "_lastUpdate", currentTime).commit();
         } catch (IOException e) {
             e.printStackTrace();
         }
