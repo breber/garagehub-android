@@ -15,11 +15,11 @@ public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
 
     private UserVehicleRecord mVehicle;
 
-	public FetchUserMaintenanceRecordsTask(Context ctx, Carhub service, AuthenticatedHttpRequestCallback delegate, UserVehicleRecord vehicle) {
-		super(ctx, service, delegate);
+    public FetchUserMaintenanceRecordsTask(Context ctx, Carhub service, AuthenticatedHttpRequestCallback delegate, UserVehicleRecord vehicle) {
+        super(ctx, service, delegate);
 
         mVehicle = vehicle;
-	}
+    }
 
     @Override
     public String doInBackground(Void ... unused) {
@@ -86,12 +86,12 @@ public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
         return "";
     }
 
-	@Override
-	protected void onPostExecute(Object r) {
-		super.onPostExecute(r);
+    @Override
+    protected void onPostExecute(Object r) {
+        super.onPostExecute(r);
 
-		if (mDelegate != null) {
-			mDelegate.taskDidFinish();
-		}
-	}
+        if (mDelegate != null) {
+            mDelegate.taskDidFinish();
+        }
+    }
 }

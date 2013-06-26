@@ -11,14 +11,14 @@ import com.google.api.services.carhub.*;
  */
 public abstract class AuthenticatedHttpRequest extends AsyncTask<Void, Void, Object> {
 
-	public interface AuthenticatedHttpRequestCallback {
-		void taskDidFinish();
-	}
+    public interface AuthenticatedHttpRequestCallback {
+        void taskDidFinish();
+    }
 
-	/**
-	 * The context to get preferences with
-	 */
-	protected Context mContext;
+    /**
+     * The context to get preferences with
+     */
+    protected Context mContext;
 
     /**
      * Current credentials
@@ -30,26 +30,26 @@ public abstract class AuthenticatedHttpRequest extends AsyncTask<Void, Void, Obj
      */
     protected Carhub mService;
 
-	/**
-	 * The delegate to notify when the task is complete
-	 */
-	protected AuthenticatedHttpRequestCallback mDelegate;
+    /**
+     * The delegate to notify when the task is complete
+     */
+    protected AuthenticatedHttpRequestCallback mDelegate;
 
-	public AuthenticatedHttpRequest(Context ctx, Carhub service) {
-		this(ctx, service, null);
-	}
+    public AuthenticatedHttpRequest(Context ctx, Carhub service) {
+        this(ctx, service, null);
+    }
 
-	public AuthenticatedHttpRequest(Context ctx, Carhub service, AuthenticatedHttpRequestCallback delegate) {
-		this.mContext = ctx;
-		this.mDelegate = delegate;
+    public AuthenticatedHttpRequest(Context ctx, Carhub service, AuthenticatedHttpRequestCallback delegate) {
+        this.mContext = ctx;
+        this.mDelegate = delegate;
         this.mService = service;
-	}
+    }
 
-	/* (non-Javadoc)
-	 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
-	 */
-	@Override
-	protected void onPostExecute(Object r) {
-		Log.e(AuthenticatedHttpRequest.class.getName(), "Result: " + r);
-	}
+    /* (non-Javadoc)
+     * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+     */
+    @Override
+    protected void onPostExecute(Object r) {
+        Log.e(AuthenticatedHttpRequest.class.getName(), "Result: " + r);
+    }
 }

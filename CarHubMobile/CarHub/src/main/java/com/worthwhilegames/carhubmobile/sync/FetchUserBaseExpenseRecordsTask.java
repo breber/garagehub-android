@@ -2,8 +2,8 @@ package com.worthwhilegames.carhubmobile.sync;
 
 import android.content.Context;
 import com.google.api.services.carhub.Carhub;
-import com.google.api.services.carhub.model.BaseExpense;
-import com.google.api.services.carhub.model.BaseExpenseCollection;
+import com.google.api.services.carhub.model.UserExpenseRecord;
+import com.google.api.services.carhub.model.UserExpenseRecordCollection;
 import com.worthwhilegames.carhubmobile.Util;
 import com.worthwhilegames.carhubmobile.models.UserBaseExpenseRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
@@ -15,15 +15,15 @@ public class FetchUserBaseExpenseRecordsTask extends AuthenticatedHttpRequest {
 
     private UserVehicleRecord mVehicle;
 
-	public FetchUserBaseExpenseRecordsTask(Context ctx, Carhub service, AuthenticatedHttpRequestCallback delegate, UserVehicleRecord vehicle) {
-		super(ctx, service, delegate);
+    public FetchUserBaseExpenseRecordsTask(Context ctx, Carhub service, AuthenticatedHttpRequestCallback delegate, UserVehicleRecord vehicle) {
+        super(ctx, service, delegate);
 
         mVehicle = vehicle;
-	}
+    }
 
     @Override
     public String doInBackground(Void ... unused) {
-        BaseExpenseCollection records;
+        UserExpenseRecordCollection records;
         long prevLastModified = Util.getSharedPrefs(mContext).getLong(FetchUserBaseExpenseRecordsTask.class.getSimpleName() + "_lastUpdate", 0);
         long currentTime = System.currentTimeMillis();
 
@@ -31,10 +31,10 @@ public class FetchUserBaseExpenseRecordsTask extends AuthenticatedHttpRequest {
             // Send all records that are dirty
             for (UserBaseExpenseRecord rec : UserBaseExpenseRecord.findAllDirty(UserBaseExpenseRecord.class)) {
                 // Convert to UserVehicle
-                BaseExpense toSend = (BaseExpense) rec.toAPI();
+                UserExpenseRecord toSend = (UserExpenseRecord) rec.toAPI();
 
                 // Send to AppEngine
-                BaseExpense sent = mService.expense().store(toSend).execute();
+                UserExpenseRecord sent = mService.expense().store(toSend).execute();
 
                 // Update our local copy (last updated, remote id, etc)
                 rec.fromAPI(sent);
@@ -57,7 +57,7 @@ public class FetchUserBaseExpenseRecordsTask extends AuthenticatedHttpRequest {
                 // Get a list of all records currently on the server
                 records = query.execute();
                 if (records != null) {
-                    for (BaseExpense r : records.getItems()) {
+                    for (UserExpenseRecord r : records.getItems()) {
                         // Try and find a record locally to update
                         UserBaseExpenseRecord toUpdate = UserBaseExpenseRecord.findByRemoteId(UserBaseExpenseRecord.class, r.getServerId());
 
@@ -86,12 +86,12 @@ public class FetchUserBaseExpenseRecordsTask extends AuthenticatedHttpRequest {
         return "";
     }
 
-	@Override
-	protected void onPostExecute(Object r) {
-		super.onPostExecute(r);
+    @Override
+    protected void onPostExecute(Object r) {
+        super.onPostExecute(r);
 
-		if (mDelegate != null) {
-			mDelegate.taskDidFinish();
-		}
-	}
+        if (mDelegate != null) {
+            mDelegate.taskDidFinish();
+        }
+    }
 }

@@ -13,59 +13,59 @@ import java.util.List;
  */
 public abstract class SyncableRecord extends SugarRecord<SyncableRecord> {
 
-	protected String mRemoteId;
-	protected boolean mDirty;
-	protected long mLastUpdated;
+    protected String mRemoteId;
+    protected boolean mDirty;
+    protected long mLastUpdated;
 
-	public SyncableRecord(Context arg0) {
-		super(arg0);
-	}
+    public SyncableRecord(Context arg0) {
+        super(arg0);
+    }
 
     public abstract void fromAPI(Object veh);
 
     public abstract Object toAPI();
 
-	/**
-	 * @return the mRemoteId
-	 */
-	public String getRemoteId() {
-		return mRemoteId;
-	}
+    /**
+     * @return the mRemoteId
+     */
+    public String getRemoteId() {
+        return mRemoteId;
+    }
 
-	/**
-	 * @param aRemoteId the mRemoteId to set
-	 */
-	public void setRemoteId(String aRemoteId) {
-		this.mRemoteId = aRemoteId;
-	}
+    /**
+     * @param aRemoteId the mRemoteId to set
+     */
+    public void setRemoteId(String aRemoteId) {
+        this.mRemoteId = aRemoteId;
+    }
 
-	/**
-	 * @return the mDirty
-	 */
-	public boolean isDirty() {
-		return mDirty;
-	}
+    /**
+     * @return the mDirty
+     */
+    public boolean isDirty() {
+        return mDirty;
+    }
 
-	/**
-	 * @param aDirty the mDirty to set
-	 */
-	public void setDirty(boolean aDirty) {
-		this.mDirty = aDirty;
-	}
+    /**
+     * @param aDirty the mDirty to set
+     */
+    public void setDirty(boolean aDirty) {
+        this.mDirty = aDirty;
+    }
 
-	/**
-	 * @return the mLastUpdated
-	 */
-	public long getLastUpdated() {
-		return mLastUpdated;
-	}
+    /**
+     * @return the mLastUpdated
+     */
+    public long getLastUpdated() {
+        return mLastUpdated;
+    }
 
-	/**
-	 * @param aLastUpdated the mLastUpdated to set
-	 */
-	public void setLastUpdated(long aLastUpdated) {
-		this.mLastUpdated = aLastUpdated;
-	}
+    /**
+     * @param aLastUpdated the mLastUpdated to set
+     */
+    public void setLastUpdated(long aLastUpdated) {
+        this.mLastUpdated = aLastUpdated;
+    }
 
     /**
      * Convenience method for finding all dirty records

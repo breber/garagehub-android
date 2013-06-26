@@ -6,134 +6,134 @@ import com.orm.SugarRecord;
 
 public class GasPriceRecord extends SugarRecord<GasPriceRecord> {
 
-	private String mStationId;
-	private String mStation;
-	private String mAddress;
-	private String mPrice;
-	private String mDistance;
-	private String mLastUpdated;
-	private String mCity;
-	private String mRegion;
-	private String mLat;
-	private String mLng;
+    private String mStationId;
+    private String mStation;
+    private String mAddress;
+    private String mPrice;
+    private String mDistance;
+    private String mLastUpdated;
+    private String mCity;
+    private String mRegion;
+    private String mLat;
+    private String mLng;
 
-	public String getLat(){
-		return mLat;
-	}
+    public String getLat(){
+        return mLat;
+    }
 
-	public void setLat(String mLat){
-		this.mLat = mLat;
-	}
+    public void setLat(String mLat){
+        this.mLat = mLat;
+    }
 
-	public String getLng(){
-		return mLng;
-	}
+    public String getLng(){
+        return mLng;
+    }
 
-	public void setLng(String mLng){
-		this.mLng = mLng;
-	}
+    public void setLng(String mLng){
+        this.mLng = mLng;
+    }
 
-	public String getCity() {
-		return mCity;
-	}
+    public String getCity() {
+        return mCity;
+    }
 
-	public void setCity(String mCity) {
-		this.mCity = mCity;
-	}
+    public void setCity(String mCity) {
+        this.mCity = mCity;
+    }
 
-	public String getRegion() {
-		return mRegion;
-	}
+    public String getRegion() {
+        return mRegion;
+    }
 
-	public void setRegion(String mRegion) {
-		this.mRegion = mRegion;
-	}
+    public void setRegion(String mRegion) {
+        this.mRegion = mRegion;
+    }
 
-	public GasPriceRecord(Context arg0) {
-		super(arg0);
-	}
+    public GasPriceRecord(Context arg0) {
+        super(arg0);
+    }
 
-	/**
-	 * @return the stationId
-	 */
-	public String getStationId() {
-		return mStationId;
-	}
+    /**
+     * @return the stationId
+     */
+    public String getStationId() {
+        return mStationId;
+    }
 
-	/**
-	 * @param aStationId the mStation to set
-	 */
-	public void setStationId(String aStationId) {
-		this.mStationId = aStationId;
-	}
+    /**
+     * @param aStationId the mStation to set
+     */
+    public void setStationId(String aStationId) {
+        this.mStationId = aStationId;
+    }
 
-	/**
-	 * @return the station
-	 */
-	public String getStation() {
-		return mStation;
-	}
+    /**
+     * @return the station
+     */
+    public String getStation() {
+        return mStation;
+    }
 
-	/**
-	 * @param aStationId the mStation to set
-	 */
-	public void setStation(String aStation) {
-		this.mStation = aStation;
-	}
+    /**
+     * @param aStationId the mStation to set
+     */
+    public void setStation(String aStation) {
+        this.mStation = aStation;
+    }
 
-	/**
-	 * @return the Address
-	 */
-	public String getAddress() {
-		return mAddress;
-	}
+    /**
+     * @return the Address
+     */
+    public String getAddress() {
+        return mAddress;
+    }
 
-	/**
-	 * @param mAddress the mAddress to set
-	 */
-	public void setAddress(String aStationId) {
-		this.mAddress = aStationId;
-	}
+    /**
+     * @param mAddress the mAddress to set
+     */
+    public void setAddress(String aStationId) {
+        this.mAddress = aStationId;
+    }
 
-	/**
-	 * @return the mPrice
-	 */
-	public String getPrice() {
-		return mPrice;
-	}
+    /**
+     * @return the mPrice
+     */
+    public String getPrice() {
+        return mPrice;
+    }
 
-	/**
-	 * @param mPrice the mPrice to set
-	 */
-	public void setPrice(String aPrice) {
-		this.mPrice = aPrice;
-	}
+    /**
+     * @param mPrice the mPrice to set
+     */
+    public void setPrice(String aPrice) {
+        this.mPrice = aPrice;
+    }
 
-	/**
-	 * @return the mDistance
-	 */
-	public String getDistance() {
-		return mDistance;
-	}
+    /**
+     * @return the mDistance
+     */
+    public String getDistance() {
+        return mDistance;
+    }
 
-	/**
-	 * @param mDistance the mDistance to set
-	 */
-	public void setDistance(String aDistance) {
-		this.mDistance = aDistance;
-	}
+    /**
+     * @param mDistance the mDistance to set
+     */
+    public void setDistance(String aDistance) {
+        this.mDistance = aDistance;
+    }
 
-	/**
-	 * @return the mLastUpdated
-	 */
-	public String getLastUpdated() {
-		return mLastUpdated;
-	}
+    /**
+     * @return the mLastUpdated
+     */
+    public String getLastUpdated() {
+        return mLastUpdated;
+    }
 
-	/**
-	 * @param mLastUpdated the mLastUpdated to set
-	 */
-	public void setLastUpdated(String aLastUpdated) {
-		this.mLastUpdated = aLastUpdated;
-	}
+    /**
+     * @param mLastUpdated the mLastUpdated to set
+     */
+    public void setLastUpdated(String aLastUpdated) {
+        this.mLastUpdated = aLastUpdated;
+    }
 }

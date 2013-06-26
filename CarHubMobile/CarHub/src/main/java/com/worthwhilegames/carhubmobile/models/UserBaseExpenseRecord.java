@@ -1,7 +1,7 @@
 package com.worthwhilegames.carhubmobile.models;
 
 import android.content.Context;
-import com.google.api.services.carhub.model.BaseExpense;
+import com.google.api.services.carhub.model.UserExpenseRecord;
 import com.orm.StringUtil;
 import com.orm.dsl.Ignore;
 
@@ -17,7 +17,7 @@ public class UserBaseExpenseRecord extends SyncableRecord {
     @Ignore
     protected static final SimpleDateFormat cDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-	protected UserVehicleRecord mVehicle;
+    protected UserVehicleRecord mVehicle;
     protected long mDate;
     protected int mCategoryId; // TODO: change to category when we sync that
     protected String mLocation;
@@ -25,14 +25,14 @@ public class UserBaseExpenseRecord extends SyncableRecord {
     protected float mAmount;
     protected String mPictureUrl;
 
-	public UserBaseExpenseRecord(Context arg0) {
-		super(arg0);
+    public UserBaseExpenseRecord(Context arg0) {
+        super(arg0);
         cDateFormat.setTimeZone(TimeZone.getDefault());
-	}
+    }
 
     @Override
     public void fromAPI(Object exp) {
-        BaseExpense oth = (BaseExpense) exp;
+        UserExpenseRecord oth = (UserExpenseRecord) exp;
         mRemoteId = oth.getServerId();
         mVehicle = UserVehicleRecord.findByRemoteId(UserVehicleRecord.class, "" + oth.getVehicle());
         try {
@@ -49,7 +49,7 @@ public class UserBaseExpenseRecord extends SyncableRecord {
 
     @Override
     public Object toAPI() {
-        BaseExpense toRet = new BaseExpense();
+        UserExpenseRecord toRet = new UserExpenseRecord();
         toRet.setServerId(mRemoteId);
         toRet.setDate(new Date(mDate).toString());
         toRet.setCategoryid(mCategoryId);
@@ -61,115 +61,115 @@ public class UserBaseExpenseRecord extends SyncableRecord {
     }
 
     /**
-	 * @return the mVehicle
-	 */
-	public UserVehicleRecord getVehicle() {
-		return mVehicle;
-	}
+     * @return the mVehicle
+     */
+    public UserVehicleRecord getVehicle() {
+        return mVehicle;
+    }
 
-	/**
-	 * @param aVehicle the mVehicle to set
-	 */
-	public void setVehicle(UserVehicleRecord aVehicle) {
-		this.mVehicle = aVehicle;
-	}
+    /**
+     * @param aVehicle the mVehicle to set
+     */
+    public void setVehicle(UserVehicleRecord aVehicle) {
+        this.mVehicle = aVehicle;
+    }
 
-	/**
-	 * @return the mDate
-	 */
-	public Long getDate() {
-		return mDate;
-	}
+    /**
+     * @return the mDate
+     */
+    public Long getDate() {
+        return mDate;
+    }
 
-	/**
-	 * @param aDate the mlong to set
-	 */
-	public void setDate(Long aDate) {
-		this.mDate = aDate;
-	}
+    /**
+     * @param aDate the mlong to set
+     */
+    public void setDate(Long aDate) {
+        this.mDate = aDate;
+    }
 
-	/**
-	 * @return the mCategoryId
-	 */
-	public Integer getCategoryId() {
-		return mCategoryId;
-	}
+    /**
+     * @return the mCategoryId
+     */
+    public Integer getCategoryId() {
+        return mCategoryId;
+    }
 
-	/**
-	 * @param aCategoryId the mCategoryId to set
-	 */
-	public void setCategoryId(Integer aCategoryId) {
-		this.mCategoryId = aCategoryId;
-	}
+    /**
+     * @param aCategoryId the mCategoryId to set
+     */
+    public void setCategoryId(Integer aCategoryId) {
+        this.mCategoryId = aCategoryId;
+    }
 
-	/**
-	 * @return the mLocation
-	 */
-	public String getLocation() {
-		return mLocation;
-	}
+    /**
+     * @return the mLocation
+     */
+    public String getLocation() {
+        return mLocation;
+    }
 
-	/**
-	 * @param aLocation the mLocation to set
-	 */
-	public void setLocation(String aLocation) {
-		this.mLocation = aLocation;
-	}
+    /**
+     * @param aLocation the mLocation to set
+     */
+    public void setLocation(String aLocation) {
+        this.mLocation = aLocation;
+    }
 
-	/**
-	 * @return the mDescription
-	 */
-	public String getDescription() {
-		return mDescription;
-	}
+    /**
+     * @return the mDescription
+     */
+    public String getDescription() {
+        return mDescription;
+    }
 
-	/**
-	 * @param aDescription the mDescription to set
-	 */
-	public void setDescription(String aDescription) {
-		this.mDescription = aDescription;
-	}
+    /**
+     * @param aDescription the mDescription to set
+     */
+    public void setDescription(String aDescription) {
+        this.mDescription = aDescription;
+    }
 
-	/**
-	 * @return the mAmount
-	 */
-	public float getAmount() {
-		return mAmount;
-	}
+    /**
+     * @return the mAmount
+     */
+    public float getAmount() {
+        return mAmount;
+    }
 
-	/**
-	 * @param aAmount the mAmount to set
-	 */
-	public void setAmount(float aAmount) {
-		this.mAmount = aAmount;
-	}
+    /**
+     * @param aAmount the mAmount to set
+     */
+    public void setAmount(float aAmount) {
+        this.mAmount = aAmount;
+    }
 
-	/**
-	 * @return the mPictureUrl
-	 */
-	public String getPictureUrl() {
-		return mPictureUrl;
-	}
+    /**
+     * @return the mPictureUrl
+     */
+    public String getPictureUrl() {
+        return mPictureUrl;
+    }
 
-	/**
-	 * @param aPictureUrl the mPictureUrl to set
-	 */
-	public void setPictureUrl(String aPictureUrl) {
-		this.mPictureUrl = aPictureUrl;
-	}
+    /**
+     * @param aPictureUrl the mPictureUrl to set
+     */
+    public void setPictureUrl(String aPictureUrl) {
+        this.mPictureUrl = aPictureUrl;
+    }
 
-	/**
-	 * Gets all records for a given vehicle
-	 * 
-	 * @param type
-	 * @param vehicle
-	 * @return
-	 */
-	public static <T extends UserBaseExpenseRecord> List<T> getRecordsForVehicle(Class<T> type, UserVehicleRecord vehicle) {
-		if (vehicle != null) {
-			return UserBaseExpenseRecord.find(type, StringUtil.toSQLName("mVehicle") + " = ?", vehicle.getId() + "");
-		} else {
-			return new ArrayList<T>();
-		}
-	}
+    /**
+     * Gets all records for a given vehicle
+     * 
+     * @param type
+     * @param vehicle
+     * @return
+     */
+    public static <T extends UserBaseExpenseRecord> List<T> getRecordsForVehicle(Class<T> type, UserVehicleRecord vehicle) {
+        if (vehicle != null) {
+            return UserBaseExpenseRecord.find(type, StringUtil.toSQLName("mVehicle") + " = ?", vehicle.getId() + "");
+        } else {
+            return new ArrayList<T>();
+        }
+    }
 }

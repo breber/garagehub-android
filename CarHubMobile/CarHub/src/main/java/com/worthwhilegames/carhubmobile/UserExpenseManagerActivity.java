@@ -22,67 +22,67 @@ import java.util.List;
  */
 public class UserExpenseManagerActivity extends AppEngineListActivity {
 
-	private UserVehicleRecord mVehicle;
+    private UserVehicleRecord mVehicle;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		Long vehicleId = getIntent().getLongExtra(Constants.INTENT_DATA_VEHICLE, 0);
-		mVehicle = UserVehicleRecord.findById(UserVehicleRecord.class, vehicleId);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        Long vehicleId = getIntent().getLongExtra(Constants.INTENT_DATA_VEHICLE, 0);
+        mVehicle = UserVehicleRecord.findById(UserVehicleRecord.class, vehicleId);
 
-		if (mVehicle == null) {
-			Toast.makeText(this, "Vehicle doesn't exist", Toast.LENGTH_LONG).show();
-			setResult(RESULT_CANCELED);
-			finish();
-			return;
-		}
+        if (mVehicle == null) {
+            Toast.makeText(this, "Vehicle doesn't exist", Toast.LENGTH_LONG).show();
+            setResult(RESULT_CANCELED);
+            finish();
+            return;
+        }
 
-		super.onCreate(savedInstanceState, R.string.noExpenseRecords);
+        super.onCreate(savedInstanceState, R.string.noExpenseRecords);
 
-		getListView().setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-				UserBaseExpenseRecord model = (UserBaseExpenseRecord) a.getItemAtPosition(position);
-				if (Util.isDebugBuild) {
-					Toast.makeText(UserExpenseManagerActivity.this, model.getId() + "", Toast.LENGTH_LONG).show();
-				}
-			}
-		});
-	}
+        getListView().setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+                UserBaseExpenseRecord model = (UserBaseExpenseRecord) a.getItemAtPosition(position);
+                if (Util.isDebugBuild) {
+                    Toast.makeText(UserExpenseManagerActivity.this, model.getId() + "", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
 
-	/**
-	 * Perform all necessary UI updates, then call execute request
-	 */
-	protected void performUpdate() {
-		setProgressBarIndeterminateVisibility(true);
+    /**
+     * Perform all necessary UI updates, then call execute request
+     */
+    protected void performUpdate() {
+        setProgressBarIndeterminateVisibility(true);
 
-		// Fetch Base Expense
-		FetchUserBaseExpenseRecordsTask request = new FetchUserBaseExpenseRecordsTask(this, mService, this, mVehicle);
-		request.execute();
+        // Fetch Base Expense
+        FetchUserBaseExpenseRecordsTask request = new FetchUserBaseExpenseRecordsTask(this, mService, this, mVehicle);
+        request.execute();
 
-		// Fetch Maintenance
+        // Fetch Maintenance
         FetchUserMaintenanceRecordsTask requestMaint = new FetchUserMaintenanceRecordsTask(this, mService, this, mVehicle);
         requestMaint.execute();
 
-		// Fetch Fuel
-		FetchUserFuelRecordsTask requestFuel = new FetchUserFuelRecordsTask(this, mService, this, mVehicle);
-		requestFuel.execute();
-	}
+        // Fetch Fuel
+        FetchUserFuelRecordsTask requestFuel = new FetchUserFuelRecordsTask(this, mService, this, mVehicle);
+        requestFuel.execute();
+    }
 
-	public void taskDidFinish() {
-		// Get all GasPriceRecords from the database
-		List<UserBaseExpenseRecord> expenseRecords = UserBaseExpenseRecord.getRecordsForVehicle(UserBaseExpenseRecord.class, mVehicle);
-		expenseRecords.addAll(UserFuelRecord.getRecordsForVehicle(UserFuelRecord.class, mVehicle));
-		expenseRecords.addAll(UserMaintenanceRecord.getRecordsForVehicle(UserMaintenanceRecord.class, mVehicle));
-		Collections.sort(expenseRecords, new Comparator<UserBaseExpenseRecord>() {
+    public void taskDidFinish() {
+        // Get all GasPriceRecords from the database
+        List<UserBaseExpenseRecord> expenseRecords = UserBaseExpenseRecord.getRecordsForVehicle(UserBaseExpenseRecord.class, mVehicle);
+        expenseRecords.addAll(UserFuelRecord.getRecordsForVehicle(UserFuelRecord.class, mVehicle));
+        expenseRecords.addAll(UserMaintenanceRecord.getRecordsForVehicle(UserMaintenanceRecord.class, mVehicle));
+        Collections.sort(expenseRecords, new Comparator<UserBaseExpenseRecord>() {
             @Override
             public int compare(UserBaseExpenseRecord lhs, UserBaseExpenseRecord rhs) {
                 return rhs.getDate().compareTo(lhs.getDate());
             }
         });
 
-		UserExpenseAdapter adapter = new UserExpenseAdapter(UserExpenseManagerActivity.this, R.layout.fouritemrow, expenseRecords);
-		setListAdapter(adapter);
+        UserExpenseAdapter adapter = new UserExpenseAdapter(UserExpenseManagerActivity.this, R.layout.fouritemrow, expenseRecords);
+        setListAdapter(adapter);
 
-		setProgressBarIndeterminateVisibility(false);
-	}
+        setProgressBarIndeterminateVisibility(false);
+    }
 }

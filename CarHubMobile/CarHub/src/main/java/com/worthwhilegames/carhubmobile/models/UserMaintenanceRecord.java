@@ -10,11 +10,11 @@ import java.util.List;
 
 public class UserMaintenanceRecord extends UserBaseExpenseRecord {
 
-	private int mOdometer;
+    private int mOdometer;
 
-	public UserMaintenanceRecord(Context arg0) {
-		super(arg0);
-	}
+    public UserMaintenanceRecord(Context arg0) {
+        super(arg0);
+    }
 
     @Override
     public void fromAPI(Object rec) {
@@ -48,36 +48,36 @@ public class UserMaintenanceRecord extends UserBaseExpenseRecord {
         return toRet;
     }
 
-	/**
-	 * @return the mOdometer
-	 */
-	public int getOdometer() {
-		return mOdometer;
-	}
+    /**
+     * @return the mOdometer
+     */
+    public int getOdometer() {
+        return mOdometer;
+    }
 
-	/**
-	 * @param aOdometer the mOdometer to set
-	 */
-	public void setOdometer(int aOdometer) {
-		this.mOdometer = aOdometer;
-	}
+    /**
+     * @param aOdometer the mOdometer to set
+     */
+    public void setOdometer(int aOdometer) {
+        this.mOdometer = aOdometer;
+    }
 
 
-	/* UTILITY METHODS */
+    /* UTILITY METHODS */
 
-	/**
-	 * Get the most recent UserMaintenanceRecord for the given vehicle
-	 * 
-	 * @param vehicle
-	 * @return
-	 */
-	public static UserMaintenanceRecord getLatest(UserVehicleRecord vehicle) {
-		List<UserMaintenanceRecord> list = UserFuelRecord.findWithQuery(UserMaintenanceRecord.class,
-				"select * from " + StringUtil.toSQLName(UserMaintenanceRecord.class.getSimpleName()) + " order by " + StringUtil.toSQLName("mOdometer") + " desc limit 1");
-		if (!list.isEmpty()) {
-			return list.get(0);
-		}
+    /**
+     * Get the most recent UserMaintenanceRecord for the given vehicle
+     * 
+     * @param vehicle
+     * @return
+     */
+    public static UserMaintenanceRecord getLatest(UserVehicleRecord vehicle) {
+        List<UserMaintenanceRecord> list = UserFuelRecord.findWithQuery(UserMaintenanceRecord.class,
+                "select * from " + StringUtil.toSQLName(UserMaintenanceRecord.class.getSimpleName()) + " order by " + StringUtil.toSQLName("mOdometer") + " desc limit 1");
+        if (!list.isEmpty()) {
+            return list.get(0);
+        }
 
-		return null;
-	}
+        return null;
+    }
 }

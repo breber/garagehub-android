@@ -32,20 +32,20 @@ public abstract class AppEngineListActivity extends AdListActivity implements Au
      */
     protected Carhub mService;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		onCreate(savedInstanceState, R.string.noVehiclesRegistered);
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        onCreate(savedInstanceState, R.string.noVehiclesRegistered);
+    }
 
-	public void onCreate(Bundle savedInstanceState, int emptyResource) {
-		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setContentView(R.layout.user_vehicle_list);
+    public void onCreate(Bundle savedInstanceState, int emptyResource) {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setContentView(R.layout.user_vehicle_list);
 
-		setProgressBarIndeterminateVisibility(false);
+        setProgressBarIndeterminateVisibility(false);
 
-		TextView tv = (TextView) findViewById(android.R.id.empty);
-		tv.setText(emptyResource);
+        TextView tv = (TextView) findViewById(android.R.id.empty);
+        tv.setText(emptyResource);
 
         // Inside your Activity class onCreate method
         SharedPreferences settings = getSharedPreferences("CarHubMobile", 0);
@@ -60,21 +60,21 @@ public abstract class AppEngineListActivity extends AdListActivity implements Au
             // Not signed in, show login window or request an account.
             chooseAccount();
         }
-	}
+    }
 
-	@Override
-	protected void onStart() {
-		super.onStart();
+    @Override
+    protected void onStart() {
+        super.onStart();
         taskDidFinish();
-	}
+    }
 
-	@Override
-	protected void onStop() {
-		super.onStop();
-	}
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_ACCOUNT_PICKER:
@@ -88,19 +88,19 @@ public abstract class AppEngineListActivity extends AdListActivity implements Au
                 }
                 break;
         }
-	}
+    }
 
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onResume()
-	 */
-	@Override
-	protected void onResume() {
-		super.onResume();
+    /* (non-Javadoc)
+     * @see android.app.Activity#onResume()
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
         if (mCreds.getSelectedAccountName() != null) {
             // Already signed in, begin app!
             performUpdate();
         }
-	}
+    }
 
     private void chooseAccount() {
         startActivityForResult(mCreds.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
@@ -115,11 +115,11 @@ public abstract class AppEngineListActivity extends AdListActivity implements Au
         mCreds.setSelectedAccountName(accountName);
     }
 
-	/**
-	 * Perform all necessary UI updates, then call execute request
-	 */
-	protected abstract void performUpdate();
+    /**
+     * Perform all necessary UI updates, then call execute request
+     */
+    protected abstract void performUpdate();
 
-	@Override
-	public abstract void taskDidFinish();
+    @Override
+    public abstract void taskDidFinish();
 }

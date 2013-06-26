@@ -18,57 +18,57 @@ import java.util.List;
  */
 public class UserMaintenanceListActivity extends AppEngineListActivity {
 
-	private UserVehicleRecord mVehicle;
+    private UserVehicleRecord mVehicle;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		Long vehicleId = getIntent().getLongExtra(Constants.INTENT_DATA_VEHICLE, 0);
-		mVehicle = UserVehicleRecord.findById(UserVehicleRecord.class, vehicleId);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        Long vehicleId = getIntent().getLongExtra(Constants.INTENT_DATA_VEHICLE, 0);
+        mVehicle = UserVehicleRecord.findById(UserVehicleRecord.class, vehicleId);
 
-		if (mVehicle == null) {
-			Toast.makeText(this, "Vehicle doesn't exist", Toast.LENGTH_LONG).show();
-			setResult(RESULT_CANCELED);
-			finish();
-			return;
-		}
+        if (mVehicle == null) {
+            Toast.makeText(this, "Vehicle doesn't exist", Toast.LENGTH_LONG).show();
+            setResult(RESULT_CANCELED);
+            finish();
+            return;
+        }
 
-		super.onCreate(savedInstanceState, R.string.noMaintRecords);
+        super.onCreate(savedInstanceState, R.string.noMaintRecords);
 
-		getListView().setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-				UserMaintenanceRecord model = (UserMaintenanceRecord) a.getItemAtPosition(position);
-				if (Util.isDebugBuild) {
-					Toast.makeText(UserMaintenanceListActivity.this, model.getId() + "", Toast.LENGTH_LONG).show();
-				}
-			}
-		});
-	}
+        getListView().setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+                UserMaintenanceRecord model = (UserMaintenanceRecord) a.getItemAtPosition(position);
+                if (Util.isDebugBuild) {
+                    Toast.makeText(UserMaintenanceListActivity.this, model.getId() + "", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
 
-	/**
-	 * Perform all necessary UI updates, then call execute request
-	 */
-	protected void performUpdate() {
-		setProgressBarIndeterminateVisibility(true);
+    /**
+     * Perform all necessary UI updates, then call execute request
+     */
+    protected void performUpdate() {
+        setProgressBarIndeterminateVisibility(true);
 
-		FetchUserMaintenanceRecordsTask request = new FetchUserMaintenanceRecordsTask(this, mService, this, mVehicle);
+        FetchUserMaintenanceRecordsTask request = new FetchUserMaintenanceRecordsTask(this, mService, this, mVehicle);
         request.execute();
-	}
+    }
 
-	public void taskDidFinish() {
-		// Get all GasPriceRecords from the database
-		List<UserMaintenanceRecord> maintRecords = UserMaintenanceRecord.getRecordsForVehicle(UserMaintenanceRecord.class, mVehicle);
-		Collections.sort(maintRecords, new Comparator<UserMaintenanceRecord>() {
-			@Override
-			public int compare(UserMaintenanceRecord lhs, UserMaintenanceRecord rhs) {
-				return rhs.getOdometer() - lhs.getOdometer();
-			}
-		});
+    public void taskDidFinish() {
+        // Get all GasPriceRecords from the database
+        List<UserMaintenanceRecord> maintRecords = UserMaintenanceRecord.getRecordsForVehicle(UserMaintenanceRecord.class, mVehicle);
+        Collections.sort(maintRecords, new Comparator<UserMaintenanceRecord>() {
+            @Override
+            public int compare(UserMaintenanceRecord lhs, UserMaintenanceRecord rhs) {
+                return rhs.getOdometer() - lhs.getOdometer();
+            }
+        });
 
-		UserMaintenanceAdapter adapter = new UserMaintenanceAdapter(UserMaintenanceListActivity.this, R.layout.fouritemrow, maintRecords);
-		setListAdapter(adapter);
+        UserMaintenanceAdapter adapter = new UserMaintenanceAdapter(UserMaintenanceListActivity.this, R.layout.fouritemrow, maintRecords);
+        setListAdapter(adapter);
 
-		setProgressBarIndeterminateVisibility(false);
-	}
+        setProgressBarIndeterminateVisibility(false);
+    }
 
 }

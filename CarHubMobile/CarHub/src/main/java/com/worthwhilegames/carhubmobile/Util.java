@@ -8,23 +8,23 @@ import android.content.SharedPreferences;
  */
 public class Util {
 
-	/**
-	 * A boolean to represent if the current build is a debug build
-	 */
-	public static final boolean isDebugBuild = true;
+    /**
+     * A boolean to represent if the current build is a debug build
+     */
+    public static final boolean isDebugBuild = true;
 
     /**
      * Should we hide ads?
      */
     public static final boolean shouldHideAds = true;
 
-	/**
-	 * Utility method for getting the SharedPreferences instance for the app
-	 * 
-	 * @param ctx
-	 * @return
-	 */
-	public static SharedPreferences getSharedPrefs(Context ctx) {
-		return ctx.getSharedPreferences("Preferences", 0);
-	}
+    /**
+     * Utility method for getting the SharedPreferences instance for the app
+     * 
+     * @param ctx
+     * @return
+     */
+    public static SharedPreferences getSharedPrefs(Context ctx) {
+        return ctx.getSharedPreferences("Preferences", 0);
+    }
 }

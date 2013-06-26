@@ -31,7 +31,7 @@ public class HttpUtils {
         } finally {
             try {
                 in.close();
-            } catch (IOException ignored) {	}
+            } catch (IOException ignored) {    }
         }
     }
 

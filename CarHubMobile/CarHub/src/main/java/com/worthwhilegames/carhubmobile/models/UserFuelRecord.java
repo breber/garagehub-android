@@ -10,16 +10,16 @@ import java.util.List;
 
 public class UserFuelRecord extends UserBaseExpenseRecord {
 
-	private float mMpg;
-	private int mOdometerStart;
-	private int mOdometerEnd;
-	private float mGallons;
-	private float mCostPerGallon;
-	private String mFuelGrade;
+    private float mMpg;
+    private int mOdometerStart;
+    private int mOdometerEnd;
+    private float mGallons;
+    private float mCostPerGallon;
+    private String mFuelGrade;
 
-	public UserFuelRecord(Context arg0) {
-		super(arg0);
-	}
+    public UserFuelRecord(Context arg0) {
+        super(arg0);
+    }
 
     @Override
     public void fromAPI(Object rec) {
@@ -63,105 +63,105 @@ public class UserFuelRecord extends UserBaseExpenseRecord {
         return toRet;
     }
 
-	/**
-	 * @return the mMpg
-	 */
-	public float getMpg() {
-		return mMpg;
-	}
+    /**
+     * @return the mMpg
+     */
+    public float getMpg() {
+        return mMpg;
+    }
 
-	/**
-	 * @param aMpg the mMpg to set
-	 */
-	public void setMpg(float aMpg) {
-		this.mMpg = aMpg;
-	}
+    /**
+     * @param aMpg the mMpg to set
+     */
+    public void setMpg(float aMpg) {
+        this.mMpg = aMpg;
+    }
 
-	/**
-	 * @return the mOdometerStart
-	 */
-	public int getOdometerStart() {
-		return mOdometerStart;
-	}
+    /**
+     * @return the mOdometerStart
+     */
+    public int getOdometerStart() {
+        return mOdometerStart;
+    }
 
-	/**
-	 * @param aOdometerStart the mOdometerStart to set
-	 */
-	public void setOdometerStart(int aOdometerStart) {
-		this.mOdometerStart = aOdometerStart;
-	}
+    /**
+     * @param aOdometerStart the mOdometerStart to set
+     */
+    public void setOdometerStart(int aOdometerStart) {
+        this.mOdometerStart = aOdometerStart;
+    }
 
-	/**
-	 * @return the mOdometerEnd
-	 */
-	public int getOdometerEnd() {
-		return mOdometerEnd;
-	}
+    /**
+     * @return the mOdometerEnd
+     */
+    public int getOdometerEnd() {
+        return mOdometerEnd;
+    }
 
-	/**
-	 * @param aOdometerEnd the mOdometerEnd to set
-	 */
-	public void setOdometerEnd(int aOdometerEnd) {
-		this.mOdometerEnd = aOdometerEnd;
-	}
+    /**
+     * @param aOdometerEnd the mOdometerEnd to set
+     */
+    public void setOdometerEnd(int aOdometerEnd) {
+        this.mOdometerEnd = aOdometerEnd;
+    }
 
-	/**
-	 * @return the mGallons
-	 */
-	public float getGallons() {
-		return mGallons;
-	}
+    /**
+     * @return the mGallons
+     */
+    public float getGallons() {
+        return mGallons;
+    }
 
-	/**
-	 * @param aGallons the mGallons to set
-	 */
-	public void setGallons(float aGallons) {
-		this.mGallons = aGallons;
-	}
+    /**
+     * @param aGallons the mGallons to set
+     */
+    public void setGallons(float aGallons) {
+        this.mGallons = aGallons;
+    }
 
-	/**
-	 * @return the mCostPerGallon
-	 */
-	public float getCostPerGallon() {
-		return mCostPerGallon;
-	}
+    /**
+     * @return the mCostPerGallon
+     */
+    public float getCostPerGallon() {
+        return mCostPerGallon;
+    }
 
-	/**
-	 * @param aCostPerGallon the mCostPerGallon to set
-	 */
-	public void setCostPerGallon(float aCostPerGallon) {
-		this.mCostPerGallon = aCostPerGallon;
-	}
+    /**
+     * @param aCostPerGallon the mCostPerGallon to set
+     */
+    public void setCostPerGallon(float aCostPerGallon) {
+        this.mCostPerGallon = aCostPerGallon;
+    }
 
-	/**
-	 * @return the mFuelGrade
-	 */
-	public String getFuelGrade() {
-		return mFuelGrade;
-	}
+    /**
+     * @return the mFuelGrade
+     */
+    public String getFuelGrade() {
+        return mFuelGrade;
+    }
 
-	/**
-	 * @param aFuelGrade the mFuelGrade to set
-	 */
-	public void setFuelGrade(String aFuelGrade) {
-		this.mFuelGrade = aFuelGrade;
-	}
+    /**
+     * @param aFuelGrade the mFuelGrade to set
+     */
+    public void setFuelGrade(String aFuelGrade) {
+        this.mFuelGrade = aFuelGrade;
+    }
 
-	/* UTILITY METHODS */
+    /* UTILITY METHODS */
 
-	/**
-	 * Get the most recent UserFuelRecord for the given vehicle
-	 * 
-	 * @param vehicle
-	 * @return
-	 */
-	public static UserFuelRecord getLatest(UserVehicleRecord vehicle) {
-		List<UserFuelRecord> list = UserFuelRecord.findWithQuery(UserFuelRecord.class,
-				"select * from " + StringUtil.toSQLName(UserFuelRecord.class.getSimpleName()) + " order by " + StringUtil.toSQLName("mOdometerEnd") + " desc limit 1");
-		if (!list.isEmpty()) {
-			return list.get(0);
-		}
+    /**
+     * Get the most recent UserFuelRecord for the given vehicle
+     * 
+     * @param vehicle
+     * @return
+     */
+    public static UserFuelRecord getLatest(UserVehicleRecord vehicle) {
+        List<UserFuelRecord> list = UserFuelRecord.findWithQuery(UserFuelRecord.class,
+                "select * from " + StringUtil.toSQLName(UserFuelRecord.class.getSimpleName()) + " order by " + StringUtil.toSQLName("mOdometerEnd") + " desc limit 1");
+        if (!list.isEmpty()) {
+            return list.get(0);
+        }
 
-		return null;
-	}
+        return null;
+    }
 }

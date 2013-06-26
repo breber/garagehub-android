@@ -11,13 +11,13 @@ import java.util.List;
 
 public class FetchUserVehiclesTask extends AuthenticatedHttpRequest {
 
-	public FetchUserVehiclesTask(Context ctx, Carhub service) {
-		this(ctx, service, null);
-	}
+    public FetchUserVehiclesTask(Context ctx, Carhub service) {
+        this(ctx, service, null);
+    }
 
-	public FetchUserVehiclesTask(Context ctx, Carhub service, AuthenticatedHttpRequestCallback delegate) {
-		super(ctx, service, delegate);
-	}
+    public FetchUserVehiclesTask(Context ctx, Carhub service, AuthenticatedHttpRequestCallback delegate) {
+        super(ctx, service, delegate);
+    }
 
     @Override
     public String doInBackground(Void ... unused) {
@@ -71,12 +71,12 @@ public class FetchUserVehiclesTask extends AuthenticatedHttpRequest {
         return "";
     }
 
-	@Override
-	protected void onPostExecute(Object r) {
-		super.onPostExecute(r);
+    @Override
+    protected void onPostExecute(Object r) {
+        super.onPostExecute(r);
 
-		if (mDelegate != null) {
-			mDelegate.taskDidFinish();
-		}
-	}
+        if (mDelegate != null) {
+            mDelegate.taskDidFinish();
+        }
+    }
 }
