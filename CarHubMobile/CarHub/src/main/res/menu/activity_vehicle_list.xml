@@ -1,0 +1,7 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_add_vehicle"
+        android:title="@string/addVehicle"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:icon="@drawable/ic_menu_add"/>
+</menu>

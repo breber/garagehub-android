@@ -20,7 +20,7 @@ import java.net.HttpURLConnection;
 
 public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
 
-    interface FetchGasPricesTaskCallback {
+    public interface FetchGasPricesTaskCallback {
         void gasPricesDidUpdate();
     }
 

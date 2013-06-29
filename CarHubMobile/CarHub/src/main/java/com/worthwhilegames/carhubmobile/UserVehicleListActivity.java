@@ -2,6 +2,8 @@ package com.worthwhilegames.carhubmobile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -31,6 +33,32 @@ public class UserVehicleListActivity extends AppEngineListActivity {
                 startActivity(i);
             }
         });
+    }
+
+    /* (non-Javadoc)
+     * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_vehicle_list, menu);
+        return true;
+    }
+
+    /* (non-Javadoc)
+     * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // This will cover the Android menu button press
+        switch (item.getItemId()) {
+            case R.id.menu_add_vehicle:
+                // TODO: fix this
+//                Intent i = new Intent(this, AddVehicleActivity.class);
+//                startActivity(i);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**

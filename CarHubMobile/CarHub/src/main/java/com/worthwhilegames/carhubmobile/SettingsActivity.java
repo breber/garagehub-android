@@ -1,6 +1,5 @@
 package com.worthwhilegames.carhubmobile;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -73,8 +72,7 @@ public class SettingsActivity extends AdActivity {
             .getAdapter();
 
             // find the current position
-            int spinnerPosition = fuelTypeAdapter.getPosition(fuelType
-                    .toString());
+            int spinnerPosition = fuelTypeAdapter.getPosition(fuelType);
 
             // set the correct position to true
             fuelTypeSpinner.setSelection(spinnerPosition);
@@ -90,7 +88,7 @@ public class SettingsActivity extends AdActivity {
             .getAdapter();
 
             // find the current position
-            int spinnerPosition = sortByAdapter.getPosition(sortBy.toString());
+            int spinnerPosition = sortByAdapter.getPosition(sortBy);
 
             // set the correct position to true
             sortBySpinner.setSelection(spinnerPosition);
@@ -123,8 +121,7 @@ public class SettingsActivity extends AdActivity {
 
         // set language to preferences
         if (sortBySpinner != null) {
-            prefsEditor.putString("Sort By", sortBySpinner.getSelectedItem()
-                    .toString());
+            prefsEditor.putString("Sort By", sortBySpinner.getSelectedItem().toString());
         }
 
         // commit the changes to the shared preferences

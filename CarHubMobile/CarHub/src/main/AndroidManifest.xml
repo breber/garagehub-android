@@ -38,6 +38,15 @@
             android:name=".UserFuelListActivity"
             android:label="@string/fuelRecords" />
         <activity
+            android:name=".AddUserFuelRecordActivity"
+            android:label="@string/addFuelRecord" />
+        <activity
+            android:name=".AddMaintenanceRecordActivity"
+            android:label="@string/addMaintenanceRecord" />
+        <activity
+            android:name=".AddExpenseRecordActivity"
+            android:label="@string/addExpenseRecord" />
+        <activity
             android:name=".SettingsActivity"
             android:label="@string/menu_settings" />
         <activity

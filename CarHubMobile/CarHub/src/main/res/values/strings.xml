@@ -40,6 +40,17 @@
     <string name="navigate">Navigate</string>
     <string name="viewMap">View Map</string>
     <string name="noExpenseRecords">No expenses</string>
+    <string name="addVehicle">Add Vehicle</string>
+    <string name="addFuelRecord">Add Fuel Record</string>
+    <string name="addMaintenanceRecord">Add Maintenance Record</string>
+    <string name="addExpenseRecord">Add Expense</string>
+    <string name="dateHint">Date</string>
+    <string name="locationHint">Location</string>
+    <string name="amountHint">Amount</string>
+    <string name="descriptionHint">Description</string>
+    <string name="costPerGallonHint">Cost Per Gallon</string>
+    <string name="odometerHint">Odometer</string>
+    <string name="save">Save</string>
 
     <string-array name="fueltype_array">
         <item>Reg</item>
