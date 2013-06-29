@@ -1,4 +1,4 @@
-package com.worthwhilegames.carhubmobile;
+package com.worthwhilegames.carhubmobile.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

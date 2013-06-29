@@ -6,7 +6,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import com.worthwhilegames.carhubmobile.MenuImageAdapter.ImageTextWrapper;
+import com.worthwhilegames.carhubmobile.adapters.MenuImageAdapter;
+import com.worthwhilegames.carhubmobile.adapters.MenuImageAdapter.ImageTextWrapper;
 
 /**
  * @author jamiekujawa

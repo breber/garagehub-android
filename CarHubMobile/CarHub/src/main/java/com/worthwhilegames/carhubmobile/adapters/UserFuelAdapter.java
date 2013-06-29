@@ -1,4 +1,4 @@
-package com.worthwhilegames.carhubmobile;
+package com.worthwhilegames.carhubmobile.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import com.worthwhilegames.carhubmobile.R;
 import com.worthwhilegames.carhubmobile.models.UserFuelRecord;
 
 import java.util.Date;

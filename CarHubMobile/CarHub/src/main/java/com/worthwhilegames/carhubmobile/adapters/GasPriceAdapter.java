@@ -1,4 +1,4 @@
-package com.worthwhilegames.carhubmobile;
+package com.worthwhilegames.carhubmobile.adapters;
 
 import java.util.List;
 
@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.worthwhilegames.carhubmobile.R;
+import com.worthwhilegames.carhubmobile.Util;
 import com.worthwhilegames.carhubmobile.models.GasPriceRecord;
 
 public class GasPriceAdapter extends ArrayAdapter<GasPriceRecord>{

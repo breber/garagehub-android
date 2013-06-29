@@ -8,7 +8,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.worthwhilegames.carhubmobile.MenuImageAdapter.ImageTextWrapper;
+import com.worthwhilegames.carhubmobile.adapters.MenuImageAdapter;
+import com.worthwhilegames.carhubmobile.adapters.MenuImageAdapter.ImageTextWrapper;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
 /**

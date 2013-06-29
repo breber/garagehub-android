@@ -22,7 +22,9 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
-import com.worthwhilegames.carhubmobile.FetchGasPricesTask.FetchGasPricesTaskCallback;
+import com.worthwhilegames.carhubmobile.sync.FetchGasPricesTask;
+import com.worthwhilegames.carhubmobile.sync.FetchGasPricesTask.FetchGasPricesTaskCallback;
+import com.worthwhilegames.carhubmobile.adapters.GasPriceAdapter;
 import com.worthwhilegames.carhubmobile.models.GasPriceRecord;
 
 import java.io.IOException;

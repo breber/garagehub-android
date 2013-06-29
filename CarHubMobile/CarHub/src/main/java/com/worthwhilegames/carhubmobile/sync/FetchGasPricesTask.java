@@ -1,9 +1,11 @@
-package com.worthwhilegames.carhubmobile;
+package com.worthwhilegames.carhubmobile.sync;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import com.worthwhilegames.carhubmobile.Util;
 import com.worthwhilegames.carhubmobile.models.GasPriceRecord;
+import com.worthwhilegames.carhubmobile.util.HttpUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;

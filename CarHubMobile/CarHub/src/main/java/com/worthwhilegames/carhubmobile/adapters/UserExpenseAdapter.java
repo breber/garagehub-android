@@ -1,4 +1,4 @@
-package com.worthwhilegames.carhubmobile;
+package com.worthwhilegames.carhubmobile.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,7 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import com.worthwhilegames.carhubmobile.models.UserMaintenanceRecord;
+import com.worthwhilegames.carhubmobile.R;
+import com.worthwhilegames.carhubmobile.models.UserBaseExpenseRecord;
 
 import java.util.Date;
 import java.util.List;
@@ -16,24 +17,24 @@ import java.util.List;
 /**
  * @author breber
  */
-public class UserMaintenanceAdapter extends ArrayAdapter<UserMaintenanceRecord> {
+public class UserExpenseAdapter extends ArrayAdapter<UserBaseExpenseRecord> {
 
     private int layoutResourceId;
 
-    public UserMaintenanceAdapter(Context context, int layoutResourceId, List<UserMaintenanceRecord> data) {
+    public UserExpenseAdapter(Context context, int layoutResourceId, List<UserBaseExpenseRecord> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
     }
 
     @Override
     public View getView(int position, View row, ViewGroup parent) {
-        FuelHolder holder = null;
+        ExpenseHolder holder = null;
 
         if (row == null) {
             LayoutInflater inflater = ((Activity) getContext()).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
 
-            holder = new FuelHolder();
+            holder = new ExpenseHolder();
             holder.topLeft = (TextView) row.findViewById(R.id.topRowLeft);
             holder.topRight = (TextView) row.findViewById(R.id.topRowRight);
             holder.bottomLeft = (TextView) row.findViewById(R.id.bottomRowLeft);
@@ -41,20 +42,20 @@ public class UserMaintenanceAdapter extends ArrayAdapter<UserMaintenanceRecord> 
 
             row.setTag(holder);
         } else {
-            holder = (FuelHolder) row.getTag();
+            holder = (ExpenseHolder) row.getTag();
         }
 
-        UserMaintenanceRecord record = getItem(position);
+        UserBaseExpenseRecord expense = getItem(position);
 
-        holder.bottomLeft.setText(DateFormat.format("MM/dd/yyyy", new Date(record.getDate())));
-        holder.topLeft.setText(record.getLocation());
-        holder.topRight.setText(record.getOdometer() + "");
-        holder.bottomRight.setText(record.getDescription());
+        holder.topLeft.setText(expense.getLocation());
+        holder.topRight.setText(expense.getDescription());
+        holder.bottomLeft.setText(DateFormat.format("MM/dd/yyyy", new Date(expense.getDate())));
+        holder.bottomRight.setText(String.format("$%.2f", expense.getAmount()));
 
         return row;
     }
 
-    static class FuelHolder
+    static class ExpenseHolder
     {
         TextView topLeft;
         TextView topRight;

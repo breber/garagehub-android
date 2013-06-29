@@ -1,4 +1,4 @@
-package com.worthwhilegames.carhubmobile;
+package com.worthwhilegames.carhubmobile.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +11,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import com.worthwhilegames.carhubmobile.R;
 
 public class MenuImageAdapter extends BaseAdapter {
     private Context mContext;
