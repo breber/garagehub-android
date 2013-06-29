@@ -71,6 +71,7 @@ public class UserExpenseManagerActivity extends AppEngineListActivity {
         switch (item.getItemId()) {
             case R.id.menu_add_expense:
                 Intent i = new Intent(this, AddExpenseRecordActivity.class);
+                i.putExtra(Constants.INTENT_DATA_VEHICLE, mVehicle.getId());
                 startActivity(i);
                 return true;
             default:

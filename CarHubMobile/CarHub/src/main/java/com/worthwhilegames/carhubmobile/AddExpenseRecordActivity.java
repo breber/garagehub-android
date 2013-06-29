@@ -3,16 +3,30 @@ package com.worthwhilegames.carhubmobile;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
 /**
  * Created by breber on 6/29/13.
  */
 public class AddExpenseRecordActivity extends AdActivity {
 
+    private UserVehicleRecord mVehicle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.addexpense);
+
+        Long vehicleId = getIntent().getLongExtra(Constants.INTENT_DATA_VEHICLE, 0);
+        mVehicle = UserVehicleRecord.findById(UserVehicleRecord.class, vehicleId);
+
+        if (mVehicle == null) {
+            Toast.makeText(this, "Vehicle doesn't exist", Toast.LENGTH_LONG).show();
+            setResult(RESULT_CANCELED);
+            finish();
+            return;
+        }
     }
 
     /* (non-Javadoc)

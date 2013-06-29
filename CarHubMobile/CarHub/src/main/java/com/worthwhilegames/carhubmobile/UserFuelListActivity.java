@@ -67,6 +67,7 @@ public class UserFuelListActivity extends AppEngineListActivity {
         switch (item.getItemId()) {
             case R.id.menu_add_fuel:
                 Intent i = new Intent(this, AddUserFuelRecordActivity.class);
+                i.putExtra(Constants.INTENT_DATA_VEHICLE, mVehicle.getId());
                 startActivity(i);
                 return true;
             default:

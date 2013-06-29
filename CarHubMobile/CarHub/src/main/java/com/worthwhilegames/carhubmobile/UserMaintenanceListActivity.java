@@ -67,6 +67,7 @@ public class UserMaintenanceListActivity extends AppEngineListActivity {
         switch (item.getItemId()) {
             case R.id.menu_add_maintenance:
                 Intent i = new Intent(this, AddMaintenanceRecordActivity.class);
+                i.putExtra(Constants.INTENT_DATA_VEHICLE, mVehicle.getId());
                 startActivity(i);
                 return true;
             default:
