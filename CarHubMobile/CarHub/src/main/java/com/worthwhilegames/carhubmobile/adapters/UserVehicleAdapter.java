@@ -1,7 +1,5 @@
 package com.worthwhilegames.carhubmobile.adapters;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,9 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
 import com.worthwhilegames.carhubmobile.R;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
+
+import java.util.List;
 
 /**
  * @author breber
@@ -27,7 +26,7 @@ public class UserVehicleAdapter extends ArrayAdapter<UserVehicleRecord> {
 
     @Override
     public View getView(int position, View row, ViewGroup parent) {
-        VehicleHolder holder = null;
+        VehicleHolder holder;
 
         if (row == null) {
             LayoutInflater inflater = ((Activity) getContext()).getLayoutInflater();

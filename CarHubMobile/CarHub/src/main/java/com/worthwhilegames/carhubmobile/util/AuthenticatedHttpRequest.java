@@ -4,7 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.services.carhub.*;
+import com.google.api.services.carhub.Carhub;
+import com.worthwhilegames.carhubmobile.Util;
 
 /**
  * @author breber
@@ -50,6 +51,8 @@ public abstract class AuthenticatedHttpRequest extends AsyncTask<Void, Void, Obj
      */
     @Override
     protected void onPostExecute(Object r) {
-        Log.e(AuthenticatedHttpRequest.class.getName(), "Result: " + r);
+        if (Util.isDebugBuild) {
+            Log.e(AuthenticatedHttpRequest.class.getName(), "Result: " + r);
+        }
     }
 }

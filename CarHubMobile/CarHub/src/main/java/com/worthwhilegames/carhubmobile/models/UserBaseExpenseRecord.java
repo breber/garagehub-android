@@ -19,7 +19,7 @@ public class UserBaseExpenseRecord extends SyncableRecord {
 
     protected UserVehicleRecord mVehicle;
     protected long mDate;
-    protected int mCategoryId; // TODO: change to category when we sync that
+    protected int mCategoryId;
     protected String mLocation;
     protected String mDescription;
     protected float mAmount;

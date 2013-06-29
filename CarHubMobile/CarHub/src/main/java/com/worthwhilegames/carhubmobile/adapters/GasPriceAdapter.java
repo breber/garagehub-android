@@ -1,7 +1,5 @@
 package com.worthwhilegames.carhubmobile.adapters;
 
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -11,10 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
 import com.worthwhilegames.carhubmobile.R;
 import com.worthwhilegames.carhubmobile.Util;
 import com.worthwhilegames.carhubmobile.models.GasPriceRecord;
+
+import java.util.List;
 
 public class GasPriceAdapter extends ArrayAdapter<GasPriceRecord>{
 
@@ -31,9 +30,8 @@ public class GasPriceAdapter extends ArrayAdapter<GasPriceRecord>{
 
     @SuppressLint("DefaultLocale")
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
-        GasPriceHolder holder = null;
+    public View getView(int position, View row, ViewGroup parent) {
+        GasPriceHolder holder;
 
         if (row == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();

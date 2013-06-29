@@ -51,12 +51,10 @@ public class SettingsActivity extends AdActivity {
 
             // make an array adapter of all options specified in the xml
             @SuppressWarnings("unchecked")
-            ArrayAdapter<String> distanceAdapter = (ArrayAdapter<String>) distanceSpinner
-            .getAdapter();
+            ArrayAdapter<String> distanceAdapter = (ArrayAdapter<String>) distanceSpinner.getAdapter();
 
             // find the current position
-            int spinnerPosition = distanceAdapter.getPosition(distanceToSearch
-                    .toString());
+            int spinnerPosition = distanceAdapter.getPosition(distanceToSearch.toString());
 
             // set the correct position to true
             distanceSpinner.setSelection(spinnerPosition);
@@ -68,8 +66,7 @@ public class SettingsActivity extends AdActivity {
 
             // make an array adapter of all options specified in the xml
             @SuppressWarnings("unchecked")
-            ArrayAdapter<String> fuelTypeAdapter = (ArrayAdapter<String>) fuelTypeSpinner
-            .getAdapter();
+            ArrayAdapter<String> fuelTypeAdapter = (ArrayAdapter<String>) fuelTypeSpinner.getAdapter();
 
             // find the current position
             int spinnerPosition = fuelTypeAdapter.getPosition(fuelType);
@@ -84,8 +81,7 @@ public class SettingsActivity extends AdActivity {
 
             // make an array adapter of all options specified in the xml
             @SuppressWarnings("unchecked")
-            ArrayAdapter<String> sortByAdapter = (ArrayAdapter<String>) sortBySpinner
-            .getAdapter();
+            ArrayAdapter<String> sortByAdapter = (ArrayAdapter<String>) sortBySpinner.getAdapter();
 
             // find the current position
             int spinnerPosition = sortByAdapter.getPosition(sortBy);
@@ -109,14 +105,12 @@ public class SettingsActivity extends AdActivity {
 
         // set number of computers
         if (distanceSpinner != null) {
-            prefsEditor.putInt("Distance", Integer
-                    .parseInt((String) distanceSpinner.getSelectedItem()));
+            prefsEditor.putInt("Distance", Integer.parseInt((String) distanceSpinner.getSelectedItem()));
         }
 
         // set difficulty of computers to preferences
         if (fuelTypeSpinner != null) {
-            prefsEditor.putString("Fuel Type",
-                    (String) fuelTypeSpinner.getSelectedItem());
+            prefsEditor.putString("Fuel Type", (String) fuelTypeSpinner.getSelectedItem());
         }
 
         // set language to preferences

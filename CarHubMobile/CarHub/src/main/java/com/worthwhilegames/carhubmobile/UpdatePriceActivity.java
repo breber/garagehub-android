@@ -1,11 +1,16 @@
 package com.worthwhilegames.carhubmobile;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.*;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -18,23 +23,11 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.Window;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  * @author jamiekujawa
@@ -81,8 +74,7 @@ public class UpdatePriceActivity extends AdActivity {
 
             // make an array adapter of all options specified in the xml
             @SuppressWarnings("unchecked")
-            ArrayAdapter<String> fuelTypeAdapter = (ArrayAdapter<String>) fuelTypeSpinner
-            .getAdapter();
+            ArrayAdapter<String> fuelTypeAdapter = (ArrayAdapter<String>) fuelTypeSpinner.getAdapter();
 
             // find the current position
             int spinnerPosition = fuelTypeAdapter.getPosition(fuelType.toString());
@@ -129,9 +121,7 @@ public class UpdatePriceActivity extends AdActivity {
                 EditText newPrice = (EditText) findViewById(R.id.newPrice);
 
                 if ("".equals(newPrice.getText().toString().trim())) {
-                    Toast.makeText(UpdatePriceActivity.this,
-                            "Please Enter a new price.", Toast.LENGTH_SHORT)
-                            .show();
+                    Toast.makeText(UpdatePriceActivity.this, "Please Enter a new price.", Toast.LENGTH_SHORT).show();
                 } else {
                     Spinner fuelTypeSpinner = (Spinner) findViewById(R.id.spinnerfueltypeUpdate);
 
@@ -205,7 +195,6 @@ public class UpdatePriceActivity extends AdActivity {
         @SuppressLint("DefaultLocale")
         @Override
         protected String doInBackground(String... params) {
-            Log.e("", "---UpdatePriceInBackground---");
             StringBuilder builder = new StringBuilder();
             HttpClient httpclient;
             HttpPost httppost;
@@ -214,10 +203,13 @@ public class UpdatePriceActivity extends AdActivity {
             httppost = new HttpPost(params[0]);
 
             try {
-                Log.e("URL", params[0]);
-                Log.e("Station Price", params[1]);
-                Log.e("Station Fuel Type", params[2]);
-                Log.e("Station ID", params[3]);
+                if (Util.isDebugBuild) {
+                    Log.e("URL", params[0]);
+                    Log.e("Station Price", params[1]);
+                    Log.e("Station Fuel Type", params[2]);
+                    Log.e("Station ID", params[3]);
+                }
+
                 postParameters = new ArrayList<NameValuePair>();
                 postParameters.add(new BasicNameValuePair("price", params[1].trim()));
                 postParameters.add(new BasicNameValuePair("fueltype", params[2].toLowerCase().trim()));
@@ -225,6 +217,7 @@ public class UpdatePriceActivity extends AdActivity {
                 httppost.setEntity(new UrlEncodedFormEntity(postParameters));
                 HttpResponse response = httpclient.execute(httppost);
 
+                // TODO: use HttpUtils
                 HttpEntity entity = response.getEntity();
                 InputStream content = entity.getContent();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(content));
@@ -240,7 +233,9 @@ public class UpdatePriceActivity extends AdActivity {
                 e.printStackTrace();
             }
 
-            Log.e("---Result---:", builder.toString());
+            if (Util.isDebugBuild) {
+                Log.e("---Result---:", builder.toString());
+            }
             return builder.toString();
         }
     }

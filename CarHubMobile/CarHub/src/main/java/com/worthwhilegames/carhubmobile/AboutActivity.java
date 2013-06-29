@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 /**
  * @author jamiekujawa
- *
  */
 public class AboutActivity extends AdActivity {
 

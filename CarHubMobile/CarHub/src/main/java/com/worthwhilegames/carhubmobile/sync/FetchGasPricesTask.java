@@ -27,10 +27,6 @@ public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
     private Context mContext;
     private FetchGasPricesTaskCallback mDelegate;
 
-    public FetchGasPricesTask(Context ctx) {
-        this.mContext = ctx;
-    }
-
     public FetchGasPricesTask(Context ctx, FetchGasPricesTaskCallback delegate) {
         this.mContext = ctx;
         this.mDelegate = delegate;
@@ -71,7 +67,10 @@ public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
         try {
             JSONObject result = new JSONObject(r);
             JSONArray stations = result.getJSONArray("stations");
-            Log.e("Number of Stations:", "" + stations.length());
+
+            if (Util.isDebugBuild) {
+                Log.e("Number of Stations:", "" + stations.length());
+            }
 
             if (stations.length() > 0) {
                 // Delete all previous records

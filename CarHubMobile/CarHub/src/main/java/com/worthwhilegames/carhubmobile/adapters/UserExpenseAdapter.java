@@ -28,7 +28,7 @@ public class UserExpenseAdapter extends ArrayAdapter<UserBaseExpenseRecord> {
 
     @Override
     public View getView(int position, View row, ViewGroup parent) {
-        ExpenseHolder holder = null;
+        ExpenseHolder holder;
 
         if (row == null) {
             LayoutInflater inflater = ((Activity) getContext()).getLayoutInflater();

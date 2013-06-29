@@ -1,11 +1,10 @@
 package com.worthwhilegames.carhubmobile.models;
 
-import java.util.LinkedList;
-import java.util.List;
-
+import android.content.Context;
 import com.google.api.services.carhub.model.UserVehicle;
 
-import android.content.Context;
+import java.util.LinkedList;
+import java.util.List;
 
 public class UserVehicleRecord extends SyncableRecord {
 
@@ -50,7 +49,7 @@ public class UserVehicleRecord extends SyncableRecord {
     }
 
     /**
-     * @param mMake the mMake to set
+     * @param aMake the mMake to set
      */
     public void setMake(String aMake) {
         this.mMake = aMake;
@@ -64,7 +63,7 @@ public class UserVehicleRecord extends SyncableRecord {
     }
 
     /**
-     * @param mModel the mModel to set
+     * @param aModel the mModel to set
      */
     public void setModel(String aModel) {
         this.mModel = aModel;
@@ -78,7 +77,7 @@ public class UserVehicleRecord extends SyncableRecord {
     }
 
     /**
-     * @param mYear the mYear to set
+     * @param aYear the mYear to set
      */
     public void setYear(String aYear) {
         this.mYear = aYear;
@@ -92,7 +91,7 @@ public class UserVehicleRecord extends SyncableRecord {
     }
 
     /**
-     * @param mColor the mColor to set
+     * @param aColor the mColor to set
      */
     public void setColor(String aColor) {
         this.mColor = aColor;
@@ -106,7 +105,7 @@ public class UserVehicleRecord extends SyncableRecord {
     }
 
     /**
-     * @param mPlates the mPlates to set
+     * @param aPlates the mPlates to set
      */
     public void setPlates(String aPlates) {
         this.mPlates = aPlates;

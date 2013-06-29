@@ -28,7 +28,7 @@ public class UserFuelAdapter extends ArrayAdapter<UserFuelRecord> {
 
     @Override
     public View getView(int position, View row, ViewGroup parent) {
-        FuelHolder holder = null;
+        FuelHolder holder;
 
         if (row == null) {
             LayoutInflater inflater = ((Activity) getContext()).getLayoutInflater();
