@@ -5,7 +5,7 @@ dependencies {
     compile 'com.google.android.gms:play-services:3.1.36'
 
     compile files('libs/GoogleAdMobAdsSdk-6.4.1.jar')
-    compile files('libs/sugar-1.2.jar')
+    compile files('libs/sugar-1.2-custom.jar')
 
 //    compile files('libs/car-hub-carhub-v1.jar')
     compile files('libs/google-api-client-1.15.0-rc.jar')

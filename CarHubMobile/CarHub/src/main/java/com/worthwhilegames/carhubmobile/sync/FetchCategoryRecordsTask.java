@@ -22,7 +22,7 @@ public class FetchCategoryRecordsTask extends AuthenticatedHttpRequest {
         long prevLastModified = Util.getSharedPrefs(mContext).getLong(FetchCategoryRecordsTask.class.getSimpleName() + "_lastUpdate", 0);
         long currentTime = System.currentTimeMillis();
 
-        if ((currentTime - prevLastModified) > (24 * 60 * 60 * 1000)) {
+        if ((currentTime - prevLastModified) < (24 * 60 * 60 * 1000)) {
             // Skip the update for now
             return "";
         }
@@ -56,7 +56,7 @@ public class FetchCategoryRecordsTask extends AuthenticatedHttpRequest {
                 }
             } while (pageToken != null);
 
-            Util.getSharedPrefs(mContext).edit().putLong(FetchUserBaseExpenseRecordsTask.class.getSimpleName() + "_lastUpdate", currentTime).commit();
+            Util.getSharedPrefs(mContext).edit().putLong(FetchCategoryRecordsTask.class.getSimpleName() + "_lastUpdate", currentTime).commit();
         } catch (IOException e) {
             e.printStackTrace();
         }

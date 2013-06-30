@@ -134,8 +134,8 @@ public class UserVehicleActivity extends AdActivity {
         setProgressBarIndeterminateVisibility(true);
 
         // Fetch Categories
-        FetchCategoryRecordsTask requestFuel = new FetchCategoryRecordsTask(this, mService);
-        requestFuel.execute();
+        FetchCategoryRecordsTask request = new FetchCategoryRecordsTask(this, mService);
+        request.execute();
     }
 
     private void chooseAccount() {

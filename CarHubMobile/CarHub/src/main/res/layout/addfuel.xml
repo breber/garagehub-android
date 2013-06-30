@@ -76,5 +76,19 @@
             android:layout_height="wrap_content"
             android:id="@+id/odometerText"
             android:inputType="number"/>
+
+        <TextView
+            android:id="@+id/fuelTypeLabel"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/fuelTypeHint"/>
+
+        <Spinner
+            android:id="@+id/fuelGradeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/fueltype_array" />
     </LinearLayout>
 </ScrollView>

@@ -50,9 +50,18 @@
     <string name="descriptionHint">Description</string>
     <string name="costPerGallonHint">Cost Per Gallon</string>
     <string name="odometerHint">Odometer</string>
+    <string name="categoryHint">Category</string>
+    <string name="fuelTypeHint">Fuel Grade</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
 
+
+    <string-array name="fuelGradeArray">
+        <item>Regular</item>
+        <item>Mid</item>
+        <item>Premium</item>
+        <item>Diesel</item>
+    </string-array>
     <string-array name="fueltype_array">
         <item>Reg</item>
         <item>Mid</item>

@@ -31,7 +31,7 @@ public class UserFuelRecord extends UserBaseExpenseRecord {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        mCategory = CategoryRecord.findByRemoteId(CategoryRecord.class, "" + oth.getCategoryid());
+        mCategory = CategoryRecord.fuelCategory(CategoryRecord.class);
         mLocation = oth.getLocation();
         mDescription = oth.getDescription();
         mAmount = (float) ((double) oth.getAmount());

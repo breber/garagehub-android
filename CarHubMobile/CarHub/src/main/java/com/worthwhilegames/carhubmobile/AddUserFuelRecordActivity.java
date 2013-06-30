@@ -3,9 +3,7 @@ package com.worthwhilegames.carhubmobile;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.*;
 import com.worthwhilegames.carhubmobile.models.UserFuelRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
@@ -19,12 +17,13 @@ public class AddUserFuelRecordActivity extends AdActivity {
     private UserVehicleRecord mVehicle;
     private UserFuelRecord mRecord;
 
+    private ArrayAdapter<String> mAdapter;
     private DatePicker mDatePicker;
     private EditText mLocationEditText;
     private EditText mAmount;
     private EditText mOdometerEndEditText;
     private EditText mCostPerGallonEditText;
-    private EditText mFuelGradeEditText; // TODO
+    private Spinner mFuelGradeSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,12 @@ public class AddUserFuelRecordActivity extends AdActivity {
         mAmount = (EditText) findViewById(R.id.amountText);
         mOdometerEndEditText = (EditText) findViewById(R.id.odometerText);
         mCostPerGallonEditText = (EditText) findViewById(R.id.costPerGallonText);
-        mFuelGradeEditText = (EditText) findViewById(R.id.fueltype);
+        mFuelGradeSpinner = (Spinner) findViewById(R.id.fuelGradeSpinner);
+
+        // Fill in the fuel types
+        String[] fuelTypesArray = getResources().getStringArray(R.array.fuelGradeArray);
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, fuelTypesArray);
+        mFuelGradeSpinner.setAdapter(mAdapter);
 
         Long existingId = getIntent().getLongExtra(Constants.INTENT_DATA_RECORD, -1);
         mRecord = UserFuelRecord.findById(UserFuelRecord.class, existingId);
@@ -60,7 +64,9 @@ public class AddUserFuelRecordActivity extends AdActivity {
             mAmount.setText(mRecord.getAmount() + "");
             mOdometerEndEditText.setText(mRecord.getOdometerEnd() + "");
             mCostPerGallonEditText.setText(mRecord.getCostPerGallon() + "");
-//            mFuelGradeEditText.setText(mRecord.getFuelGrade()); // TODO:
+
+            int selectedPosition = mAdapter.getPosition(mRecord.getFuelGrade());
+            mFuelGradeSpinner.setSelection(selectedPosition);
         }
     }
 
@@ -93,7 +99,7 @@ public class AddUserFuelRecordActivity extends AdActivity {
                 }
                 String odometerEnd = mOdometerEndEditText.getText().toString();
                 String costPerGallon = mCostPerGallonEditText.getText().toString();
-                String fuelGrade = mFuelGradeEditText.getText().toString();
+                String fuelGrade = mFuelGradeSpinner.getSelectedItem().toString();
 
                 if ("".equals(costPerGallon) || "".equals(amount) || "".equals(odometerEnd)) {
                     return false;
@@ -103,7 +109,6 @@ public class AddUserFuelRecordActivity extends AdActivity {
                     mRecord = new UserFuelRecord(this);
                 }
 
-                // TODO: category
                 mRecord.setDate(calendar.getTimeInMillis());
                 mRecord.setLocation(location);
                 mRecord.setAmount(Float.parseFloat(amount));
@@ -121,7 +126,11 @@ public class AddUserFuelRecordActivity extends AdActivity {
                 finish();
                 return true;
             case R.id.menu_delete:
-                // TODO: add delete functionality
+                if (mRecord != null) {
+                    // TODO: add delete functionality
+                }
+
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

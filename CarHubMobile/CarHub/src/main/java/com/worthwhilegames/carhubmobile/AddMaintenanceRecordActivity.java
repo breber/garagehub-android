@@ -3,13 +3,13 @@ package com.worthwhilegames.carhubmobile;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.*;
+import com.worthwhilegames.carhubmobile.models.CategoryRecord;
 import com.worthwhilegames.carhubmobile.models.UserMaintenanceRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by breber on 6/29/13.
@@ -19,7 +19,9 @@ public class AddMaintenanceRecordActivity extends AdActivity {
     private UserVehicleRecord mVehicle;
     private UserMaintenanceRecord mRecord;
 
+    private ArrayAdapter<CategoryRecord> mAdapter;
     private DatePicker mDatePicker;
+    private Spinner mCategorySpinner;
     private EditText mLocationEditText;
     private EditText mDescriptionEditText;
     private EditText mAmount;
@@ -42,10 +44,16 @@ public class AddMaintenanceRecordActivity extends AdActivity {
 
         // Set up the UI elements
         mDatePicker = (DatePicker) findViewById(R.id.datePicker);
+        mCategorySpinner = (Spinner) findViewById(R.id.categorySpinner);
         mLocationEditText = (EditText) findViewById(R.id.locationText);
         mDescriptionEditText = (EditText) findViewById(R.id.descriptionText);
         mAmount = (EditText) findViewById(R.id.amountText);
         mOdometer = (EditText) findViewById(R.id.odometerText);
+
+        // Fill in the categories
+        List<CategoryRecord> categoryRecords = CategoryRecord.getMaintenanceCategories(CategoryRecord.class);
+        mAdapter = new ArrayAdapter<CategoryRecord>(this, android.R.layout.simple_spinner_dropdown_item, categoryRecords);
+        mCategorySpinner.setAdapter(mAdapter);
 
         Long existingId = getIntent().getLongExtra(Constants.INTENT_DATA_RECORD, -1);
         mRecord = UserMaintenanceRecord.findById(UserMaintenanceRecord.class, existingId);
@@ -58,6 +66,9 @@ public class AddMaintenanceRecordActivity extends AdActivity {
             mDescriptionEditText.setText(mRecord.getDescription());
             mAmount.setText(mRecord.getAmount() + "");
             mOdometer.setText(mRecord.getOdometer() + "");
+
+            int selectedPosition = mAdapter.getPosition(mRecord.getCategory());
+            mCategorySpinner.setSelection(selectedPosition);
         }
     }
 
@@ -89,7 +100,7 @@ public class AddMaintenanceRecordActivity extends AdActivity {
                     mRecord = new UserMaintenanceRecord(this);
                 }
 
-                // TODO: category
+                mRecord.setCategoryId(mAdapter.getItem(mCategorySpinner.getSelectedItemPosition()));
                 mRecord.setDate(calendar.getTimeInMillis());
                 mRecord.setLocation(location);
                 mRecord.setDescription(description);
@@ -101,7 +112,11 @@ public class AddMaintenanceRecordActivity extends AdActivity {
                 finish();
                 return true;
             case R.id.menu_delete:
-                // TODO: add delete functionality
+                if (mRecord != null) {
+                    // TODO: add delete functionality
+                }
+
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

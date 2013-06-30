@@ -22,6 +22,19 @@
             android:id="@+id/datePicker"/>
 
         <TextView
+            android:id="@+id/categoryLabel"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/categoryHint"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/categorySpinner"/>
+
+        <TextView
             android:id="@+id/locationLabel"
             android:textStyle="bold"
             android:textSize="20sp"

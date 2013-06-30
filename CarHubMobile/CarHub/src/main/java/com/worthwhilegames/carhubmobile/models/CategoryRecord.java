@@ -2,6 +2,9 @@ package com.worthwhilegames.carhubmobile.models;
 
 import android.content.Context;
 import com.google.api.services.carhub.model.ExpenseCategory;
+import com.orm.StringUtil;
+
+import java.util.List;
 
 public class CategoryRecord extends SyncableRecord {
 
@@ -45,4 +48,48 @@ public class CategoryRecord extends SyncableRecord {
         this.mSubcategory = aSubcategory;
     }
 
+    public String toString() {
+        if (mSubcategory != null && !"".equals(mSubcategory)) {
+            return mSubcategory;
+        } else {
+            return mCategory;
+        }
+    }
+
+    /**
+     * Convenience method for finding the fuel category
+     *
+     * @param type
+     * @param <T>
+     * @return
+     */
+    public static <T extends SyncableRecord> T fuelCategory(Class<T> type) {
+        List<T> toRet = T.find(type, StringUtil.toSQLName("mCategory") + " = 'Fuel Up'");
+        if (!toRet.isEmpty()) {
+            return toRet.get(0);
+        }
+        return null;
+    }
+
+    /**
+     * Convenience method for finding the expense categories
+     *
+     * @param type
+     * @param <T>
+     * @return
+     */
+    public static <T extends SyncableRecord> List<T> getExpenseCategories(Class<T> type) {
+        return T.find(type, StringUtil.toSQLName("mCategory") + " != 'Maintenance'");
+    }
+
+    /**
+     * Convenience method for finding the maintenance categories
+     *
+     * @param type
+     * @param <T>
+     * @return
+     */
+    public static <T extends SyncableRecord> List<T> getMaintenanceCategories(Class<T> type) {
+        return T.find(type, StringUtil.toSQLName("mCategory") + " == 'Maintenance'");
+    }
 }
