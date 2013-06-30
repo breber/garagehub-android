@@ -19,7 +19,7 @@
 package com.google.api.services.carhub.model;
 
 /**
- * Model definition for UserVehicleCollection.
+ * Model definition for ModelsActiveRecords.
  *
  * <p> This is the Java data model class that specifies how to parse/serialize into the JSON that is
  * transmitted over HTTP when working with the . For a detailed explanation see:
@@ -29,64 +29,37 @@ package com.google.api.services.carhub.model;
  * @author Google, Inc.
  */
 @SuppressWarnings("javadoc")
-public final class UserVehicleCollection extends com.google.api.client.json.GenericJson {
+public final class ModelsActiveRecords extends com.google.api.client.json.GenericJson {
 
   /**
    * The value may be {@code null}.
    */
   @com.google.api.client.util.Key
-  private java.util.List<UserVehicle> items;
-
-  static {
-    // hack to force ProGuard to consider UserVehicle used, since otherwise it would be stripped out
-    // see http://code.google.com/p/google-api-java-client/issues/detail?id=528
-    com.google.api.client.util.Data.nullOf(UserVehicle.class);
-  }
-
-  /**
-   * The value may be {@code null}.
-   */
-  @com.google.api.client.util.Key
-  private java.lang.String nextPageToken;
+  private java.util.List<java.lang.String> active;
 
   /**
    * @return value or {@code null} for none
    */
-  public java.util.List<UserVehicle> getItems() {
-    return items;
+  public java.util.List<java.lang.String> getActive() {
+    return active;
   }
 
   /**
-   * @param items items or {@code null} for none
+   * @param active active or {@code null} for none
    */
-  public UserVehicleCollection setItems(java.util.List<UserVehicle> items) {
-    this.items = items;
-    return this;
-  }
-
-  /**
-   * @return value or {@code null} for none
-   */
-  public java.lang.String getNextPageToken() {
-    return nextPageToken;
-  }
-
-  /**
-   * @param nextPageToken nextPageToken or {@code null} for none
-   */
-  public UserVehicleCollection setNextPageToken(java.lang.String nextPageToken) {
-    this.nextPageToken = nextPageToken;
+  public ModelsActiveRecords setActive(java.util.List<java.lang.String> active) {
+    this.active = active;
     return this;
   }
 
   @Override
-  public UserVehicleCollection set(String fieldName, Object value) {
-    return (UserVehicleCollection) super.set(fieldName, value);
+  public ModelsActiveRecords set(String fieldName, Object value) {
+    return (ModelsActiveRecords) super.set(fieldName, value);
   }
 
   @Override
-  public UserVehicleCollection clone() {
-    return (UserVehicleCollection) super.clone();
+  public ModelsActiveRecords clone() {
+    return (ModelsActiveRecords) super.clone();
   }
 
 }

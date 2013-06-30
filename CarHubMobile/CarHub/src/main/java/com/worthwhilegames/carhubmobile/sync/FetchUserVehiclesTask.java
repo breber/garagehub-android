@@ -1,12 +1,17 @@
 package com.worthwhilegames.carhubmobile.sync;
 
 import android.content.Context;
-import com.google.api.services.carhub.model.*;
-import com.google.api.services.carhub.*;
+import android.util.Log;
+import com.google.api.services.carhub.Carhub;
+import com.google.api.services.carhub.model.ModelsActiveRecords;
+import com.google.api.services.carhub.model.ModelsCurrentVehicles;
+import com.google.api.services.carhub.model.UserVehicle;
+import com.google.api.services.carhub.model.UserVehicleCollection;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FetchUserVehiclesTask extends AuthenticatedHttpRequest {
@@ -25,6 +30,41 @@ public class FetchUserVehiclesTask extends AuthenticatedHttpRequest {
         long currentTime = System.currentTimeMillis();
 
         try {
+            // Handle all records deleted on the server
+            List<UserVehicleRecord> allLocalVehicles = UserVehicleRecord.listAll(UserVehicleRecord.class);
+            List<UserVehicleRecord> toDeleteVehicles = new ArrayList<UserVehicleRecord>();
+            ModelsActiveRecords activeVehicles = mService.vehicle().active().execute();
+            List<String> activeVehiclesList = activeVehicles.getActive();
+            for (UserVehicleRecord rec : allLocalVehicles) {
+                if (!activeVehiclesList.contains(rec.getRemoteId())) {
+                    toDeleteVehicles.add(rec);
+                }
+            }
+
+            UserVehicleRecord.deleteAllInList(UserVehicleRecord.class, toDeleteVehicles);
+
+
+            // Get a list of all records currently on the server
+            vehicles = mService.vehicle().list().execute();
+            if (vehicles != null) {
+                for (UserVehicle v : vehicles.getItems()) {
+                    // Try and find a record locally to update
+                    UserVehicleRecord toUpdate = UserVehicleRecord.findByRemoteId(UserVehicleRecord.class, v.getServerId());
+
+                    // If one can't be found, create a new one
+                    if (toUpdate == null) {
+                        toUpdate = new UserVehicleRecord(mContext);
+                    }
+
+                    // Update the local copy with the server information
+                    toUpdate.fromAPI(v);
+                    toUpdate.setDirty(false);
+                    toUpdate.setLastUpdated(currentTime);
+                    toUpdate.save();
+                }
+            }
+
+
             // Send all records that are dirty
             List<UserVehicleRecord> dirtyRecords = UserVehicleRecord.findAllDirty(UserVehicleRecord.class);
             for (UserVehicleRecord rec : dirtyRecords) {
@@ -41,28 +81,6 @@ public class FetchUserVehiclesTask extends AuthenticatedHttpRequest {
                 rec.setDirty(false);
                 rec.setLastUpdated(currentTime);
                 rec.save();
-            }
-
-            // Get a list of all records currently on the server
-            vehicles = mService.vehicle().list().execute();
-            if (vehicles != null) {
-                for (UserVehicle v : vehicles.getItems()) {
-                    // Try and find a record locally to update
-                    UserVehicleRecord toUpdate = UserVehicleRecord.findByRemoteId(UserVehicleRecord.class, v.getServerId());
-
-                    // If one can't be found, create a new one
-                    if (toUpdate == null) {
-                        toUpdate = new UserVehicleRecord(mContext);
-                    }
-
-                    // Update the local copy with the server information
-                    toUpdate.fromAPI(v);
-                    toUpdate.setLastUpdated(currentTime);
-                    toUpdate.save();
-                }
-
-                // TODO: go through all records that we have locally, but not remotely and delete them
-
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -46,8 +46,16 @@ public class UserVehicleAdapter extends ArrayAdapter<UserVehicleRecord> {
         UserVehicleRecord vehicle = getItem(position);
 
         holder.vehicleName.setText(vehicle.getMake().trim() + " " + vehicle.getModel().trim());
-        holder.vehicleColor.setText(vehicle.getColor().trim());
-        holder.vehicleLicensePlates.setText(vehicle.getPlates().trim());
+        if (vehicle.getColor() != null) {
+            holder.vehicleColor.setText(vehicle.getColor().trim());
+        } else {
+            holder.vehicleColor.setText("N/A");
+        }
+        if (vehicle.getPlates() != null) {
+            holder.vehicleLicensePlates.setText(vehicle.getPlates().trim());
+        } else {
+            holder.vehicleLicensePlates.setText("N/A");
+        }
         holder.vehicleYear.setText(vehicle.getYear().trim());
 
         return row;

@@ -95,4 +95,16 @@ public abstract class SyncableRecord extends SugarRecord<SyncableRecord> {
         }
         return null;
     }
+
+    /**
+     * Delete all records passed in
+     * @param type
+     * @param <T>
+     * @return
+     */
+    public static <T extends SyncableRecord> void deleteAllInList(Class<T> type, List<T> toDelete) {
+        for (T t : toDelete) {
+            t.delete();
+        }
+    }
 }
