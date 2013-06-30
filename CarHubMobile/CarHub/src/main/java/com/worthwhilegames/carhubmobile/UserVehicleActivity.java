@@ -1,6 +1,8 @@
 package com.worthwhilegames.carhubmobile;
 
+import android.accounts.AccountManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -8,14 +10,35 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.services.carhub.Carhub;
 import com.worthwhilegames.carhubmobile.adapters.MenuImageAdapter;
 import com.worthwhilegames.carhubmobile.adapters.MenuImageAdapter.ImageTextWrapper;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
+import com.worthwhilegames.carhubmobile.sync.FetchCategoryRecordsTask;
 
 /**
  * @author breber
  */
 public class UserVehicleActivity extends AdActivity {
+
+    private static final String PREF_ACCOUNT_NAME = "accountName";
+
+    private static final int REQUEST_ACCOUNT_PICKER = 2;
+
+    /**
+     * Current credentials
+     */
+    protected GoogleAccountCredential mCreds;
+
+    /**
+     * The Carhub service for interacting with AppEngine
+     */
+    protected Carhub mService;
+
+
 
     private UserVehicleRecord mVehicle;
 
@@ -56,7 +79,38 @@ public class UserVehicleActivity extends AdActivity {
             }
         });
 
+        // Inside your Activity class onCreate method
+        SharedPreferences settings = getSharedPreferences("CarHubMobile", 0);
+        mCreds = GoogleAccountCredential.usingAudience(this,
+                "server:client_id:280486107933-fkp13pk6dv84vdkumqu1vj5hh0o74he3.apps.googleusercontent.com");
+        setAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
+
+        Carhub.Builder bl = new Carhub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCreds);
+        mService = bl.build();
+
+        if (mCreds.getSelectedAccountName() == null) {
+            // Not signed in, show login window or request an account.
+            chooseAccount();
+        }
+
         updateUi();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_ACCOUNT_PICKER:
+                if (data != null && data.getExtras() != null) {
+                    String accountName = data.getExtras().getString(AccountManager.KEY_ACCOUNT_NAME);
+                    if (accountName != null) {
+                        setAccountName(accountName);
+
+                        performUpdate();
+                    }
+                }
+                break;
+        }
     }
 
     /* (non-Javadoc)
@@ -65,7 +119,36 @@ public class UserVehicleActivity extends AdActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (mCreds.getSelectedAccountName() != null) {
+            // Already signed in, begin app!
+            performUpdate();
+        }
+
         updateUi();
+    }
+
+    /**
+     * Perform all necessary UI updates, then call execute request
+     */
+    protected void performUpdate() {
+        setProgressBarIndeterminateVisibility(true);
+
+        // Fetch Categories
+        FetchCategoryRecordsTask requestFuel = new FetchCategoryRecordsTask(this, mService);
+        requestFuel.execute();
+    }
+
+    private void chooseAccount() {
+        startActivityForResult(mCreds.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+    }
+
+    // setAccountName definition
+    private void setAccountName(String accountName) {
+        SharedPreferences settings = getSharedPreferences("CarHubMobile", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(PREF_ACCOUNT_NAME, accountName);
+        editor.commit();
+        mCreds.setSelectedAccountName(accountName);
     }
 
     private void updateUi() {

@@ -19,7 +19,7 @@ public class UserBaseExpenseRecord extends SyncableRecord {
 
     protected UserVehicleRecord mVehicle;
     protected long mDate;
-    protected int mCategoryId;
+    protected CategoryRecord mCategory;
     protected String mLocation;
     protected String mDescription;
     protected float mAmount;
@@ -40,7 +40,7 @@ public class UserBaseExpenseRecord extends SyncableRecord {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        mCategoryId = oth.getCategoryid();
+        mCategory = CategoryRecord.findByRemoteId(CategoryRecord.class, "" + oth.getCategoryid());
         mLocation = oth.getLocation();
         mDescription = oth.getDescription();
         mAmount = (float) ((double) oth.getAmount());
@@ -52,7 +52,7 @@ public class UserBaseExpenseRecord extends SyncableRecord {
         UserExpenseRecord toRet = new UserExpenseRecord();
         toRet.setServerId(mRemoteId);
         toRet.setDate(new Date(mDate).toString());
-        toRet.setCategoryid(mCategoryId);
+        toRet.setCategoryid(Integer.parseInt(mCategory.getRemoteId()));
         toRet.setLocation(mLocation);
         toRet.setDescription(mDescription);
         toRet.setAmount((double) mAmount);
@@ -89,17 +89,17 @@ public class UserBaseExpenseRecord extends SyncableRecord {
     }
 
     /**
-     * @return the mCategoryId
+     * @return the mCategory
      */
-    public Integer getCategoryId() {
-        return mCategoryId;
+    public CategoryRecord getCategory() {
+        return mCategory;
     }
 
     /**
-     * @param aCategoryId the mCategoryId to set
+     * @param aCategory the mCategory to set
      */
-    public void setCategoryId(Integer aCategoryId) {
-        this.mCategoryId = aCategoryId;
+    public void setCategoryId(CategoryRecord aCategory) {
+        this.mCategory = aCategory;
     }
 
     /**

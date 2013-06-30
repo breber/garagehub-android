@@ -26,7 +26,7 @@ public class UserMaintenanceRecord extends UserBaseExpenseRecord {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        mCategoryId = oth.getCategoryid();
+        mCategory = CategoryRecord.findByRemoteId(CategoryRecord.class, "" + oth.getCategoryid());
         mLocation = oth.getLocation();
         mDescription = oth.getDescription();
         mAmount = oth.getAmount().floatValue();
@@ -39,7 +39,7 @@ public class UserMaintenanceRecord extends UserBaseExpenseRecord {
         MaintenanceRecord toRet = new MaintenanceRecord();
         toRet.setServerId(mRemoteId);
         toRet.setDate(new Date(mDate).toString());
-        toRet.setCategoryid(mCategoryId);
+        toRet.setCategoryid(Integer.parseInt(mCategory.getRemoteId()));
         toRet.setLocation(mLocation);
         toRet.setDescription(mDescription);
         toRet.setAmount((double) mAmount);

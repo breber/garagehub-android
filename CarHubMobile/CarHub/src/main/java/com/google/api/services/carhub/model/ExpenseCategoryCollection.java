@@ -19,7 +19,7 @@
 package com.google.api.services.carhub.model;
 
 /**
- * Model definition for MaintenanceRecordCollection.
+ * Model definition for ExpenseCategoryCollection.
  *
  * <p> This is the Java data model class that specifies how to parse/serialize into the JSON that is
  * transmitted over HTTP when working with the . For a detailed explanation see:
@@ -29,13 +29,19 @@ package com.google.api.services.carhub.model;
  * @author Google, Inc.
  */
 @SuppressWarnings("javadoc")
-public final class MaintenanceRecordCollection extends com.google.api.client.json.GenericJson {
+public final class ExpenseCategoryCollection extends com.google.api.client.json.GenericJson {
 
   /**
    * The value may be {@code null}.
    */
   @com.google.api.client.util.Key
-  private java.util.List<MaintenanceRecord> items;
+  private java.util.List<ExpenseCategory> items;
+
+  static {
+    // hack to force ProGuard to consider ExpenseCategory used, since otherwise it would be stripped out
+    // see http://code.google.com/p/google-api-java-client/issues/detail?id=528
+    com.google.api.client.util.Data.nullOf(ExpenseCategory.class);
+  }
 
   /**
    * The value may be {@code null}.
@@ -46,14 +52,14 @@ public final class MaintenanceRecordCollection extends com.google.api.client.jso
   /**
    * @return value or {@code null} for none
    */
-  public java.util.List<MaintenanceRecord> getItems() {
+  public java.util.List<ExpenseCategory> getItems() {
     return items;
   }
 
   /**
    * @param items items or {@code null} for none
    */
-  public MaintenanceRecordCollection setItems(java.util.List<MaintenanceRecord> items) {
+  public ExpenseCategoryCollection setItems(java.util.List<ExpenseCategory> items) {
     this.items = items;
     return this;
   }
@@ -68,19 +74,19 @@ public final class MaintenanceRecordCollection extends com.google.api.client.jso
   /**
    * @param nextPageToken nextPageToken or {@code null} for none
    */
-  public MaintenanceRecordCollection setNextPageToken(java.lang.String nextPageToken) {
+  public ExpenseCategoryCollection setNextPageToken(java.lang.String nextPageToken) {
     this.nextPageToken = nextPageToken;
     return this;
   }
 
   @Override
-  public MaintenanceRecordCollection set(String fieldName, Object value) {
-    return (MaintenanceRecordCollection) super.set(fieldName, value);
+  public ExpenseCategoryCollection set(String fieldName, Object value) {
+    return (ExpenseCategoryCollection) super.set(fieldName, value);
   }
 
   @Override
-  public MaintenanceRecordCollection clone() {
-    return (MaintenanceRecordCollection) super.clone();
+  public ExpenseCategoryCollection clone() {
+    return (ExpenseCategoryCollection) super.clone();
   }
 
 }

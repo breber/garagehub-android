@@ -19,7 +19,7 @@
 package com.google.api.services.carhub.model;
 
 /**
- * Model definition for MaintenanceRecordCollection.
+ * Model definition for ExpenseCategory.
  *
  * <p> This is the Java data model class that specifies how to parse/serialize into the JSON that is
  * transmitted over HTTP when working with the . For a detailed explanation see:
@@ -29,58 +29,79 @@ package com.google.api.services.carhub.model;
  * @author Google, Inc.
  */
 @SuppressWarnings("javadoc")
-public final class MaintenanceRecordCollection extends com.google.api.client.json.GenericJson {
+public final class ExpenseCategory extends com.google.api.client.json.GenericJson {
 
   /**
    * The value may be {@code null}.
    */
   @com.google.api.client.util.Key
-  private java.util.List<MaintenanceRecord> items;
+  private java.lang.String category;
+
+  /**
+   * The value may be {@code null}.
+   */
+  @com.google.api.client.util.Key("server_id")
+  private java.lang.String serverId;
 
   /**
    * The value may be {@code null}.
    */
   @com.google.api.client.util.Key
-  private java.lang.String nextPageToken;
+  private java.lang.String subcategory;
 
   /**
    * @return value or {@code null} for none
    */
-  public java.util.List<MaintenanceRecord> getItems() {
-    return items;
+  public java.lang.String getCategory() {
+    return category;
   }
 
   /**
-   * @param items items or {@code null} for none
+   * @param category category or {@code null} for none
    */
-  public MaintenanceRecordCollection setItems(java.util.List<MaintenanceRecord> items) {
-    this.items = items;
+  public ExpenseCategory setCategory(java.lang.String category) {
+    this.category = category;
     return this;
   }
 
   /**
    * @return value or {@code null} for none
    */
-  public java.lang.String getNextPageToken() {
-    return nextPageToken;
+  public java.lang.String getServerId() {
+    return serverId;
   }
 
   /**
-   * @param nextPageToken nextPageToken or {@code null} for none
+   * @param serverId serverId or {@code null} for none
    */
-  public MaintenanceRecordCollection setNextPageToken(java.lang.String nextPageToken) {
-    this.nextPageToken = nextPageToken;
+  public ExpenseCategory setServerId(java.lang.String serverId) {
+    this.serverId = serverId;
+    return this;
+  }
+
+  /**
+   * @return value or {@code null} for none
+   */
+  public java.lang.String getSubcategory() {
+    return subcategory;
+  }
+
+  /**
+   * @param subcategory subcategory or {@code null} for none
+   */
+  public ExpenseCategory setSubcategory(java.lang.String subcategory) {
+    this.subcategory = subcategory;
     return this;
   }
 
   @Override
-  public MaintenanceRecordCollection set(String fieldName, Object value) {
-    return (MaintenanceRecordCollection) super.set(fieldName, value);
+  public ExpenseCategory set(String fieldName, Object value) {
+    return (ExpenseCategory) super.set(fieldName, value);
   }
 
   @Override
-  public MaintenanceRecordCollection clone() {
-    return (MaintenanceRecordCollection) super.clone();
+  public ExpenseCategory clone() {
+    return (ExpenseCategory) super.clone();
   }
 
 }
