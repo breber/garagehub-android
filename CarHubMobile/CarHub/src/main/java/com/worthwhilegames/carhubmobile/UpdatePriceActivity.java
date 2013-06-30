@@ -7,14 +7,16 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.*;
+import com.worthwhilegames.carhubmobile.util.HttpUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -23,10 +25,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
@@ -107,11 +105,25 @@ public class UpdatePriceActivity extends AdActivity {
                 startActivity(new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri)));
             }
         });
+    }
 
-        Button updatePrice = (Button) findViewById(R.id.updatePrice);
-        updatePrice.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    /* (non-Javadoc)
+     * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_update_price, menu);
+        return true;
+    }
+
+    /* (non-Javadoc)
+     * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // This will cover the Android menu button press
+        switch (item.getItemId()) {
+            case R.id.menu_save:
                 Intent i = UpdatePriceActivity.this.getIntent();
 
                 // String stationName = i.getStringExtra("StationName");
@@ -137,8 +149,10 @@ public class UpdatePriceActivity extends AdActivity {
                     Toast.makeText(UpdatePriceActivity.this, "Sending Request.", Toast.LENGTH_SHORT).show();
                     setProgressBarIndeterminateVisibility(true);
                 }
-            }
-        });
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
@@ -167,11 +181,9 @@ public class UpdatePriceActivity extends AdActivity {
          */
         @Override
         protected void onPostExecute(String r) {
-            JSONObject result = null;
-
             // Convert string to object
             try {
-                result = new JSONObject(r);
+                JSONObject result = new JSONObject(r);
 
                 if (result != null) {
                     JSONObject status = result.getJSONObject("status");
@@ -195,12 +207,7 @@ public class UpdatePriceActivity extends AdActivity {
         @SuppressLint("DefaultLocale")
         @Override
         protected String doInBackground(String... params) {
-            StringBuilder builder = new StringBuilder();
-            HttpClient httpclient;
-            HttpPost httppost;
-            ArrayList<NameValuePair> postParameters;
-            httpclient = new DefaultHttpClient();
-            httppost = new HttpPost(params[0]);
+            String responseString = null;
 
             try {
                 if (Util.isDebugBuild) {
@@ -210,33 +217,26 @@ public class UpdatePriceActivity extends AdActivity {
                     Log.e("Station ID", params[3]);
                 }
 
-                postParameters = new ArrayList<NameValuePair>();
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost(params[0]);
+                ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
                 postParameters.add(new BasicNameValuePair("price", params[1].trim()));
                 postParameters.add(new BasicNameValuePair("fueltype", params[2].toLowerCase().trim()));
                 postParameters.add(new BasicNameValuePair("stationid", params[3].trim()));
                 httppost.setEntity(new UrlEncodedFormEntity(postParameters));
+
                 HttpResponse response = httpclient.execute(httppost);
-
-                // TODO: use HttpUtils
                 HttpEntity entity = response.getEntity();
-                InputStream content = entity.getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                String line;
-
-                while ((line = reader.readLine()) != null) {
-                    builder.append(line);
-                }
-
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+                responseString = HttpUtils.readStreamAsString(entity.getContent());
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
             if (Util.isDebugBuild) {
-                Log.e("---Result---:", builder.toString());
+                Log.e("---Result---:", responseString);
             }
-            return builder.toString();
+
+            return responseString;
         }
     }
 
