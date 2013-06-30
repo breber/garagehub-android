@@ -51,6 +51,7 @@
     <string name="costPerGallonHint">Cost Per Gallon</string>
     <string name="odometerHint">Odometer</string>
     <string name="save">Save</string>
+    <string name="delete">Delete</string>
 
     <string-array name="fueltype_array">
         <item>Reg</item>

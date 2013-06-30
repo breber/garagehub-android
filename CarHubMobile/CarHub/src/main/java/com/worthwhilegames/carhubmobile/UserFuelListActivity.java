@@ -45,6 +45,11 @@ public class UserFuelListActivity extends AppEngineListActivity {
                 if (Util.isDebugBuild) {
                     Toast.makeText(UserFuelListActivity.this, model.getId() + "", Toast.LENGTH_LONG).show();
                 }
+
+                Intent i = new Intent(UserFuelListActivity.this, AddUserFuelRecordActivity.class);
+                i.putExtra(Constants.INTENT_DATA_VEHICLE, mVehicle.getId());
+                i.putExtra(Constants.INTENT_DATA_RECORD, model.getId());
+                startActivity(i);
             }
         });
     }

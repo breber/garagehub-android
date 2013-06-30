@@ -45,6 +45,11 @@ public class UserMaintenanceListActivity extends AppEngineListActivity {
                 if (Util.isDebugBuild) {
                     Toast.makeText(UserMaintenanceListActivity.this, model.getId() + "", Toast.LENGTH_LONG).show();
                 }
+
+                Intent i = new Intent(UserMaintenanceListActivity.this, AddMaintenanceRecordActivity.class);
+                i.putExtra(Constants.INTENT_DATA_VEHICLE, mVehicle.getId());
+                i.putExtra(Constants.INTENT_DATA_RECORD, model.getId());
+                startActivity(i);
             }
         });
     }

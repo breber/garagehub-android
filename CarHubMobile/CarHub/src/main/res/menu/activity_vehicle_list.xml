@@ -2,6 +2,6 @@
     <item android:id="@+id/menu_add_vehicle"
         android:title="@string/addVehicle"
         android:orderInCategory="100"
-        android:showAsAction="ifRoom|withText"
+        android:showAsAction="never"
         android:icon="@drawable/ic_menu_add"/>
 </menu>
