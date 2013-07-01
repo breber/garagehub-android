@@ -1,10 +1,8 @@
 package com.worthwhilegames.carhubmobile.sync;
 
 import android.content.Context;
-import android.util.Log;
 import com.google.api.services.carhub.Carhub;
 import com.google.api.services.carhub.model.ModelsActiveRecords;
-import com.google.api.services.carhub.model.ModelsCurrentVehicles;
 import com.google.api.services.carhub.model.UserVehicle;
 import com.google.api.services.carhub.model.UserVehicleCollection;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
@@ -46,7 +44,7 @@ public class FetchUserVehiclesTask extends AuthenticatedHttpRequest {
 
             // Get a list of all records currently on the server
             vehicles = mService.vehicle().list().execute();
-            if (vehicles != null) {
+            if (vehicles != null && vehicles.getItems() != null) {
                 for (UserVehicle v : vehicles.getItems()) {
                     // Try and find a record locally to update
                     UserVehicleRecord toUpdate = UserVehicleRecord.findByRemoteId(UserVehicleRecord.class, v.getServerId());
@@ -59,7 +57,6 @@ public class FetchUserVehiclesTask extends AuthenticatedHttpRequest {
                     // Update the local copy with the server information
                     toUpdate.fromAPI(v);
                     toUpdate.setDirty(false);
-                    toUpdate.setLastUpdated(currentTime);
                     toUpdate.save();
                 }
             }
@@ -79,7 +76,6 @@ public class FetchUserVehiclesTask extends AuthenticatedHttpRequest {
 
                 // Save the record
                 rec.setDirty(false);
-                rec.setLastUpdated(currentTime);
                 rec.save();
             }
         } catch (IOException e) {

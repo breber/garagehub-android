@@ -8,14 +8,13 @@ import java.util.List;
 
 /**
  * An abstract class representing an AppEngine syncable record
- * 
+ *
  * @author breber
  */
 public abstract class SyncableRecord extends SugarRecord<SyncableRecord> {
 
     protected String mRemoteId;
     protected boolean mDirty;
-    protected long mLastUpdated;
 
     public SyncableRecord(Context arg0) {
         super(arg0);
@@ -54,20 +53,6 @@ public abstract class SyncableRecord extends SugarRecord<SyncableRecord> {
     }
 
     /**
-     * @return the mLastUpdated
-     */
-    public long getLastUpdated() {
-        return mLastUpdated;
-    }
-
-    /**
-     * @param aLastUpdated the mLastUpdated to set
-     */
-    public void setLastUpdated(long aLastUpdated) {
-        this.mLastUpdated = aLastUpdated;
-    }
-
-    /**
      * Convenience method for finding all dirty records
      *
      * @param type
@@ -75,7 +60,7 @@ public abstract class SyncableRecord extends SugarRecord<SyncableRecord> {
      * @return
      */
     public static <T extends SyncableRecord> List<T> findAllDirty(Class<T> type) {
-        return T.find(type, StringUtil.toSQLName("mDirty") + " = 1");
+        return T.find(type, StringUtil.toSQLName("mDirty") + " != 0");
     }
 
     /**
