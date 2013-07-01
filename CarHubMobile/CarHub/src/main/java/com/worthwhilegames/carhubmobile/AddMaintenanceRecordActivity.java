@@ -106,6 +106,7 @@ public class AddMaintenanceRecordActivity extends AdActivity {
                 mRecord.setDescription(description);
                 mRecord.setAmount(Float.parseFloat(amount));
                 mRecord.setOdometer(Integer.parseInt(odometer));
+                mRecord.setVehicle(mVehicle);
                 mRecord.setDirty(true);
                 mRecord.save();
 

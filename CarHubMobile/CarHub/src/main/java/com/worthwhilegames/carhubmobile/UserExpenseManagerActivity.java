@@ -102,13 +102,13 @@ public class UserExpenseManagerActivity extends AppEngineListActivity {
         FetchUserBaseExpenseRecordsTask request = new FetchUserBaseExpenseRecordsTask(this, mService, this, mVehicle);
         request.execute();
 
-        // Fetch Maintenance
-        FetchUserMaintenanceRecordsTask requestMaint = new FetchUserMaintenanceRecordsTask(this, mService, this, mVehicle);
-        requestMaint.execute();
-
-        // Fetch Fuel
-        FetchUserFuelRecordsTask requestFuel = new FetchUserFuelRecordsTask(this, mService, this, mVehicle);
-        requestFuel.execute();
+//        // Fetch Maintenance
+//        FetchUserMaintenanceRecordsTask requestMaint = new FetchUserMaintenanceRecordsTask(this, mService, this, mVehicle);
+//        requestMaint.execute();
+//
+//        // Fetch Fuel
+//        FetchUserFuelRecordsTask requestFuel = new FetchUserFuelRecordsTask(this, mService, this, mVehicle);
+//        requestFuel.execute();
     }
 
     public void taskDidFinish() {

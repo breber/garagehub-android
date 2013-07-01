@@ -51,7 +51,8 @@ public class UserBaseExpenseRecord extends SyncableRecord {
     public Object toAPI() {
         UserExpenseRecord toRet = new UserExpenseRecord();
         toRet.setServerId(mRemoteId);
-        toRet.setDate(new Date(mDate).toString());
+        toRet.setVehicle(Integer.parseInt(mVehicle.getRemoteId()));
+        toRet.setDate(cDateFormat.format(new Date(mDate)));
         toRet.setCategoryid(Integer.parseInt(mCategory.getRemoteId()));
         toRet.setLocation(mLocation);
         toRet.setDescription(mDescription);
@@ -160,7 +161,7 @@ public class UserBaseExpenseRecord extends SyncableRecord {
 
     /**
      * Gets all records for a given vehicle
-     * 
+     *
      * @param type
      * @param vehicle
      * @return

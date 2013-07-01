@@ -37,7 +37,8 @@ public class FetchUserBaseExpenseRecordsTask extends AuthenticatedHttpRequest {
             ModelsActiveRecords active = mService.expense().active(Long.parseLong(mVehicle.getRemoteId())).execute();
             List<String> activeList = active.getActive();
             for (UserBaseExpenseRecord rec : allLocal) {
-                if (!activeList.contains(rec.getRemoteId())) {
+                String remoteId = rec.getRemoteId();
+                if (remoteId != null && !"".equals(remoteId) && !activeList.contains(remoteId)) {
                     toDelete.add(rec);
                 }
             }
@@ -82,7 +83,14 @@ public class FetchUserBaseExpenseRecordsTask extends AuthenticatedHttpRequest {
                 UserExpenseRecord toSend = (UserExpenseRecord) rec.toAPI();
 
                 // Send to AppEngine
-                UserExpenseRecord sent = mService.expense().store(toSend).execute();
+                UserExpenseRecord sent;
+
+                if (toSend.getServerId() != null &&
+                        !"".equals(toSend.getServerId())) {
+                    sent = mService.expense().update(toSend).setKey(toSend.getServerId()).execute();
+                } else {
+                    sent = mService.expense().add(toSend).execute();
+                }
 
                 // Update our local copy (last updated, remote id, etc)
                 rec.fromAPI(sent);

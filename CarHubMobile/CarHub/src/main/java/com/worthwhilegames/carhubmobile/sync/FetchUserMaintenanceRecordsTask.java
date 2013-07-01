@@ -37,7 +37,8 @@ public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
             ModelsActiveRecords active = mService.maintenance().active(Long.parseLong(mVehicle.getRemoteId())).execute();
             List<String> activeList = active.getActive();
             for (UserMaintenanceRecord rec : allLocal) {
-                if (!activeList.contains(rec.getRemoteId())) {
+                String remoteId = rec.getRemoteId();
+                if (remoteId != null && !"".equals(remoteId) && !activeList.contains(remoteId)) {
                     toDelete.add(rec);
                 }
             }
@@ -82,7 +83,14 @@ public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
                 MaintenanceRecord toSend = rec.toAPI();
 
                 // Send to AppEngine
-                MaintenanceRecord sent = mService.maintenance().store(toSend).execute();
+                MaintenanceRecord sent;
+
+                if (toSend.getServerId() != null &&
+                        !"".equals(toSend.getServerId())) {
+                    sent = mService.maintenance().update(toSend).setKey(toSend.getServerId()).execute();
+                } else {
+                    sent = mService.maintenance().add(toSend).execute();
+                }
 
                 // Update our local copy (last updated, remote id, etc)
                 rec.fromAPI(sent);

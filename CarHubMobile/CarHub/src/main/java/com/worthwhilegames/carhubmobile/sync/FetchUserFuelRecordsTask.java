@@ -37,7 +37,8 @@ public class FetchUserFuelRecordsTask extends AuthenticatedHttpRequest {
             ModelsActiveRecords active = mService.fuel().active(Long.parseLong(mVehicle.getRemoteId())).execute();
             List<String> activeList = active.getActive();
             for (UserFuelRecord rec : allLocal) {
-                if (!activeList.contains(rec.getRemoteId())) {
+                String remoteId = rec.getRemoteId();
+                if (remoteId != null && !"".equals(remoteId) && !activeList.contains(remoteId)) {
                     toDelete.add(rec);
                 }
             }
@@ -82,7 +83,14 @@ public class FetchUserFuelRecordsTask extends AuthenticatedHttpRequest {
                 FuelRecord toSend = rec.toAPI();
 
                 // Send to AppEngine
-                FuelRecord sent = mService.fuel().store(toSend).execute();
+                FuelRecord sent;
+
+                if (toSend.getServerId() != null &&
+                        !"".equals(toSend.getServerId())) {
+                    sent = mService.fuel().update(toSend).setKey(toSend.getServerId()).execute();
+                } else {
+                    sent = mService.fuel().add(toSend).execute();
+                }
 
                 // Update our local copy (last updated, remote id, etc)
                 rec.fromAPI(sent);

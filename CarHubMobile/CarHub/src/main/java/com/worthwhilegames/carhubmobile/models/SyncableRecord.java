@@ -1,8 +1,10 @@
 package com.worthwhilegames.carhubmobile.models;
 
 import android.content.Context;
+import android.util.Log;
 import com.orm.StringUtil;
 import com.orm.SugarRecord;
+import com.worthwhilegames.carhubmobile.Util;
 
 import java.util.List;
 
@@ -14,7 +16,7 @@ import java.util.List;
 public abstract class SyncableRecord extends SugarRecord<SyncableRecord> {
 
     protected String mRemoteId;
-    protected boolean mDirty;
+    protected int mDirty;
 
     public SyncableRecord(Context arg0) {
         super(arg0);
@@ -42,14 +44,14 @@ public abstract class SyncableRecord extends SugarRecord<SyncableRecord> {
      * @return the mDirty
      */
     public boolean isDirty() {
-        return mDirty;
+        return mDirty != 0;
     }
 
     /**
      * @param aDirty the mDirty to set
      */
     public void setDirty(boolean aDirty) {
-        this.mDirty = aDirty;
+        this.mDirty = aDirty ? 1 : 0;
     }
 
     /**
@@ -89,6 +91,9 @@ public abstract class SyncableRecord extends SugarRecord<SyncableRecord> {
      */
     public static <T extends SyncableRecord> void deleteAllInList(Class<T> type, List<T> toDelete) {
         for (T t : toDelete) {
+            if (Util.isDebugBuild) {
+                Log.d("SyncableRecord", "Deleting " + type.getSimpleName() + " Remote: " + t.getRemoteId() + " Local: " + t.getId());
+            }
             t.delete();
         }
     }

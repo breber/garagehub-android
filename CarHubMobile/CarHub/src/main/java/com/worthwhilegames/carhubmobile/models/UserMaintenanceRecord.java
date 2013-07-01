@@ -4,8 +4,8 @@ import android.content.Context;
 import com.google.api.services.carhub.model.MaintenanceRecord;
 import com.orm.StringUtil;
 
-import java.sql.Date;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 public class UserMaintenanceRecord extends UserBaseExpenseRecord {
@@ -38,7 +38,8 @@ public class UserMaintenanceRecord extends UserBaseExpenseRecord {
     public MaintenanceRecord toAPI() {
         MaintenanceRecord toRet = new MaintenanceRecord();
         toRet.setServerId(mRemoteId);
-        toRet.setDate(new Date(mDate).toString());
+        toRet.setVehicle(Integer.parseInt(mVehicle.getRemoteId()));
+        toRet.setDate(cDateFormat.format(new Date(mDate)));
         toRet.setCategoryid(Integer.parseInt(mCategory.getRemoteId()));
         toRet.setLocation(mLocation);
         toRet.setDescription(mDescription);
@@ -67,7 +68,7 @@ public class UserMaintenanceRecord extends UserBaseExpenseRecord {
 
     /**
      * Get the most recent UserMaintenanceRecord for the given vehicle
-     * 
+     *
      * @param vehicle
      * @return
      */

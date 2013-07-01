@@ -101,6 +101,7 @@ public class AddExpenseRecordActivity extends AdActivity {
                 mRecord.setLocation(location);
                 mRecord.setDescription(description);
                 mRecord.setAmount(Float.parseFloat(amount));
+                mRecord.setVehicle(mVehicle);
                 mRecord.setDirty(true);
                 mRecord.save();
 

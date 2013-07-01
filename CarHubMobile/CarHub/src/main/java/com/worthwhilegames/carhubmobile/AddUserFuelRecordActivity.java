@@ -120,6 +120,7 @@ public class AddUserFuelRecordActivity extends AdActivity {
                     mRecord.setMpg((mRecord.getOdometerEnd() - mRecord.getOdometerStart()) / mRecord.getGallons());
                 }
                 mRecord.setFuelGrade(fuelGrade);
+                mRecord.setVehicle(mVehicle);
                 mRecord.setDirty(true);
                 mRecord.save();
 
