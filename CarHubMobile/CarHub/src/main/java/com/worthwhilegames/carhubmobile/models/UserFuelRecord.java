@@ -50,7 +50,7 @@ public class UserFuelRecord extends UserBaseExpenseRecord {
         toRet.setServerId(mRemoteId);
         toRet.setVehicle(Integer.parseInt(mVehicle.getRemoteId()));
         toRet.setDate(cDateFormat.format(new Date(mDate)));
-        toRet.setCategoryid(Integer.parseInt(mCategory.getRemoteId()));
+        toRet.setCategoryid(Integer.parseInt(CategoryRecord.fuelCategory(CategoryRecord.class).getRemoteId()));
         toRet.setLocation(mLocation);
         toRet.setDescription(mDescription);
         toRet.setAmount((double) mAmount);
