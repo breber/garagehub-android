@@ -28,7 +28,6 @@ public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
     public String doInBackground(Void ... unused) {
         MaintenanceRecordCollection records;
         long prevLastModified = Util.getSharedPrefs(mContext).getLong(FetchUserMaintenanceRecordsTask.class.getSimpleName() + "_lastUpdate", 0);
-        long currentTime = System.currentTimeMillis();
 
         try {
             // Handle all records deleted on the server
@@ -87,7 +86,7 @@ public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
 
                 if (toSend.getServerId() != null &&
                         !"".equals(toSend.getServerId())) {
-                    sent = mService.maintenance().update(toSend).setKey(toSend.getServerId()).execute();
+                    sent = mService.maintenance().update(toSend.getServerId(), toSend).execute();
                 } else {
                     sent = mService.maintenance().add(toSend).execute();
                 }
@@ -100,6 +99,7 @@ public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
                 rec.save();
             }
 
+            long currentTime = System.currentTimeMillis();
             Util.getSharedPrefs(mContext).edit().putLong(FetchUserMaintenanceRecordsTask.class.getSimpleName() + "_lastUpdate", currentTime).commit();
         } catch (IOException e) {
             e.printStackTrace();
