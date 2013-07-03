@@ -35,15 +35,16 @@ public class FetchUserBaseExpenseRecordsTask extends AuthenticatedHttpRequest {
             List<UserBaseExpenseRecord> toDelete = new ArrayList<UserBaseExpenseRecord>();
             ModelsActiveRecords active = mService.expense().active(Long.parseLong(mVehicle.getRemoteId())).execute();
             List<String> activeList = active.getActive();
-            for (UserBaseExpenseRecord rec : allLocal) {
-                String remoteId = rec.getRemoteId();
-                if (remoteId != null && !"".equals(remoteId) && !activeList.contains(remoteId)) {
-                    toDelete.add(rec);
+            if (activeList != null) {
+                for (UserBaseExpenseRecord rec : allLocal) {
+                    String remoteId = rec.getRemoteId();
+                    if (remoteId != null && !"".equals(remoteId) && !activeList.contains(remoteId)) {
+                        toDelete.add(rec);
+                    }
                 }
+
+                UserBaseExpenseRecord.deleteAllInList(UserBaseExpenseRecord.class, toDelete);
             }
-
-            UserBaseExpenseRecord.deleteAllInList(UserBaseExpenseRecord.class, toDelete);
-
 
             // Get a list of all records currently on the server
             String pageToken = null;

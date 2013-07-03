@@ -35,15 +35,16 @@ public class FetchUserFuelRecordsTask extends AuthenticatedHttpRequest {
             List<UserFuelRecord> toDelete = new ArrayList<UserFuelRecord>();
             ModelsActiveRecords active = mService.fuel().active(Long.parseLong(mVehicle.getRemoteId())).execute();
             List<String> activeList = active.getActive();
-            for (UserFuelRecord rec : allLocal) {
-                String remoteId = rec.getRemoteId();
-                if (remoteId != null && !"".equals(remoteId) && !activeList.contains(remoteId)) {
-                    toDelete.add(rec);
+            if (activeList != null) {
+                for (UserFuelRecord rec : allLocal) {
+                    String remoteId = rec.getRemoteId();
+                    if (remoteId != null && !"".equals(remoteId) && !activeList.contains(remoteId)) {
+                        toDelete.add(rec);
+                    }
                 }
+
+                UserFuelRecord.deleteAllInList(UserFuelRecord.class, toDelete);
             }
-
-            UserFuelRecord.deleteAllInList(UserFuelRecord.class, toDelete);
-
 
             // Get a list of all records currently on the server
             String pageToken = null;

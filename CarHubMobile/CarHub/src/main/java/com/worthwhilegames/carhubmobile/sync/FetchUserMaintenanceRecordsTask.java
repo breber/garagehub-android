@@ -35,15 +35,16 @@ public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
             List<UserMaintenanceRecord> toDelete = new ArrayList<UserMaintenanceRecord>();
             ModelsActiveRecords active = mService.maintenance().active(Long.parseLong(mVehicle.getRemoteId())).execute();
             List<String> activeList = active.getActive();
-            for (UserMaintenanceRecord rec : allLocal) {
-                String remoteId = rec.getRemoteId();
-                if (remoteId != null && !"".equals(remoteId) && !activeList.contains(remoteId)) {
-                    toDelete.add(rec);
+            if (activeList != null) {
+                for (UserMaintenanceRecord rec : allLocal) {
+                    String remoteId = rec.getRemoteId();
+                    if (remoteId != null && !"".equals(remoteId) && !activeList.contains(remoteId)) {
+                        toDelete.add(rec);
+                    }
                 }
+
+                UserMaintenanceRecord.deleteAllInList(UserMaintenanceRecord.class, toDelete);
             }
-
-            UserMaintenanceRecord.deleteAllInList(UserMaintenanceRecord.class, toDelete);
-
 
             // Get a list of all records currently on the server
             String pageToken = null;

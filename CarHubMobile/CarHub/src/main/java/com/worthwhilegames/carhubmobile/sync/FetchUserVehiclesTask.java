@@ -33,15 +33,16 @@ public class FetchUserVehiclesTask extends AuthenticatedHttpRequest {
             List<UserVehicleRecord> toDelete = new ArrayList<UserVehicleRecord>();
             ModelsActiveRecords activeVehicles = mService.vehicle().active().execute();
             List<String> activeList = activeVehicles.getActive();
-            for (UserVehicleRecord rec : allLocalVehicles) {
-                String remoteId = rec.getRemoteId();
-                if (remoteId != null && !"".equals(remoteId) && !activeList.contains(remoteId)) {
-                    toDelete.add(rec);
+            if (activeList != null) {
+                for (UserVehicleRecord rec : allLocalVehicles) {
+                    String remoteId = rec.getRemoteId();
+                    if (remoteId != null && !"".equals(remoteId) && !activeList.contains(remoteId)) {
+                        toDelete.add(rec);
+                    }
                 }
+
+                UserVehicleRecord.deleteAllInList(UserVehicleRecord.class, toDelete);
             }
-
-            UserVehicleRecord.deleteAllInList(UserVehicleRecord.class, toDelete);
-
 
             // Get a list of all records currently on the server
             vehicles = mService.vehicle().list().execute();
