@@ -156,7 +156,7 @@ public class UserVehicleActivity extends AdActivity {
 
         TextView currentField = (TextView) findViewById(R.id.vehicleColor);
         String color = mVehicle.getColor();
-        if (color != null) {
+        if (color != null && !"".equals(color)) {
             currentField.setText(color);
         } else {
             currentField.setText("N/A");
@@ -164,7 +164,7 @@ public class UserVehicleActivity extends AdActivity {
 
         currentField = (TextView) findViewById(R.id.vehiclePlates);
         String plates = mVehicle.getPlates();
-        if (plates != null) {
+        if (plates != null && !"".equals(plates)) {
             currentField.setText(plates);
         } else {
             currentField.setText("N/A");

@@ -47,6 +47,9 @@
             android:name=".AddExpenseRecordActivity"
             android:label="@string/addExpenseRecord" />
         <activity
+            android:name=".AddVehicleActivity"
+            android:label="@string/addVehicle" />
+        <activity
             android:name=".SettingsActivity"
             android:label="@string/menu_settings" />
         <activity

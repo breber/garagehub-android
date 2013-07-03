@@ -70,7 +70,14 @@ public class FetchUserVehiclesTask extends AuthenticatedHttpRequest {
                 UserVehicle toSend = rec.toAPI();
 
                 // Send to AppEngine
-                UserVehicle sent = mService.vehicle().store(toSend).execute();
+                UserVehicle sent;
+
+                if (toSend.getServerId() != null &&
+                        !"".equals(toSend.getServerId())) {
+                    sent = mService.vehicle().update(toSend.getServerId(), toSend).execute();
+                } else {
+                    sent = mService.vehicle().add(toSend).execute();
+                }
 
                 // Update our local copy (last updated, remote id, etc)
                 rec.fromAPI(sent);

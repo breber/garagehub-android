@@ -52,6 +52,11 @@
     <string name="odometerHint">Odometer</string>
     <string name="categoryHint">Category</string>
     <string name="fuelTypeHint">Fuel Grade</string>
+    <string name="yearHint">Year</string>
+    <string name="makeHint">Make</string>
+    <string name="modelHint">Model</string>
+    <string name="colorHint">Color</string>
+    <string name="plateHint">License Plates</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
 

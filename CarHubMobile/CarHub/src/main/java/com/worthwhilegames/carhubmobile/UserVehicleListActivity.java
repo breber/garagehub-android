@@ -52,9 +52,8 @@ public class UserVehicleListActivity extends AppEngineListActivity {
         // This will cover the Android menu button press
         switch (item.getItemId()) {
             case R.id.menu_add_vehicle:
-                // TODO: fix this
-//                Intent i = new Intent(this, AddVehicleActivity.class);
-//                startActivity(i);
+                Intent i = new Intent(this, AddVehicleActivity.class);
+                startActivity(i);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
