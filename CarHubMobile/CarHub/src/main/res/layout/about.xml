@@ -13,7 +13,8 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="10dip"
         android:text="@string/aboutInformation"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:autoLink="web"/>
 
     <com.google.ads.AdView
         android:id="@+id/adView"

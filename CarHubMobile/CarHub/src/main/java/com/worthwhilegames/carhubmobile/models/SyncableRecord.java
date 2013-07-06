@@ -77,6 +77,15 @@ public abstract class SyncableRecord extends SugarRecord<SyncableRecord> {
         if (remoteId != null) {
             List<T> found = T.find(type, StringUtil.toSQLName("mRemoteId") + " = ? LIMIT 1", remoteId);
             if (!found.isEmpty()) {
+                if (found.size() != 1) {
+                    for (int i = 1; i < found.size(); i++) {
+                        T t = found.get(i);
+                        if (Util.isDebugBuild) {
+                            Log.d("SyncableRecord", "More than one remote id. Deleting " + type.getSimpleName() + " Remote: " + t.getRemoteId() + " Local: " + t.getId());
+                        }
+                        t.delete();
+                    }
+                }
                 return found.get(0);
             }
         }

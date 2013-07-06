@@ -43,9 +43,9 @@ public class UserVehicleActivity extends AdActivity {
     private UserVehicleRecord mVehicle;
 
     private ImageTextWrapper[] mImageTextWrappers = {
-            new MenuImageAdapter.ImageTextWrapper(R.drawable.ic_launcher, R.string.expenseManager, UserExpenseManagerActivity.class),
-            new MenuImageAdapter.ImageTextWrapper(R.drawable.ic_launcher, R.string.maintenanceRecords, UserMaintenanceListActivity.class),
-            new MenuImageAdapter.ImageTextWrapper(R.drawable.ic_launcher, R.string.fuelRecords, UserFuelListActivity.class),
+            new MenuImageAdapter.ImageTextWrapper(R.drawable.ic_menu_expense, R.string.expenseManager, UserExpenseManagerActivity.class),
+            new MenuImageAdapter.ImageTextWrapper(R.drawable.ic_menu_maintenance, R.string.maintenanceRecords, UserMaintenanceListActivity.class),
+            new MenuImageAdapter.ImageTextWrapper(R.drawable.ic_menu_gas, R.string.fuelRecords, UserFuelListActivity.class),
     };
 
     /* (non-Javadoc)
