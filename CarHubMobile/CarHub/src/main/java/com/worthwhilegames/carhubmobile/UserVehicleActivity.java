@@ -96,6 +96,32 @@ public class UserVehicleActivity extends AdActivity {
         updateUi();
     }
 
+//    /* (non-Javadoc)
+//     * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+//     */
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.activity_vehicle, menu);
+//        return true;
+//    }
+//
+//    /* (non-Javadoc)
+//     * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+//     */
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // This will cover the Android menu button press
+//        switch (item.getItemId()) {
+//            case R.id.menu_edit_vehicle:
+//                Intent i = new Intent(this, AddVehicleActivity.class);
+//                i.putExtra(Constants.INTENT_DATA_VEHICLE, mVehicle.getId());
+//                startActivity(i);
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

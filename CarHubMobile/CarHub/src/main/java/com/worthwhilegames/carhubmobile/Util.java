@@ -11,16 +11,16 @@ public class Util {
     /**
      * A boolean to represent if the current build is a debug build
      */
-    public static final boolean isDebugBuild = true;
+    public static final boolean isDebugBuild = BuildConfig.DEBUG;
 
     /**
      * Should we hide ads?
      */
-    public static final boolean shouldHideAds = true;
+    public static final boolean shouldHideAds = BuildConfig.DEBUG;
 
     /**
      * Utility method for getting the SharedPreferences instance for the app
-     * 
+     *
      * @param ctx
      * @return
      */

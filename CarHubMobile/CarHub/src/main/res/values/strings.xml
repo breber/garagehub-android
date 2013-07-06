@@ -22,9 +22,7 @@
     <string name="settings">Settings</string>
     <string name="costCalculator">Cost Calculator</string>
     <string name="menu">Menu</string>
-    <string name="aboutInformation">This application uses the information from myGasFeed.com to display nearby gas price information. Users will have the option to search by their current location or enter a zip code. The application will get information about nearby gas prices based on the input.\n\nComing soon - view, add and modify vehicle data stored on http://www.carhub.us!\n\nIcons courtesy of http://www.visualpharm.com/</string>
-    <string name="howTo">How To</string>
-    <string name="howToInformation">To use this application please select the Find Nearby Gas Prices from the main menu. By clicking on the Android menu button a user will be able to change their search options. To search for nearby gas prices select the Find Stations button. A table will be shown with the station information.</string>
+    <string name="aboutInformation">This application uses the information from myGasFeed.com to display nearby gas price information. Users will have the option to search by their current location or enter a zip code. The application will get information about nearby gas prices based on the input.\n\nIcons courtesy of http://www.visualpharm.com/</string>
     <string name="noGasPrices">No gas prices available</string>
     <string name="userVehicleList">Vehicles</string>
     <string name="noVehiclesRegistered">No vehicles registered</string>
@@ -41,6 +39,7 @@
     <string name="viewMap">View Map</string>
     <string name="noExpenseRecords">No expenses</string>
     <string name="addVehicle">Add Vehicle</string>
+    <string name="editVehicle">Edit Vehicle</string>
     <string name="addFuelRecord">Add Fuel Record</string>
     <string name="addMaintenanceRecord">Add Maintenance Record</string>
     <string name="addExpenseRecord">Add Expense</string>
