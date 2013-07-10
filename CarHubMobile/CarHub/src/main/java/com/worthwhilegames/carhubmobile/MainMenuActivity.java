@@ -1,6 +1,7 @@
 package com.worthwhilegames.carhubmobile;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -39,5 +40,17 @@ public class MainMenuActivity extends AdActivity {
                 startActivity(i);
             }
         });
+
+        // Temporarily clear preferences if first start up
+        // This should fix syncing issues after database upgrade
+        SharedPreferences prefs = Util.getSharedPrefs(this);
+        try {
+            if (prefs.getInt("PACKAGE_VERSION", 0) != 1) {
+                prefs.edit().clear().commit();
+                prefs.edit().putInt("PACKAGE_VERSION", 1).commit();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
