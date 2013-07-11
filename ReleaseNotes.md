@@ -1,5 +1,10 @@
 ## Release Notes
 
+### Version 1.1.0
+
+* Add support for syncing vehicle information from CarHub.us
+* Improve location handling when finding local gas prices
+
 ### Version 1.0.3
 
 * Hopefully fix issue with gas prices not displaying when upgrading
