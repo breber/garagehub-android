@@ -16,7 +16,7 @@ public class Util {
     /**
      * Should we hide ads?
      */
-    public static final boolean shouldHideAds = BuildConfig.DEBUG;
+    public static final boolean shouldHideAds = isDebugBuild;
 
     /**
      * Utility method for getting the SharedPreferences instance for the app
