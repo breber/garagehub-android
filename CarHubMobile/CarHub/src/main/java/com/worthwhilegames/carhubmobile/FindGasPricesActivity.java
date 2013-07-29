@@ -202,21 +202,25 @@ public class FindGasPricesActivity extends AdListActivity implements FetchGasPri
             preLocation = getLocationFromGoogle();
         }
 
-        double lat = Double.parseDouble(preLocation.split("~~")[0]);
-        double lon = Double.parseDouble(preLocation.split("~~")[1]);
+        if (preLocation.matches("-?\\d+\\.\\d+~~-?\\d+\\.\\d+")) {
+            double lat = Double.parseDouble(preLocation.split("~~")[0]);
+            double lon = Double.parseDouble(preLocation.split("~~")[1]);
 
-        Log.d("Longitude: ", "" + lat);
-        Log.d("Latitude: ", "" + lon);
+            if (Util.isDebugBuild) {
+                Log.d("Longitude: ", "" + lat);
+                Log.d("Latitude: ", "" + lon);
+            }
 
-        SharedPreferences sharedPref = Util.getSharedPrefs(this);
-        int distance = sharedPref.getInt("Distance", 5);
-        String fuelType = sharedPref.getString("Fuel Type", "Mid");
-        String sortBy = sharedPref.getString("Sort By", "Price");
-        FetchGasPricesTask request = new FetchGasPricesTask(this, this);
+            SharedPreferences sharedPref = Util.getSharedPrefs(this);
+            int distance = sharedPref.getInt("Distance", 5);
+            String fuelType = sharedPref.getString("Fuel Type", "Mid");
+            String sortBy = sharedPref.getString("Sort By", "Price");
+            FetchGasPricesTask request = new FetchGasPricesTask(this, this);
 
-        String url = String.format("http://api.mygasfeed.com/stations/radius/%f/%f/%d/%s/%s/zax22arsix.json",
-                lat, lon, distance, fuelType.trim().toLowerCase(), sortBy.toLowerCase());
-        request.execute(url);
+            String url = String.format("http://api.mygasfeed.com/stations/radius/%f/%f/%d/%s/%s/zax22arsix.json",
+                    lat, lon, distance, fuelType.trim().toLowerCase(), sortBy.toLowerCase());
+            request.execute(url);
+        }
     }
 
     private void updateUi() {
