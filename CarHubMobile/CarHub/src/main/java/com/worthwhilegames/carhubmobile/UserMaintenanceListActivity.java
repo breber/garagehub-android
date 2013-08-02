@@ -11,7 +11,8 @@ import android.widget.Toast;
 import com.worthwhilegames.carhubmobile.adapters.UserMaintenanceAdapter;
 import com.worthwhilegames.carhubmobile.models.UserMaintenanceRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
-import com.worthwhilegames.carhubmobile.sync.FetchUserMaintenanceRecordsTask;
+import com.worthwhilegames.carhubmobile.sync.SyncAdapter;
+import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -86,11 +87,10 @@ public class UserMaintenanceListActivity extends AppEngineListActivity {
     protected void performUpdate() {
         setProgressBarIndeterminateVisibility(true);
 
-        FetchUserMaintenanceRecordsTask request = new FetchUserMaintenanceRecordsTask(this, mService, this, mVehicle);
-        request.execute();
+        SyncAdapter.performSync(this, mService, this);
     }
 
-    public void taskDidFinish() {
+    public void taskDidFinish(Class<? extends AuthenticatedHttpRequest> cls) {
         // Get all GasPriceRecords from the database
         List<UserMaintenanceRecord> maintRecords = UserMaintenanceRecord.getRecordsForVehicle(UserMaintenanceRecord.class, mVehicle);
         Collections.sort(maintRecords, new Comparator<UserMaintenanceRecord>() {

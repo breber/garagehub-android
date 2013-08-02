@@ -5,6 +5,7 @@ import com.google.api.services.carhub.Carhub;
 import com.google.api.services.carhub.model.ModelsActiveRecords;
 import com.google.api.services.carhub.model.UserVehicle;
 import com.google.api.services.carhub.model.UserVehicleCollection;
+import com.worthwhilegames.carhubmobile.Util;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
@@ -24,8 +25,8 @@ public class FetchUserVehiclesTask extends AuthenticatedHttpRequest {
 
     @Override
     public String doInBackground(Void ... unused) {
-        UserVehicleCollection vehicles;
-        long currentTime = System.currentTimeMillis();
+        UserVehicleCollection records;
+        long prevLastModified = Util.getSharedPrefs(mContext).getLong(FetchUserVehiclesTask.class.getSimpleName() + "_lastUpdate", 0);
 
         try {
             // Handle all records deleted on the server
@@ -45,24 +46,35 @@ public class FetchUserVehiclesTask extends AuthenticatedHttpRequest {
             }
 
             // Get a list of all records currently on the server
-            vehicles = mService.vehicle().list().execute();
-            if (vehicles != null && vehicles.getItems() != null) {
-                for (UserVehicle v : vehicles.getItems()) {
-                    // Try and find a record locally to update
-                    UserVehicleRecord toUpdate = UserVehicleRecord.findByRemoteId(UserVehicleRecord.class, v.getServerId());
+            String pageToken = null;
+            do {
+                Carhub.Vehicle.List query = mService.vehicle().list();
+                if (prevLastModified != 0) {
+                    query = query.setModifiedSince(prevLastModified + "");
+                }
+                query = query.setPageToken(pageToken);
 
-                    // If one can't be found, create a new one
-                    if (toUpdate == null) {
-                        toUpdate = new UserVehicleRecord(mContext);
+                // Get a list of all records currently on the server
+                records = query.execute();
+                if (records != null && records.getItems() != null) {
+                    for (UserVehicle r : records.getItems()) {
+                        // Try and find a record locally to update
+                        UserVehicleRecord toUpdate = UserVehicleRecord.findByRemoteId(UserVehicleRecord.class, r.getServerId());
+
+                        // If one can't be found, create a new one
+                        if (toUpdate == null) {
+                            toUpdate = new UserVehicleRecord(mContext);
+                        }
+
+                        // Update the local copy with the server information
+                        toUpdate.fromAPI(r);
+                        toUpdate.setDirty(false);
+                        toUpdate.save();
                     }
 
-                    // Update the local copy with the server information
-                    toUpdate.fromAPI(v);
-                    toUpdate.setDirty(false);
-                    toUpdate.save();
+                    pageToken = records.getNextPageToken();
                 }
-            }
-
+            } while (pageToken != null);
 
             // Send all records that are dirty
             List<UserVehicleRecord> dirtyRecords = UserVehicleRecord.findAllDirty(UserVehicleRecord.class);
@@ -87,6 +99,10 @@ public class FetchUserVehiclesTask extends AuthenticatedHttpRequest {
                 rec.setDirty(false);
                 rec.save();
             }
+
+
+            long currentTime = System.currentTimeMillis();
+            Util.getSharedPrefs(mContext).edit().putLong(FetchUserVehiclesTask.class.getSimpleName() + "_lastUpdate", currentTime).commit();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -99,7 +115,7 @@ public class FetchUserVehiclesTask extends AuthenticatedHttpRequest {
         super.onPostExecute(r);
 
         if (mDelegate != null) {
-            mDelegate.taskDidFinish();
+            mDelegate.taskDidFinish(FetchUserVehiclesTask.class);
         }
     }
 }

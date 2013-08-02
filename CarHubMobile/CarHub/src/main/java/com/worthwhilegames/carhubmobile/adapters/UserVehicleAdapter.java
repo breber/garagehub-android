@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import com.worthwhilegames.carhubmobile.R;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
 import java.util.List;
@@ -33,10 +32,7 @@ public class UserVehicleAdapter extends ArrayAdapter<UserVehicleRecord> {
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new VehicleHolder();
-            holder.vehicleName = (TextView) row.findViewById(R.id.vehicleName);
-            holder.vehicleColor = (TextView) row.findViewById(R.id.vehicleColor);
-            holder.vehicleLicensePlates = (TextView) row.findViewById(R.id.vehicleLicensePlates);
-            holder.vehicleYear = (TextView) row.findViewById(R.id.vehicleModelYear);
+            holder.vehicleName = (TextView) row.findViewById(android.R.id.text1);
 
             row.setTag(holder);
         } else {
@@ -45,20 +41,7 @@ public class UserVehicleAdapter extends ArrayAdapter<UserVehicleRecord> {
 
         UserVehicleRecord vehicle = getItem(position);
 
-        holder.vehicleName.setText(vehicle.getMake().trim() + " " + vehicle.getModel().trim());
-        String color = vehicle.getColor();
-        if (color != null && !"".equals(color.trim())) {
-            holder.vehicleColor.setText(color.trim());
-        } else {
-            holder.vehicleColor.setText("N/A");
-        }
-        String plates = vehicle.getPlates();
-        if (plates != null && !"".equals(plates.trim())) {
-            holder.vehicleLicensePlates.setText(plates.trim());
-        } else {
-            holder.vehicleLicensePlates.setText("N/A");
-        }
-        holder.vehicleYear.setText(vehicle.getYear().trim());
+        holder.vehicleName.setText(vehicle.getYear() + " " + vehicle.getMake() + " " + vehicle.getModel());
 
         return row;
     }
@@ -66,8 +49,5 @@ public class UserVehicleAdapter extends ArrayAdapter<UserVehicleRecord> {
     static class VehicleHolder
     {
         TextView vehicleName;
-        TextView vehicleColor;
-        TextView vehicleLicensePlates;
-        TextView vehicleYear;
     }
 }

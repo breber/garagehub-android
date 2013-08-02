@@ -27,7 +27,7 @@ public class FetchUserFuelRecordsTask extends AuthenticatedHttpRequest {
     @Override
     public String doInBackground(Void ... unused) {
         FuelRecordCollection records;
-        long prevLastModified = Util.getSharedPrefs(mContext).getLong(FetchUserFuelRecordsTask.class.getSimpleName() + "_lastUpdate", 0);
+        long prevLastModified = Util.getSharedPrefs(mContext).getLong(FetchUserFuelRecordsTask.class.getSimpleName() + "_" + mVehicle.getRemoteId() + "_lastUpdate", 0);
 
         try {
             // Handle all records deleted on the server
@@ -69,6 +69,7 @@ public class FetchUserFuelRecordsTask extends AuthenticatedHttpRequest {
 
                         // Update the local copy with the server information
                         toUpdate.fromAPI(r);
+                        toUpdate.setDirty(false);
                         toUpdate.save();
                     }
 
@@ -101,7 +102,7 @@ public class FetchUserFuelRecordsTask extends AuthenticatedHttpRequest {
             }
 
             long currentTime = System.currentTimeMillis();
-            Util.getSharedPrefs(mContext).edit().putLong(FetchUserFuelRecordsTask.class.getSimpleName() + "_lastUpdate", currentTime).commit();
+            Util.getSharedPrefs(mContext).edit().putLong(FetchUserFuelRecordsTask.class.getSimpleName() + "_" + mVehicle.getRemoteId() + "_lastUpdate", currentTime).commit();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -114,7 +115,7 @@ public class FetchUserFuelRecordsTask extends AuthenticatedHttpRequest {
         super.onPostExecute(r);
 
         if (mDelegate != null) {
-            mDelegate.taskDidFinish();
+            mDelegate.taskDidFinish(FetchUserFuelRecordsTask.class);
         }
     }
 }

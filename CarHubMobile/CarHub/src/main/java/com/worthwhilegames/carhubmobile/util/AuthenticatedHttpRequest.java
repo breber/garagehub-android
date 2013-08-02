@@ -11,7 +11,7 @@ import com.google.api.services.carhub.Carhub;
 public abstract class AuthenticatedHttpRequest extends AsyncTask<Void, Void, Object> {
 
     public interface AuthenticatedHttpRequestCallback {
-        void taskDidFinish();
+        void taskDidFinish(Class<? extends AuthenticatedHttpRequest> cls);
     }
 
     /**

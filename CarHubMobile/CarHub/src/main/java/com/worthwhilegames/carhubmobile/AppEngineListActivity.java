@@ -1,7 +1,6 @@
 package com.worthwhilegames.carhubmobile;
 
 import android.accounts.AccountManager;
-import android.app.ListActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,7 +9,7 @@ import android.widget.TextView;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.json.gson.GsonFactory;
-import com.google.api.services.carhub.*;
+import com.google.api.services.carhub.Carhub;
 import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 /**
@@ -65,7 +64,7 @@ public abstract class AppEngineListActivity extends AdListActivity implements Au
     @Override
     protected void onStart() {
         super.onStart();
-        taskDidFinish();
+        taskDidFinish(null);
     }
 
     @Override
@@ -121,5 +120,5 @@ public abstract class AppEngineListActivity extends AdListActivity implements Au
     protected abstract void performUpdate();
 
     @Override
-    public abstract void taskDidFinish();
+    public abstract void taskDidFinish(Class<? extends AuthenticatedHttpRequest> clz);
 }

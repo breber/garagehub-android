@@ -17,12 +17,13 @@ import com.google.api.services.carhub.Carhub;
 import com.worthwhilegames.carhubmobile.adapters.MenuImageAdapter;
 import com.worthwhilegames.carhubmobile.adapters.MenuImageAdapter.ImageTextWrapper;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
-import com.worthwhilegames.carhubmobile.sync.FetchCategoryRecordsTask;
+import com.worthwhilegames.carhubmobile.sync.SyncAdapter;
+import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 /**
  * @author breber
  */
-public class UserVehicleActivity extends AdActivity {
+public class UserVehicleActivity extends AdActivity implements AuthenticatedHttpRequest.AuthenticatedHttpRequestCallback {
 
     private static final String PREF_ACCOUNT_NAME = "accountName";
 
@@ -159,9 +160,7 @@ public class UserVehicleActivity extends AdActivity {
     protected void performUpdate() {
         setProgressBarIndeterminateVisibility(true);
 
-        // Fetch Categories
-        FetchCategoryRecordsTask request = new FetchCategoryRecordsTask(this, mService);
-        request.execute();
+        SyncAdapter.performSync(this, mService, this);
     }
 
     private void chooseAccount() {
@@ -211,5 +210,11 @@ public class UserVehicleActivity extends AdActivity {
         } else {
             currentField.setText("Unknown");
         }
+    }
+
+    public void taskDidFinish(Class<? extends AuthenticatedHttpRequest> cls) {
+        updateUi();
+
+        setProgressBarIndeterminateVisibility(false);
     }
 }
