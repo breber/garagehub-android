@@ -49,7 +49,7 @@ public class FetchUserMaintenanceRecordsTask extends AuthenticatedHttpRequest {
             // Get a list of all records currently on the server
             String pageToken = null;
             do {
-                Carhub.Maintenance.List query = mService.maintenance().list(Integer.parseInt(mVehicle.getRemoteId()));
+                Carhub.Maintenance.List query = mService.maintenance().list(Long.parseLong(mVehicle.getRemoteId()));
                 if (prevLastModified != 0) {
                     query = query.setModifiedSince(prevLastModified + "");
                 }

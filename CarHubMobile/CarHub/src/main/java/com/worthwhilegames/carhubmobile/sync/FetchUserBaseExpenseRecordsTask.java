@@ -49,7 +49,7 @@ public class FetchUserBaseExpenseRecordsTask extends AuthenticatedHttpRequest {
             // Get a list of all records currently on the server
             String pageToken = null;
             do {
-                Carhub.Expense.List query = mService.expense().list(Integer.parseInt(mVehicle.getRemoteId()));
+                Carhub.Expense.List query = mService.expense().list(Long.parseLong(mVehicle.getRemoteId()));
                 if (prevLastModified != 0) {
                     query = query.setModifiedSince(prevLastModified + "");
                 }

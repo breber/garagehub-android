@@ -49,7 +49,7 @@ public class FetchUserFuelRecordsTask extends AuthenticatedHttpRequest {
             // Get a list of all records currently on the server
             String pageToken = null;
             do {
-                Carhub.Fuel.List query = mService.fuel().list(Integer.parseInt(mVehicle.getRemoteId()));
+                Carhub.Fuel.List query = mService.fuel().list(Long.parseLong(mVehicle.getRemoteId()));
                 if (prevLastModified != 0) {
                     query = query.setModifiedSince(prevLastModified + "");
                 }
