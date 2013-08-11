@@ -1,0 +1,3 @@
+[submodule "CarHubMobile/CarHub/src/main/java/com/worthwhilegames/carhubmobile/carhubkeys"]
+	path = CarHubMobile/CarHub/src/main/java/com/worthwhilegames/carhubmobile/carhubkeys
+	url = ssh://git@bitbucket.org/breber/carhub-keys.git

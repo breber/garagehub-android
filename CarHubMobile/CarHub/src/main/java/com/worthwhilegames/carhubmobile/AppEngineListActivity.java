@@ -10,6 +10,7 @@ import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.carhub.Carhub;
+import com.worthwhilegames.carhubmobile.carhubkeys.CarHubKeys;
 import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 /**
@@ -48,8 +49,7 @@ public abstract class AppEngineListActivity extends AdListActivity implements Au
 
         // Inside your Activity class onCreate method
         SharedPreferences settings = getSharedPreferences("CarHubMobile", 0);
-        mCreds = GoogleAccountCredential.usingAudience(this,
-                "server:client_id:280486107933-fkp13pk6dv84vdkumqu1vj5hh0o74he3.apps.googleusercontent.com");
+        mCreds = GoogleAccountCredential.usingAudience(this, CarHubKeys.CARHUB_KEY);
         setAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
 
         Carhub.Builder bl = new Carhub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCreds);
