@@ -41,13 +41,12 @@ public class UserVehicleActivity extends AdActivity implements AuthenticatedHttp
     protected Carhub mService;
 
 
-
     private UserVehicleRecord mVehicle;
 
     private ImageTextWrapper[] mImageTextWrappers = {
-            new MenuImageAdapter.ImageTextWrapper(R.drawable.ic_menu_expense, R.string.expenseManager, UserExpenseManagerActivity.class),
-            new MenuImageAdapter.ImageTextWrapper(R.drawable.ic_menu_maintenance, R.string.maintenanceRecords, UserMaintenanceListActivity.class),
-            new MenuImageAdapter.ImageTextWrapper(R.drawable.ic_menu_gas, R.string.fuelRecords, UserFuelListActivity.class),
+            new MenuImageAdapter.ImageTextWrapper(R.raw.expense, R.string.expenseManager, UserExpenseManagerActivity.class),
+            new MenuImageAdapter.ImageTextWrapper(R.raw.maintenance, R.string.maintenanceRecords, UserMaintenanceListActivity.class),
+            new MenuImageAdapter.ImageTextWrapper(R.raw.fuel, R.string.fuelRecords, UserFuelListActivity.class),
     };
 
     /* (non-Javadoc)

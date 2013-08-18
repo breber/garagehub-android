@@ -2,15 +2,16 @@ package com.worthwhilegames.carhubmobile.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.PictureDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.*;
+import com.larvalabs.svgandroid.SVG;
+import com.larvalabs.svgandroid.SVGParser;
 import com.worthwhilegames.carhubmobile.R;
 
 public class MenuImageAdapter extends BaseAdapter {
@@ -49,10 +50,17 @@ public class MenuImageAdapter extends BaseAdapter {
             wrapper = (RelativeLayout) convertView;
         }
 
+        SVG svg = SVGParser.getSVGFromResource(mContext.getResources(), mImageTextWrappers[position].mImageId);
+        PictureDrawable pd = svg.createPictureDrawable();
+
+        Bitmap bitmap = Bitmap.createBitmap(pd.getIntrinsicWidth(), pd.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        pd.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        pd.draw(canvas);
+
         ImageView imageView = (ImageView) wrapper.findViewById(R.id.imageView);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        imageView.setPadding(8, 8, 8, 8);
-        imageView.setImageResource(mImageTextWrappers[position].mImageId);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        imageView.setImageBitmap(bitmap);
 
         TextView textView = (TextView) wrapper.findViewById(R.id.itemLabel);
         textView.setText(mImageTextWrappers[position].mTextId);
