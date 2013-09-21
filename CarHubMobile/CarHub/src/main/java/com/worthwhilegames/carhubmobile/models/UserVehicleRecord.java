@@ -1,7 +1,7 @@
 package com.worthwhilegames.carhubmobile.models;
 
 import android.content.Context;
-import com.google.api.services.carhub.model.UserVehicle;
+import com.appspot.car_hub.carhub.model.UserVehicle;
 
 import java.util.LinkedList;
 import java.util.List;

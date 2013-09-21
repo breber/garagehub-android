@@ -3,7 +3,7 @@ package com.worthwhilegames.carhubmobile.util;
 import android.content.Context;
 import android.os.AsyncTask;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.services.carhub.Carhub;
+import com.appspot.car_hub.carhub.Carhub;
 
 /**
  * @author breber

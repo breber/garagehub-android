@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.json.gson.GsonFactory;
-import com.google.api.services.carhub.Carhub;
+import com.appspot.car_hub.carhub.Carhub;
 import com.worthwhilegames.carhubmobile.adapters.MenuImageAdapter;
 import com.worthwhilegames.carhubmobile.adapters.MenuImageAdapter.ImageTextWrapper;
 import com.worthwhilegames.carhubmobile.carhubkeys.CarHubKeys;

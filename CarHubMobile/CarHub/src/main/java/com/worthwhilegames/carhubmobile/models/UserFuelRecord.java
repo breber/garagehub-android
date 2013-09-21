@@ -1,7 +1,7 @@
 package com.worthwhilegames.carhubmobile.models;
 
 import android.content.Context;
-import com.google.api.services.carhub.model.FuelRecord;
+import com.appspot.car_hub.carhub.model.FuelRecord;
 import com.orm.StringUtil;
 
 import java.text.ParseException;

@@ -1,7 +1,7 @@
 package com.worthwhilegames.carhubmobile.sync;
 
 import android.content.Context;
-import com.google.api.services.carhub.Carhub;
+import com.appspot.car_hub.carhub.Carhub;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 

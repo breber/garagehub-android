@@ -1,7 +1,7 @@
 package com.worthwhilegames.carhubmobile.models;
 
 import android.content.Context;
-import com.google.api.services.carhub.model.UserExpenseRecord;
+import com.appspot.car_hub.carhub.model.UserExpenseRecord;
 import com.orm.StringUtil;
 import com.orm.dsl.Ignore;
 

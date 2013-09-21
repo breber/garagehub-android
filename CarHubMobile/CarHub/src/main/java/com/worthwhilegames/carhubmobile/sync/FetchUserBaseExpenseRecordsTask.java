@@ -1,10 +1,10 @@
 package com.worthwhilegames.carhubmobile.sync;
 
 import android.content.Context;
-import com.google.api.services.carhub.Carhub;
-import com.google.api.services.carhub.model.ModelsActiveRecords;
-import com.google.api.services.carhub.model.UserExpenseRecord;
-import com.google.api.services.carhub.model.UserExpenseRecordCollection;
+import com.appspot.car_hub.carhub.Carhub;
+import com.appspot.car_hub.carhub.model.ModelsActiveRecords;
+import com.appspot.car_hub.carhub.model.UserExpenseRecord;
+import com.appspot.car_hub.carhub.model.UserExpenseRecordCollection;
 import com.worthwhilegames.carhubmobile.Util;
 import com.worthwhilegames.carhubmobile.models.UserBaseExpenseRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
