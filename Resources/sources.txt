@@ -1,7 +1,0 @@
-# Sources of Icons
-
-http://www.iconarchive.com/icons/visualpharm/icons8-metro-style/free-license.pdf/Users/breber/git/CarHubMobile/Resources/ic_menu_about.png
-  ic_menu_expense.png
-  ic_menu_gas.png
-  ic_menu_maintenance.png
-  ic_menu_vehicle.png

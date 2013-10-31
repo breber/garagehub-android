@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import com.worthwhilegames.carhubmobile.adapters.MenuImageAdapter;
 import com.worthwhilegames.carhubmobile.adapters.MenuImageAdapter.ImageTextWrapper;
@@ -16,9 +15,9 @@ import com.worthwhilegames.carhubmobile.adapters.MenuImageAdapter.ImageTextWrapp
 public class MainMenuActivity extends AdActivity {
 
     private ImageTextWrapper[] mImageTextWrappers = {
-            new MenuImageAdapter.ImageTextWrapper(R.drawable.ic_menu_gas, R.string.findNearbyGasPrices, FindGasPricesActivity.class),
-            new MenuImageAdapter.ImageTextWrapper(R.drawable.ic_menu_vehicle, R.string.userVehicleList, UserVehicleListActivity.class),
-            new MenuImageAdapter.ImageTextWrapper(R.drawable.ic_menu_about, R.string.about, AboutActivity.class),
+            new MenuImageAdapter.ImageTextWrapper(R.raw.fuel, R.string.findNearbyGasPrices, FindGasPricesActivity.class),
+            new MenuImageAdapter.ImageTextWrapper(R.raw.vehicle, R.string.userVehicleList, UserVehicleListActivity.class),
+            new MenuImageAdapter.ImageTextWrapper(R.raw.info, R.string.about, AboutActivity.class),
     };
 
     /* (non-Javadoc)
@@ -32,7 +31,7 @@ public class MainMenuActivity extends AdActivity {
         GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(new MenuImageAdapter(this, mImageTextWrappers));
 
-        gridview.setOnItemClickListener(new OnItemClickListener() {
+        gridview.setOnItemClickListener(new GridView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 ImageTextWrapper item = (ImageTextWrapper) parent.getItemAtPosition(position);
