@@ -96,7 +96,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         ads:adSize="BANNER"
-        ads:adUnitId="a150c682a43c4b9" />
+        ads:adUnitId="@string/ad_unit_id" />
 
 </RelativeLayout>
 
