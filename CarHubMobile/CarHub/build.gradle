@@ -1,9 +1,8 @@
 apply plugin: 'android'
 
 dependencies {
-    compile 'com.google.android.gms:play-services:3.2.25'
+    compile 'com.google.android.gms:play-services:4.0.30'
 
-    compile files('libs/GoogleAdMobAdsSdk-6.4.1.jar')
     compile files('libs/sugar-1.3_beta.jar')
     compile files('libs/svg-android.jar')
 
@@ -19,7 +18,7 @@ dependencies {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "18.0.1"
+    buildToolsVersion "19"
 
     defaultConfig {
         minSdkVersion 8
