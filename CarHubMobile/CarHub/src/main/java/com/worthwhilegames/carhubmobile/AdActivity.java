@@ -13,7 +13,7 @@ import com.google.android.gms.ads.AdView;
  */
 public abstract class AdActivity extends Activity {
 
-    private boolean mAdsHidden = false;
+    private boolean mAdsHidden = Util.shouldHideAds;
 
     @Override
     protected void onStart() {
