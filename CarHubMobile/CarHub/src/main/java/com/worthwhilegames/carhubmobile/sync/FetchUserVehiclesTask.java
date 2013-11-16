@@ -7,24 +7,29 @@ import com.appspot.car_hub.carhub.model.UserVehicle;
 import com.appspot.car_hub.carhub.model.UserVehicleCollection;
 import com.worthwhilegames.carhubmobile.Util;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
-import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FetchUserVehiclesTask extends AuthenticatedHttpRequest {
+public class FetchUserVehiclesTask implements ISyncTask {
+    /**
+     * The context
+     */
+    private Context mContext;
+
+    /**
+     * The Carhub service for interacting with AppEngine
+     */
+    protected Carhub mService;
 
     public FetchUserVehiclesTask(Context ctx, Carhub service) {
-        this(ctx, service, null);
-    }
-
-    public FetchUserVehiclesTask(Context ctx, Carhub service, AuthenticatedHttpRequestCallback delegate) {
-        super(ctx, service, delegate);
+        mContext = ctx;
+        mService = service;
     }
 
     @Override
-    public String doInBackground(Void ... unused) {
+    public boolean performTask() {
         UserVehicleCollection records;
         long prevLastModified = Util.getSharedPrefs(mContext).getLong(FetchUserVehiclesTask.class.getSimpleName() + "_lastUpdate", 0);
 
@@ -100,22 +105,13 @@ public class FetchUserVehiclesTask extends AuthenticatedHttpRequest {
                 rec.save();
             }
 
-
             long currentTime = System.currentTimeMillis();
             Util.getSharedPrefs(mContext).edit().putLong(FetchUserVehiclesTask.class.getSimpleName() + "_lastUpdate", currentTime).commit();
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
 
-        return "";
-    }
-
-    @Override
-    protected void onPostExecute(Object r) {
-        super.onPostExecute(r);
-
-        if (mDelegate != null) {
-            mDelegate.taskDidFinish(FetchUserVehiclesTask.class);
-        }
+        return true;
     }
 }

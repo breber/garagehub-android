@@ -3,23 +3,36 @@ package com.worthwhilegames.carhubmobile.sync;
 import android.accounts.Account;
 import android.content.*;
 import android.os.Bundle;
+import com.appspot.car_hub.carhub.Carhub;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.json.gson.GsonFactory;
+import com.worthwhilegames.carhubmobile.Util;
+import com.worthwhilegames.carhubmobile.carhubkeys.CarHubKeys;
+import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
+
+import java.util.List;
 
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
-    // Global variables
-    // Define a variable to contain a content resolver instance
-    private ContentResolver mContentResolver;
+    private Context mContext;
+
+    /**
+     * Current credentials
+     */
+    protected GoogleAccountCredential mCreds;
+
+    /**
+     * The Carhub service for interacting with AppEngine
+     */
+    protected Carhub mService;
 
     /**
      * Set up the sync adapter
      */
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
-        /*
-         * If your app uses a content resolver, get an instance of it
-         * from the incoming Context
-         */
-        mContentResolver = context.getContentResolver();
+        mContext = context;
     }
 
     /**
@@ -32,12 +45,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             boolean autoInitialize,
             boolean allowParallelSyncs) {
         super(context, autoInitialize, allowParallelSyncs);
-        /*
-         * If your app uses a content resolver, get an instance of it
-         * from the incoming Context
-         */
-        mContentResolver = context.getContentResolver();
-
+        mContext = context;
     }
 
     @Override
@@ -47,5 +55,43 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                               ContentProviderClient contentProviderClient,
                               SyncResult syncResult) {
 
+        // Inside your Activity class onCreate method
+        SharedPreferences settings = mContext.getSharedPreferences("CarHubMobile", 0);
+        mCreds = GoogleAccountCredential.usingAudience(mContext, CarHubKeys.CARHUB_KEY);
+        setAccountName(settings.getString(Util.PREF_ACCOUNT_NAME, null));
+
+        Carhub.Builder bl = new Carhub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCreds);
+        mService = bl.build();
+
+        if (mCreds.getSelectedAccountName() != null) {
+            FetchCategoryRecordsTask request = new FetchCategoryRecordsTask(mContext, mService);
+            request.performTask();
+
+            // Fetch Vehicles
+            FetchUserVehiclesTask vehiclesTask = new FetchUserVehiclesTask(mContext, mService);
+            vehiclesTask.performTask();
+
+            List<UserVehicleRecord> vehicles = UserVehicleRecord.listAll(UserVehicleRecord.class);
+
+            for (UserVehicleRecord rec : vehicles) {
+                // Once we have vehicles, sync Fuel, Maintenance and Expenses
+                FetchUserMaintenanceRecordsTask maintTask = new FetchUserMaintenanceRecordsTask(mContext, mService, rec);
+                maintTask.performTask();
+
+                FetchUserBaseExpenseRecordsTask expenseRecordsTask = new FetchUserBaseExpenseRecordsTask(mContext, mService, rec);
+                expenseRecordsTask.performTask();
+
+                FetchUserFuelRecordsTask fuelTask = new FetchUserFuelRecordsTask(mContext, mService, rec);
+                fuelTask.performTask();
+            }
+        }
+    }
+
+    private void setAccountName(String accountName) {
+        SharedPreferences settings = getContext().getSharedPreferences("CarHubMobile", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(Util.PREF_ACCOUNT_NAME, accountName);
+        editor.commit();
+        mCreds.setSelectedAccountName(accountName);
     }
 }

@@ -18,6 +18,8 @@ public class Util {
      */
     public static final boolean shouldHideAds = isDebugBuild;
 
+    public static final String PREF_ACCOUNT_NAME = "accountName";
+
     /**
      * The pref key for account name
      */

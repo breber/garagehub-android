@@ -6,25 +6,35 @@ import com.appspot.car_hub.carhub.model.ExpenseCategory;
 import com.appspot.car_hub.carhub.model.ExpenseCategoryCollection;
 import com.worthwhilegames.carhubmobile.Util;
 import com.worthwhilegames.carhubmobile.models.CategoryRecord;
-import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 import java.io.IOException;
 
-public class FetchCategoryRecordsTask extends AuthenticatedHttpRequest {
+public class FetchCategoryRecordsTask implements ISyncTask {
+
+    /**
+     * The context
+     */
+    private Context mContext;
+
+    /**
+     * The Carhub service for interacting with AppEngine
+     */
+    protected Carhub mService;
 
     public FetchCategoryRecordsTask(Context ctx, Carhub service) {
-        super(ctx, service, null);
+        mContext = ctx;
+        mService = service;
     }
 
     @Override
-    public String doInBackground(Void ... unused) {
+    public boolean performTask() {
         ExpenseCategoryCollection records;
         long prevLastModified = Util.getSharedPrefs(mContext).getLong(FetchCategoryRecordsTask.class.getSimpleName() + "_lastUpdate", 0);
         long currentTime = System.currentTimeMillis();
 
         if ((currentTime - prevLastModified) < (24 * 60 * 60 * 1000)) {
             // Skip the update for now
-            return "";
+            return false; // TODO: should be false?
         }
 
         try {
@@ -59,8 +69,9 @@ public class FetchCategoryRecordsTask extends AuthenticatedHttpRequest {
             Util.getSharedPrefs(mContext).edit().putLong(FetchCategoryRecordsTask.class.getSimpleName() + "_lastUpdate", currentTime).commit();
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
 
-        return "";
+        return true;
     }
 }
