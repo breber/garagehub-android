@@ -18,7 +18,7 @@ import com.worthwhilegames.carhubmobile.adapters.MenuImageAdapter;
 import com.worthwhilegames.carhubmobile.adapters.MenuImageAdapter.ImageTextWrapper;
 import com.worthwhilegames.carhubmobile.carhubkeys.CarHubKeys;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
-import com.worthwhilegames.carhubmobile.sync.SyncAdapter;
+import com.worthwhilegames.carhubmobile.sync.OldSyncAdapter;
 import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 /**
@@ -131,7 +131,7 @@ public class UserVehicleActivity extends AdActivity implements AuthenticatedHttp
     protected void performUpdate() {
         setProgressBarIndeterminateVisibility(true);
 
-        SyncAdapter.performSync(this, mService, this);
+        OldSyncAdapter.performSync(this, mService, this);
     }
 
     private void chooseAccount() {

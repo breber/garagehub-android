@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.worthwhilegames.carhubmobile.adapters.UserFuelAdapter;
 import com.worthwhilegames.carhubmobile.models.UserFuelRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
-import com.worthwhilegames.carhubmobile.sync.SyncAdapter;
+import com.worthwhilegames.carhubmobile.sync.OldSyncAdapter;
 import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 import java.util.Collections;
@@ -87,7 +87,7 @@ public class UserFuelListActivity extends AppEngineListActivity {
     protected void performUpdate() {
         setProgressBarIndeterminateVisibility(true);
 
-        SyncAdapter.performSync(this, mService, this);
+        OldSyncAdapter.performSync(this, mService, this);
     }
 
     public void taskDidFinish(Class<? extends AuthenticatedHttpRequest> cls) {

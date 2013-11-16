@@ -9,7 +9,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.worthwhilegames.carhubmobile.adapters.UserVehicleAdapter;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
-import com.worthwhilegames.carhubmobile.sync.SyncAdapter;
+import com.worthwhilegames.carhubmobile.sync.OldSyncAdapter;
 import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 import java.util.Collections;
@@ -68,7 +68,7 @@ public class UserVehicleListActivity extends AppEngineListActivity {
     protected void performUpdate() {
         setProgressBarIndeterminateVisibility(true);
 
-        SyncAdapter.performSync(this, mService, this);
+        OldSyncAdapter.performSync(this, mService, this);
     }
 
     @Override
