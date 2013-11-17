@@ -11,8 +11,6 @@ import android.widget.Toast;
 import com.worthwhilegames.carhubmobile.adapters.UserMaintenanceAdapter;
 import com.worthwhilegames.carhubmobile.models.UserMaintenanceRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
-import com.worthwhilegames.carhubmobile.sync.OldSyncAdapter;
-import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -81,16 +79,7 @@ public class UserMaintenanceListActivity extends AppEngineListActivity {
         }
     }
 
-    /**
-     * Perform all necessary UI updates, then call execute request
-     */
-    protected void performUpdate() {
-        setProgressBarIndeterminateVisibility(true);
-
-        OldSyncAdapter.performSync(this, mService, this);
-    }
-
-    public void taskDidFinish(Class<? extends AuthenticatedHttpRequest> cls) {
+    public void updateUi() {
         // Get all GasPriceRecords from the database
         List<UserMaintenanceRecord> maintRecords = UserMaintenanceRecord.getRecordsForVehicle(UserMaintenanceRecord.class, mVehicle);
         Collections.sort(maintRecords, new Comparator<UserMaintenanceRecord>() {
@@ -102,8 +91,6 @@ public class UserMaintenanceListActivity extends AppEngineListActivity {
 
         UserMaintenanceAdapter adapter = new UserMaintenanceAdapter(UserMaintenanceListActivity.this, R.layout.fouritemrow, maintRecords);
         setListAdapter(adapter);
-
-        setProgressBarIndeterminateVisibility(false);
     }
 
 }

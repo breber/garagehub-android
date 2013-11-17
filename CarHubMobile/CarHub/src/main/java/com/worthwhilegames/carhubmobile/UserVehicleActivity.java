@@ -10,21 +10,19 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.appspot.car_hub.carhub.Carhub;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.json.gson.GsonFactory;
-import com.appspot.car_hub.carhub.Carhub;
 import com.worthwhilegames.carhubmobile.adapters.MenuImageAdapter;
 import com.worthwhilegames.carhubmobile.adapters.MenuImageAdapter.ImageTextWrapper;
 import com.worthwhilegames.carhubmobile.carhubkeys.CarHubKeys;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
-import com.worthwhilegames.carhubmobile.sync.OldSyncAdapter;
-import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 /**
  * @author breber
  */
-public class UserVehicleActivity extends AdActivity implements AuthenticatedHttpRequest.AuthenticatedHttpRequestCallback {
+public class UserVehicleActivity extends AdActivity {
 
     private static final int REQUEST_ACCOUNT_PICKER = 2;
 
@@ -79,9 +77,8 @@ public class UserVehicleActivity extends AdActivity implements AuthenticatedHttp
         });
 
         // Inside your Activity class onCreate method
-        SharedPreferences settings = Util.getSharedPrefs(this);
         mCreds = GoogleAccountCredential.usingAudience(this, CarHubKeys.CARHUB_KEY);
-        setAccountName(settings.getString(Util.PREF_ACCOUNT_NAME, null));
+        setAccountName(Util.getAccountName(this));
 
         Carhub.Builder bl = new Carhub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCreds);
         mService = bl.build();
@@ -104,7 +101,7 @@ public class UserVehicleActivity extends AdActivity implements AuthenticatedHttp
                     if (accountName != null) {
                         setAccountName(accountName);
 
-                        performUpdate();
+                        Util.startSync(this);
                     }
                 }
                 break;
@@ -117,21 +114,8 @@ public class UserVehicleActivity extends AdActivity implements AuthenticatedHttp
     @Override
     protected void onResume() {
         super.onResume();
-        if (mCreds.getSelectedAccountName() != null) {
-            // Already signed in, begin app!
-            performUpdate();
-        }
 
         updateUi();
-    }
-
-    /**
-     * Perform all necessary UI updates, then call execute request
-     */
-    protected void performUpdate() {
-        setProgressBarIndeterminateVisibility(true);
-
-        OldSyncAdapter.performSync(this, mService, this);
     }
 
     private void chooseAccount() {
@@ -181,11 +165,5 @@ public class UserVehicleActivity extends AdActivity implements AuthenticatedHttp
         } else {
             currentField.setText("Unknown");
         }
-    }
-
-    public void taskDidFinish(Class<? extends AuthenticatedHttpRequest> cls) {
-        updateUi();
-
-        setProgressBarIndeterminateVisibility(false);
     }
 }

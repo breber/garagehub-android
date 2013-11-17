@@ -3,6 +3,7 @@ package com.worthwhilegames.carhubmobile.sync;
 import android.accounts.Account;
 import android.content.*;
 import android.os.Bundle;
+import android.util.Log;
 import com.appspot.car_hub.carhub.Carhub;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -14,6 +15,9 @@ import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 import java.util.List;
 
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
+
+    public static String SYNC_STARTED_BROADCAST = "com.worthwhilegames.carhubmobile.sync.SyncAdapter.SYNC_STARTED";
+    public static String SYNC_FINISHED_BROADCAST = "com.worthwhilegames.carhubmobile.sync.SyncAdapter.SYNC_FINISHED";
 
     private Context mContext;
 
@@ -54,9 +58,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                               String s,
                               ContentProviderClient contentProviderClient,
                               SyncResult syncResult) {
+        if (Util.isDebugBuild) {
+            Log.d("SyncAdapter", "onPerformSync");
+        }
+
+        // Send a message saying we finished syncing
+        getContext().sendBroadcast(new Intent(SYNC_STARTED_BROADCAST));
 
         // Inside your Activity class onCreate method
-        SharedPreferences settings = mContext.getSharedPreferences("CarHubMobile", 0);
+        SharedPreferences settings = Util.getSharedPrefs(mContext);
         mCreds = GoogleAccountCredential.usingAudience(mContext, CarHubKeys.CARHUB_KEY);
         setAccountName(settings.getString(Util.PREF_ACCOUNT_NAME, null));
 
@@ -67,9 +77,17 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             FetchCategoryRecordsTask request = new FetchCategoryRecordsTask(mContext, mService);
             request.performTask();
 
+            if (Util.isDebugBuild) {
+                Log.d("SyncAdapter", "fetched categories");
+            }
+
             // Fetch Vehicles
             FetchUserVehiclesTask vehiclesTask = new FetchUserVehiclesTask(mContext, mService);
             vehiclesTask.performTask();
+
+            if (Util.isDebugBuild) {
+                Log.d("SyncAdapter", "fetched vehicles");
+            }
 
             List<UserVehicleRecord> vehicles = UserVehicleRecord.listAll(UserVehicleRecord.class);
 
@@ -85,6 +103,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 fuelTask.performTask();
             }
         }
+
+        // Send a message saying we finished syncing
+        getContext().sendBroadcast(new Intent(SYNC_FINISHED_BROADCAST));
     }
 
     private void setAccountName(String accountName) {

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
+              android:contentAuthority="com.worthwhilegames.carhubmobile.provider"
+              android:accountType="com.google"
+              android:supportsUploading="true"
+              android:userVisible="false"
+              android:isAlwaysSyncable="true"/>

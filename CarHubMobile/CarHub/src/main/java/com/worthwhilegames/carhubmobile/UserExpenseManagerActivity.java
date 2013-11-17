@@ -13,8 +13,6 @@ import com.worthwhilegames.carhubmobile.models.UserBaseExpenseRecord;
 import com.worthwhilegames.carhubmobile.models.UserFuelRecord;
 import com.worthwhilegames.carhubmobile.models.UserMaintenanceRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
-import com.worthwhilegames.carhubmobile.sync.OldSyncAdapter;
-import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -63,6 +61,8 @@ public class UserExpenseManagerActivity extends AppEngineListActivity {
                 startActivity(i);
             }
         });
+
+        updateUi();
     }
 
     /* (non-Javadoc)
@@ -91,16 +91,7 @@ public class UserExpenseManagerActivity extends AppEngineListActivity {
         }
     }
 
-    /**
-     * Perform all necessary UI updates, then call execute request
-     */
-    protected void performUpdate() {
-        setProgressBarIndeterminateVisibility(true);
-
-        OldSyncAdapter.performSync(this, mService, this);
-    }
-
-    public void taskDidFinish(Class<? extends AuthenticatedHttpRequest> cls) {
+    public void updateUi() {
         // Get all GasPriceRecords from the database
         List<UserBaseExpenseRecord> expenseRecords = UserBaseExpenseRecord.getRecordsForVehicle(UserBaseExpenseRecord.class, mVehicle);
         expenseRecords.addAll(UserFuelRecord.getRecordsForVehicle(UserFuelRecord.class, mVehicle));
@@ -114,7 +105,5 @@ public class UserExpenseManagerActivity extends AppEngineListActivity {
 
         UserExpenseAdapter adapter = new UserExpenseAdapter(UserExpenseManagerActivity.this, R.layout.fouritemrow, expenseRecords);
         setListAdapter(adapter);
-
-        setProgressBarIndeterminateVisibility(false);
     }
 }

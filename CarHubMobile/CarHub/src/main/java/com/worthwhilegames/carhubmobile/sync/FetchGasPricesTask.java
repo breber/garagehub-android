@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 import com.worthwhilegames.carhubmobile.Util;
 import com.worthwhilegames.carhubmobile.models.GasPriceRecord;
-import com.worthwhilegames.carhubmobile.util.HttpUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -60,7 +59,7 @@ public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
 
     /**
      * Process data on background thread
-     * 
+     *
      * @param r
      */
     private void processData(String r) {
@@ -118,7 +117,7 @@ public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
             HttpResponse response = client.execute(httpGet);
 
             if (HttpURLConnection.HTTP_OK == response.getStatusLine().getStatusCode()) {
-                result = HttpUtils.readStreamAsString(response.getEntity().getContent());
+                result = Util.readStreamAsString(response.getEntity().getContent());
                 processData(result);
             }
         } catch (ClientProtocolException e) {
