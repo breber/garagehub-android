@@ -26,8 +26,6 @@ import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
  */
 public class UserVehicleActivity extends AdActivity implements AuthenticatedHttpRequest.AuthenticatedHttpRequestCallback {
 
-    private static final String PREF_ACCOUNT_NAME = "accountName";
-
     private static final int REQUEST_ACCOUNT_PICKER = 2;
 
     /**
@@ -81,9 +79,9 @@ public class UserVehicleActivity extends AdActivity implements AuthenticatedHttp
         });
 
         // Inside your Activity class onCreate method
-        SharedPreferences settings = getSharedPreferences("CarHubMobile", 0);
+        SharedPreferences settings = Util.getSharedPrefs(this);
         mCreds = GoogleAccountCredential.usingAudience(this, CarHubKeys.CARHUB_KEY);
-        setAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
+        setAccountName(settings.getString(Util.PREF_ACCOUNT_NAME, null));
 
         Carhub.Builder bl = new Carhub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCreds);
         mService = bl.build();
@@ -95,32 +93,6 @@ public class UserVehicleActivity extends AdActivity implements AuthenticatedHttp
 
         updateUi();
     }
-
-//    /* (non-Javadoc)
-//     * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
-//     */
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.activity_vehicle, menu);
-//        return true;
-//    }
-//
-//    /* (non-Javadoc)
-//     * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
-//     */
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // This will cover the Android menu button press
-//        switch (item.getItemId()) {
-//            case R.id.menu_edit_vehicle:
-//                Intent i = new Intent(this, AddVehicleActivity.class);
-//                i.putExtra(Constants.INTENT_DATA_VEHICLE, mVehicle.getId());
-//                startActivity(i);
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -168,9 +140,9 @@ public class UserVehicleActivity extends AdActivity implements AuthenticatedHttp
 
     // setAccountName definition
     private void setAccountName(String accountName) {
-        SharedPreferences settings = getSharedPreferences("CarHubMobile", 0);
+        SharedPreferences settings = Util.getSharedPrefs(this);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString(PREF_ACCOUNT_NAME, accountName);
+        editor.putString(Util.PREF_ACCOUNT_NAME, accountName);
         editor.commit();
         mCreds.setSelectedAccountName(accountName);
     }

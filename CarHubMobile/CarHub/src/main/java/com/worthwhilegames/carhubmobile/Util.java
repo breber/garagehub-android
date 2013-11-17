@@ -19,12 +19,26 @@ public class Util {
     public static final boolean shouldHideAds = isDebugBuild;
 
     /**
+     * The pref key for account name
+     */
+    public static final String PREF_ACCOUNT_NAME = "accountName";
+
+    /**
      * Utility method for getting the SharedPreferences instance for the app
      *
      * @param ctx
      * @return
      */
     public static SharedPreferences getSharedPrefs(Context ctx) {
-        return ctx.getSharedPreferences("Preferences", 0);
+        SharedPreferences prefs = ctx.getSharedPreferences("Preferences", 0);
+
+        // Migrate old preferences to new consolidated preferences
+        SharedPreferences oldPrefs = ctx.getSharedPreferences("CarHubMobile", 0);
+        if (oldPrefs.contains(PREF_ACCOUNT_NAME)) {
+            prefs.edit().putString(PREF_ACCOUNT_NAME, oldPrefs.getString(PREF_ACCOUNT_NAME, "")).commit();
+            prefs.edit().clear().commit();
+        }
+
+        return prefs;
     }
 }

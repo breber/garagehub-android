@@ -18,8 +18,6 @@ import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
  */
 public abstract class AppEngineListActivity extends AdListActivity implements AuthenticatedHttpRequest.AuthenticatedHttpRequestCallback {
 
-    private static final String PREF_ACCOUNT_NAME = "accountName";
-
     private static final int REQUEST_ACCOUNT_PICKER = 2;
 
     /**
@@ -48,9 +46,9 @@ public abstract class AppEngineListActivity extends AdListActivity implements Au
         tv.setText(emptyResource);
 
         // Inside your Activity class onCreate method
-        SharedPreferences settings = getSharedPreferences("CarHubMobile", 0);
+        SharedPreferences settings = Util.getSharedPrefs(this);
         mCreds = GoogleAccountCredential.usingAudience(this, CarHubKeys.CARHUB_KEY);
-        setAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
+        setAccountName(settings.getString(Util.PREF_ACCOUNT_NAME, null));
 
         Carhub.Builder bl = new Carhub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCreds);
         mService = bl.build();
@@ -107,9 +105,9 @@ public abstract class AppEngineListActivity extends AdListActivity implements Au
 
     // setAccountName definition
     private void setAccountName(String accountName) {
-        SharedPreferences settings = getSharedPreferences("CarHubMobile", 0);
+        SharedPreferences settings = Util.getSharedPrefs(this);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString(PREF_ACCOUNT_NAME, accountName);
+        editor.putString(Util.PREF_ACCOUNT_NAME, accountName);
         editor.commit();
         mCreds.setSelectedAccountName(accountName);
     }
