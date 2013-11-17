@@ -19,8 +19,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public static String SYNC_STARTED_BROADCAST = "com.worthwhilegames.carhubmobile.sync.SyncAdapter.SYNC_STARTED";
     public static String SYNC_FINISHED_BROADCAST = "com.worthwhilegames.carhubmobile.sync.SyncAdapter.SYNC_FINISHED";
 
-    private Context mContext;
-
     /**
      * Current credentials
      */
@@ -31,25 +29,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      */
     protected Carhub mService;
 
-    /**
-     * Set up the sync adapter
-     */
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
-        mContext = context;
     }
 
-    /**
-     * Set up the sync adapter. This form of the
-     * constructor maintains compatibility with Android 3.0
-     * and later platform versions
-     */
-    public SyncAdapter(
-            Context context,
-            boolean autoInitialize,
-            boolean allowParallelSyncs) {
+    public SyncAdapter(Context context, boolean autoInitialize, boolean allowParallelSyncs) {
         super(context, autoInitialize, allowParallelSyncs);
-        mContext = context;
     }
 
     @Override
@@ -66,15 +51,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         getContext().sendBroadcast(new Intent(SYNC_STARTED_BROADCAST));
 
         // Inside your Activity class onCreate method
-        SharedPreferences settings = Util.getSharedPrefs(mContext);
-        mCreds = GoogleAccountCredential.usingAudience(mContext, CarHubKeys.CARHUB_KEY);
+        SharedPreferences settings = Util.getSharedPrefs(getContext());
+        mCreds = GoogleAccountCredential.usingAudience(getContext(), CarHubKeys.CARHUB_KEY);
         setAccountName(settings.getString(Util.PREF_ACCOUNT_NAME, null));
 
         Carhub.Builder bl = new Carhub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCreds);
         mService = bl.build();
 
         if (mCreds.getSelectedAccountName() != null) {
-            FetchCategoryRecordsTask request = new FetchCategoryRecordsTask(mContext, mService);
+            FetchCategoryRecordsTask request = new FetchCategoryRecordsTask(getContext(), mService);
             request.performTask();
 
             if (Util.isDebugBuild) {
@@ -82,7 +67,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             }
 
             // Fetch Vehicles
-            FetchUserVehiclesTask vehiclesTask = new FetchUserVehiclesTask(mContext, mService);
+            FetchUserVehiclesTask vehiclesTask = new FetchUserVehiclesTask(getContext(), mService);
             vehiclesTask.performTask();
 
             if (Util.isDebugBuild) {
@@ -93,13 +78,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             for (UserVehicleRecord rec : vehicles) {
                 // Once we have vehicles, sync Fuel, Maintenance and Expenses
-                FetchUserMaintenanceRecordsTask maintTask = new FetchUserMaintenanceRecordsTask(mContext, mService, rec);
+                FetchUserMaintenanceRecordsTask maintTask = new FetchUserMaintenanceRecordsTask(getContext(), mService, rec);
                 maintTask.performTask();
 
-                FetchUserBaseExpenseRecordsTask expenseRecordsTask = new FetchUserBaseExpenseRecordsTask(mContext, mService, rec);
+                FetchUserBaseExpenseRecordsTask expenseRecordsTask = new FetchUserBaseExpenseRecordsTask(getContext(), mService, rec);
                 expenseRecordsTask.performTask();
 
-                FetchUserFuelRecordsTask fuelTask = new FetchUserFuelRecordsTask(mContext, mService, rec);
+                FetchUserFuelRecordsTask fuelTask = new FetchUserFuelRecordsTask(getContext(), mService, rec);
                 fuelTask.performTask();
             }
         }
@@ -109,7 +94,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void setAccountName(String accountName) {
-        SharedPreferences settings = getContext().getSharedPreferences("CarHubMobile", 0);
+        SharedPreferences settings = Util.getSharedPrefs(getContext());
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(Util.PREF_ACCOUNT_NAME, accountName);
         editor.commit();

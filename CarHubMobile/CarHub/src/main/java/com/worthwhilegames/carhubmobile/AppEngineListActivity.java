@@ -59,7 +59,7 @@ public abstract class AppEngineListActivity extends AdListActivity {
             chooseAccount();
         } else {
             // Signed in, so start a sync
-            Util.startSync(this);
+            Util.startSync(this, false);
         }
     }
 
@@ -73,7 +73,7 @@ public abstract class AppEngineListActivity extends AdListActivity {
                     if (accountName != null) {
                         setAccountName(accountName);
 
-                        Util.startSync(this);
+                        Util.startSync(this, true);
                         updateUi();
                     }
                 }

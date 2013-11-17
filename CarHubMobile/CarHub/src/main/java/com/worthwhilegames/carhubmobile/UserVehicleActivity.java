@@ -101,7 +101,7 @@ public class UserVehicleActivity extends AdActivity {
                     if (accountName != null) {
                         setAccountName(accountName);
 
-                        Util.startSync(this);
+                        Util.startSync(this, true);
                     }
                 }
                 break;
