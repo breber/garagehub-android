@@ -110,6 +110,7 @@ public class AddMaintenanceRecordActivity extends AdActivity {
                 mRecord.setDirty(true);
                 mRecord.save();
 
+                Util.startSync(this, false);
                 finish();
                 return true;
             case R.id.menu_delete:
@@ -117,6 +118,7 @@ public class AddMaintenanceRecordActivity extends AdActivity {
                     // TODO: add delete functionality
                 }
 
+                Util.startSync(this, false);
                 finish();
                 return true;
             default:

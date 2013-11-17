@@ -91,9 +91,9 @@ public class Util {
             for (Account a : accounts) {
                 if (a.name.equals(accountName)) {
                     Bundle b = new Bundle();
+                    b.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
                     if (important) {
                         // Disable sync backoff and ignore sync preferences. In other words...perform sync NOW!
-                        b.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
                         b.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
                     }
                     ContentResolver.requestSync(a, Util.AUTHORITY, b);
