@@ -4,5 +4,5 @@
               android:contentAuthority="com.worthwhilegames.carhubmobile.provider"
               android:accountType="com.google"
               android:supportsUploading="true"
-              android:userVisible="false"
+              android:userVisible="true"
               android:isAlwaysSyncable="true"/>
