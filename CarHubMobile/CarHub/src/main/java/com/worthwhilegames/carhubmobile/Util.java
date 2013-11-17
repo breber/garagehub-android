@@ -35,8 +35,11 @@ public class Util {
         // Migrate old preferences to new consolidated preferences
         SharedPreferences oldPrefs = ctx.getSharedPreferences("CarHubMobile", 0);
         if (oldPrefs.contains(PREF_ACCOUNT_NAME)) {
+            // Add key to new preferences
             prefs.edit().putString(PREF_ACCOUNT_NAME, oldPrefs.getString(PREF_ACCOUNT_NAME, "")).commit();
-            prefs.edit().clear().commit();
+
+            // Clear the old preferences
+            oldPrefs.edit().clear().commit();
         }
 
         return prefs;
