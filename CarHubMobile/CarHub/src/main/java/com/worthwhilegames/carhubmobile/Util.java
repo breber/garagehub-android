@@ -97,6 +97,7 @@ public class Util {
                         b.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
                     }
                     ContentResolver.requestSync(a, Util.AUTHORITY, b);
+                    ContentResolver.setSyncAutomatically(a, AUTHORITY, true);
                 }
             }
         }
