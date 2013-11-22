@@ -9,8 +9,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import com.worthwhilegames.carhubmobile.adapters.UserVehicleAdapter;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
-import com.worthwhilegames.carhubmobile.sync.SyncAdapter;
-import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -61,18 +59,8 @@ public class UserVehicleListActivity extends AppEngineListActivity {
         }
     }
 
-    /**
-     * Perform all necessary UI updates, then call execute request
-     */
     @Override
-    protected void performUpdate() {
-        setProgressBarIndeterminateVisibility(true);
-
-        SyncAdapter.performSync(this, mService, this);
-    }
-
-    @Override
-    public void taskDidFinish(Class<? extends AuthenticatedHttpRequest> cls) {
+    public void updateUi() {
         // Get all GasPriceRecords from the database
         List<UserVehicleRecord> vehicles = UserVehicleRecord.listAll(UserVehicleRecord.class);
         Collections.sort(vehicles, new Comparator<UserVehicleRecord>() {
@@ -83,7 +71,5 @@ public class UserVehicleListActivity extends AppEngineListActivity {
         });
 
         setListAdapter(new UserVehicleAdapter(this, android.R.layout.simple_list_item_1, vehicles));
-
-        setProgressBarIndeterminateVisibility(false);
     }
 }

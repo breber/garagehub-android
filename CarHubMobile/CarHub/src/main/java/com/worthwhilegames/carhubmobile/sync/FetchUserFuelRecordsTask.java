@@ -8,24 +8,35 @@ import com.appspot.car_hub.carhub.model.ModelsActiveRecords;
 import com.worthwhilegames.carhubmobile.Util;
 import com.worthwhilegames.carhubmobile.models.UserFuelRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
-import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FetchUserFuelRecordsTask extends AuthenticatedHttpRequest {
-
+public class FetchUserFuelRecordsTask implements ISyncTask {
+    /**
+     * The Vehicle to get fuel records for
+     */
     private UserVehicleRecord mVehicle;
 
-    public FetchUserFuelRecordsTask(Context ctx, Carhub service, AuthenticatedHttpRequestCallback delegate, UserVehicleRecord vehicle) {
-        super(ctx, service, delegate);
+    /**
+     * The context
+     */
+    private Context mContext;
 
+    /**
+     * The Carhub service for interacting with AppEngine
+     */
+    protected Carhub mService;
+
+    public FetchUserFuelRecordsTask(Context ctx, Carhub service, UserVehicleRecord vehicle) {
+        mContext = ctx;
+        mService = service;
         mVehicle = vehicle;
     }
 
     @Override
-    public String doInBackground(Void ... unused) {
+    public boolean performTask() {
         FuelRecordCollection records;
         long prevLastModified = Util.getSharedPrefs(mContext).getLong(FetchUserFuelRecordsTask.class.getSimpleName() + "_" + mVehicle.getRemoteId() + "_lastUpdate", 0);
 
@@ -105,17 +116,10 @@ public class FetchUserFuelRecordsTask extends AuthenticatedHttpRequest {
             Util.getSharedPrefs(mContext).edit().putLong(FetchUserFuelRecordsTask.class.getSimpleName() + "_" + mVehicle.getRemoteId() + "_lastUpdate", currentTime).commit();
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
 
-        return "";
+        return true;
     }
 
-    @Override
-    protected void onPostExecute(Object r) {
-        super.onPostExecute(r);
-
-        if (mDelegate != null) {
-            mDelegate.taskDidFinish(FetchUserFuelRecordsTask.class);
-        }
-    }
 }

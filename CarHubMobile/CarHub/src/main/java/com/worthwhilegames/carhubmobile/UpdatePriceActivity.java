@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.*;
-import com.worthwhilegames.carhubmobile.util.HttpUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -227,7 +226,7 @@ public class UpdatePriceActivity extends AdActivity {
 
                 HttpResponse response = httpclient.execute(httppost);
                 HttpEntity entity = response.getEntity();
-                responseString = HttpUtils.readStreamAsString(entity.getContent());
+                responseString = Util.readStreamAsString(entity.getContent());
             } catch (Exception e) {
                 e.printStackTrace();
             }

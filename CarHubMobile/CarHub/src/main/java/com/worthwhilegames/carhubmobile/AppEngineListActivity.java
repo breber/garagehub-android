@@ -1,24 +1,29 @@
 package com.worthwhilegames.carhubmobile;
 
 import android.accounts.AccountManager;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.os.Bundle;
-import android.view.Window;
 import android.widget.TextView;
+import com.appspot.car_hub.carhub.Carhub;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.json.gson.GsonFactory;
-import com.appspot.car_hub.carhub.Carhub;
 import com.worthwhilegames.carhubmobile.carhubkeys.CarHubKeys;
-import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
+import com.worthwhilegames.carhubmobile.sync.SyncAdapter;
 
 /**
  * @author breber
  */
-public abstract class AppEngineListActivity extends AdListActivity implements AuthenticatedHttpRequest.AuthenticatedHttpRequestCallback {
+public abstract class AppEngineListActivity extends AdListActivity {
 
     private static final int REQUEST_ACCOUNT_PICKER = 2;
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateUi();
+        }
+    };
 
     /**
      * Current credentials
@@ -37,18 +42,14 @@ public abstract class AppEngineListActivity extends AdListActivity implements Au
 
     public void onCreate(Bundle savedInstanceState, int emptyResource) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.user_vehicle_list);
-
-        setProgressBarIndeterminateVisibility(false);
 
         TextView tv = (TextView) findViewById(android.R.id.empty);
         tv.setText(emptyResource);
 
         // Inside your Activity class onCreate method
-        SharedPreferences settings = Util.getSharedPrefs(this);
         mCreds = GoogleAccountCredential.usingAudience(this, CarHubKeys.CARHUB_KEY);
-        setAccountName(settings.getString(Util.PREF_ACCOUNT_NAME, null));
+        setAccountName(Util.getAccountName(this));
 
         Carhub.Builder bl = new Carhub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCreds);
         mService = bl.build();
@@ -56,18 +57,10 @@ public abstract class AppEngineListActivity extends AdListActivity implements Au
         if (mCreds.getSelectedAccountName() == null) {
             // Not signed in, show login window or request an account.
             chooseAccount();
+        } else {
+            // Signed in, so start a sync
+            Util.startSync(this, false);
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        taskDidFinish(null);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
     }
 
     @Override
@@ -80,7 +73,8 @@ public abstract class AppEngineListActivity extends AdListActivity implements Au
                     if (accountName != null) {
                         setAccountName(accountName);
 
-                        performUpdate();
+                        Util.startSync(this, true);
+                        updateUi();
                     }
                 }
                 break;
@@ -95,8 +89,24 @@ public abstract class AppEngineListActivity extends AdListActivity implements Au
         super.onResume();
         if (mCreds.getSelectedAccountName() != null) {
             // Already signed in, begin app!
-            performUpdate();
+            updateUi();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Listen for broadcast message
+        registerReceiver(broadcastReceiver, new IntentFilter(SyncAdapter.SYNC_FINISHED_BROADCAST));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // Unregister
+        unregisterReceiver(broadcastReceiver);
     }
 
     private void chooseAccount() {
@@ -112,11 +122,5 @@ public abstract class AppEngineListActivity extends AdListActivity implements Au
         mCreds.setSelectedAccountName(accountName);
     }
 
-    /**
-     * Perform all necessary UI updates, then call execute request
-     */
-    protected abstract void performUpdate();
-
-    @Override
-    public abstract void taskDidFinish(Class<? extends AuthenticatedHttpRequest> clz);
+    protected abstract void updateUi();
 }

@@ -1,81 +1,103 @@
 package com.worthwhilegames.carhubmobile.sync;
 
-import android.content.Context;
+import android.accounts.Account;
+import android.content.*;
+import android.os.Bundle;
+import android.util.Log;
 import com.appspot.car_hub.carhub.Carhub;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.json.gson.GsonFactory;
+import com.worthwhilegames.carhubmobile.Util;
+import com.worthwhilegames.carhubmobile.carhubkeys.CarHubKeys;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
-import com.worthwhilegames.carhubmobile.util.AuthenticatedHttpRequest;
 
 import java.util.List;
 
-/**
- * Created by breber on 8/2/13.
- */
-public class SyncAdapter implements AuthenticatedHttpRequest.AuthenticatedHttpRequestCallback {
+public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
-    private static final int NONE = 0;
-    private static final int MAINTENANCE = (1 << 0);
-    private static final int FUEL = (1 << 1);
-    private static final int EXPENSE = (1 << 2);
-    private static final int ALL = (MAINTENANCE | FUEL | EXPENSE);
+    public static String SYNC_STARTED_BROADCAST = "com.worthwhilegames.carhubmobile.sync.SyncAdapter.SYNC_STARTED";
+    public static String SYNC_FINISHED_BROADCAST = "com.worthwhilegames.carhubmobile.sync.SyncAdapter.SYNC_FINISHED";
 
-    private Context mContext;
-    private Carhub mService;
-    private AuthenticatedHttpRequest.AuthenticatedHttpRequestCallback mDelegate;
-    private int mFinished = NONE;
+    /**
+     * Current credentials
+     */
+    protected GoogleAccountCredential mCreds;
 
-    public static void performSync(Context ctx, Carhub service, AuthenticatedHttpRequest.AuthenticatedHttpRequestCallback delegate) {
-        SyncAdapter adapter = new SyncAdapter(ctx, service, delegate);
-        adapter.startSync();
+    /**
+     * The Carhub service for interacting with AppEngine
+     */
+    protected Carhub mService;
+
+    public SyncAdapter(Context context, boolean autoInitialize) {
+        super(context, autoInitialize);
     }
 
-    private SyncAdapter(Context ctx, Carhub service, AuthenticatedHttpRequest.AuthenticatedHttpRequestCallback delegate) {
-        this.mContext = ctx;
-        this.mService = service;
-        this.mDelegate = delegate;
-    }
-
-    private void startSync() {
-        // Fetch Categories
-        FetchCategoryRecordsTask request = new FetchCategoryRecordsTask(mContext, mService);
-        request.execute();
-
-        // Fetch Vehicles
-        FetchUserVehiclesTask vehiclesTask = new FetchUserVehiclesTask(mContext, mService, this);
-        vehiclesTask.execute();
-    }
-
-    private void handleFinished() {
-        if (mFinished == ALL) {
-            mFinished = NONE;
-            mDelegate.taskDidFinish(null);
-        }
+    public SyncAdapter(Context context, boolean autoInitialize, boolean allowParallelSyncs) {
+        super(context, autoInitialize, allowParallelSyncs);
     }
 
     @Override
-    public void taskDidFinish(Class<? extends AuthenticatedHttpRequest> cls) {
-        if (cls == FetchUserVehiclesTask.class) {
+    public void onPerformSync(Account account,
+                              Bundle bundle,
+                              String s,
+                              ContentProviderClient contentProviderClient,
+                              SyncResult syncResult) {
+        if (Util.isDebugBuild) {
+            Log.d("SyncAdapter", "onPerformSync");
+        }
+
+        // Send a message saying we finished syncing
+        getContext().sendBroadcast(new Intent(SYNC_STARTED_BROADCAST));
+
+        // Inside your Activity class onCreate method
+        SharedPreferences settings = Util.getSharedPrefs(getContext());
+        mCreds = GoogleAccountCredential.usingAudience(getContext(), CarHubKeys.CARHUB_KEY);
+        setAccountName(settings.getString(Util.PREF_ACCOUNT_NAME, null));
+
+        Carhub.Builder bl = new Carhub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCreds);
+        mService = bl.build();
+
+        if (mCreds.getSelectedAccountName() != null) {
+            FetchCategoryRecordsTask request = new FetchCategoryRecordsTask(getContext(), mService);
+            request.performTask();
+
+            if (Util.isDebugBuild) {
+                Log.d("SyncAdapter", "fetched categories");
+            }
+
+            // Fetch Vehicles
+            FetchUserVehiclesTask vehiclesTask = new FetchUserVehiclesTask(getContext(), mService);
+            vehiclesTask.performTask();
+
+            if (Util.isDebugBuild) {
+                Log.d("SyncAdapter", "fetched vehicles");
+            }
+
             List<UserVehicleRecord> vehicles = UserVehicleRecord.listAll(UserVehicleRecord.class);
 
             for (UserVehicleRecord rec : vehicles) {
                 // Once we have vehicles, sync Fuel, Maintenance and Expenses
-                FetchUserMaintenanceRecordsTask maintTask = new FetchUserMaintenanceRecordsTask(mContext, mService, this, rec);
-                maintTask.execute();
+                FetchUserMaintenanceRecordsTask maintTask = new FetchUserMaintenanceRecordsTask(getContext(), mService, rec);
+                maintTask.performTask();
 
-                FetchUserBaseExpenseRecordsTask expenseRecordsTask = new FetchUserBaseExpenseRecordsTask(mContext, mService, this, rec);
-                expenseRecordsTask.execute();
+                FetchUserBaseExpenseRecordsTask expenseRecordsTask = new FetchUserBaseExpenseRecordsTask(getContext(), mService, rec);
+                expenseRecordsTask.performTask();
 
-                FetchUserFuelRecordsTask fuelTask = new FetchUserFuelRecordsTask(mContext, mService, this, rec);
-                fuelTask.execute();
+                FetchUserFuelRecordsTask fuelTask = new FetchUserFuelRecordsTask(getContext(), mService, rec);
+                fuelTask.performTask();
             }
-        } else if (cls == FetchUserMaintenanceRecordsTask.class) {
-            mFinished |= MAINTENANCE;
-            handleFinished();
-        } else if (cls == FetchUserFuelRecordsTask.class) {
-            mFinished |= FUEL;
-            handleFinished();
-        } else if (cls == FetchUserBaseExpenseRecordsTask.class) {
-            mFinished |= EXPENSE;
-            handleFinished();
         }
+
+        // Send a message saying we finished syncing
+        getContext().sendBroadcast(new Intent(SYNC_FINISHED_BROADCAST));
+    }
+
+    private void setAccountName(String accountName) {
+        SharedPreferences settings = Util.getSharedPrefs(getContext());
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(Util.PREF_ACCOUNT_NAME, accountName);
+        editor.commit();
+        mCreds.setSelectedAccountName(accountName);
     }
 }
