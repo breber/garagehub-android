@@ -89,7 +89,7 @@ public class UserMaintenanceListActivity extends AppEngineListActivity {
             }
         });
 
-        UserMaintenanceAdapter adapter = new UserMaintenanceAdapter(UserMaintenanceListActivity.this, R.layout.fouritemrow, maintRecords);
+        UserMaintenanceAdapter adapter = new UserMaintenanceAdapter(UserMaintenanceListActivity.this, maintRecords);
         setListAdapter(adapter);
     }
 

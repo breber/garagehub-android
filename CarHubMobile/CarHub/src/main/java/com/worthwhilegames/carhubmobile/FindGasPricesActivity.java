@@ -239,7 +239,7 @@ public class FindGasPricesActivity extends AdListActivity implements FetchGasPri
         }
 
         data.addAll(naData);
-        setListAdapter(new GasPriceAdapter(FindGasPricesActivity.this, R.layout.gaspricerowlayout, data));
+        setListAdapter(new GasPriceAdapter(FindGasPricesActivity.this, data));
 
         setProgressBarIndeterminateVisibility(false);
     }

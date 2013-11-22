@@ -103,7 +103,7 @@ public class UserExpenseManagerActivity extends AppEngineListActivity {
             }
         });
 
-        UserExpenseAdapter adapter = new UserExpenseAdapter(UserExpenseManagerActivity.this, R.layout.fouritemrow, expenseRecords);
+        UserExpenseAdapter adapter = new UserExpenseAdapter(UserExpenseManagerActivity.this, expenseRecords);
         setListAdapter(adapter);
     }
 }

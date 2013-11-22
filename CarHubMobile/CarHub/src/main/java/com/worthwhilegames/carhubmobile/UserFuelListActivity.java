@@ -89,7 +89,7 @@ public class UserFuelListActivity extends AppEngineListActivity {
             }
         });
 
-        UserFuelAdapter adapter = new UserFuelAdapter(UserFuelListActivity.this, R.layout.fouritemrow, fuelRecords);
+        UserFuelAdapter adapter = new UserFuelAdapter(UserFuelListActivity.this, fuelRecords);
         setListAdapter(adapter);
     }
 }

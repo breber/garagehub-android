@@ -70,6 +70,6 @@ public class UserVehicleListActivity extends AppEngineListActivity {
             }
         });
 
-        setListAdapter(new UserVehicleAdapter(this, android.R.layout.simple_list_item_1, vehicles));
+        setListAdapter(new UserVehicleAdapter(this, vehicles));
     }
 }
