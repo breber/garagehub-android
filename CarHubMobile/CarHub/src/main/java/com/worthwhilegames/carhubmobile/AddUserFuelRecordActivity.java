@@ -17,7 +17,6 @@ public class AddUserFuelRecordActivity extends AdActivity {
     private UserVehicleRecord mVehicle;
     private UserFuelRecord mRecord;
 
-    private ArrayAdapter<String> mAdapter;
     private DatePicker mDatePicker;
     private EditText mLocationEditText;
     private EditText mAmount;
@@ -50,8 +49,8 @@ public class AddUserFuelRecordActivity extends AdActivity {
 
         // Fill in the fuel types
         String[] fuelTypesArray = getResources().getStringArray(R.array.fuelGradeArray);
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, fuelTypesArray);
-        mFuelGradeSpinner.setAdapter(mAdapter);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, fuelTypesArray);
+        mFuelGradeSpinner.setAdapter(adapter);
 
         Long existingId = getIntent().getLongExtra(Constants.INTENT_DATA_RECORD, -1);
         mRecord = UserFuelRecord.findById(UserFuelRecord.class, existingId);
@@ -65,7 +64,7 @@ public class AddUserFuelRecordActivity extends AdActivity {
             mOdometerEndEditText.setText(mRecord.getOdometerEnd() + "");
             mCostPerGallonEditText.setText(mRecord.getCostPerGallon() + "");
 
-            int selectedPosition = mAdapter.getPosition(mRecord.getFuelGrade());
+            int selectedPosition = adapter.getPosition(mRecord.getFuelGrade());
             mFuelGradeSpinner.setSelection(selectedPosition);
         }
     }

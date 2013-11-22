@@ -1,6 +1,7 @@
 package com.worthwhilegames.carhubmobile.sync;
 
 import android.accounts.Account;
+import android.annotation.TargetApi;
 import android.content.*;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +34,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         super(context, autoInitialize);
     }
 
+    @TargetApi(11)
     public SyncAdapter(Context context, boolean autoInitialize, boolean allowParallelSyncs) {
         super(context, autoInitialize, allowParallelSyncs);
     }

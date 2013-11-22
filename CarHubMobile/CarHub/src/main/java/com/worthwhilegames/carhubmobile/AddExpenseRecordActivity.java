@@ -12,6 +12,8 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
+ * Add expense activity
+ *
  * Created by breber on 6/29/13.
  */
 public class AddExpenseRecordActivity extends AdActivity {

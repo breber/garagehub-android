@@ -18,9 +18,9 @@ public class UserVehicleAdapter extends ArrayAdapter<UserVehicleRecord> {
 
     private int layoutResourceId;
 
-    public UserVehicleAdapter(Context context, int layoutResourceId, List<UserVehicleRecord> data) {
-        super(context, layoutResourceId, data);
-        this.layoutResourceId = layoutResourceId;
+    public UserVehicleAdapter(Context context, List<UserVehicleRecord> data) {
+        super(context, android.R.layout.simple_list_item_1, data);
+        this.layoutResourceId = android.R.layout.simple_list_item_1;
     }
 
     @Override

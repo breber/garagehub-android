@@ -1,5 +1,6 @@
 package com.worthwhilegames.carhubmobile;
 
+import android.annotation.SuppressLint;
 import android.app.ListActivity;
 import android.view.View;
 import com.google.android.gms.ads.AdRequest;
@@ -8,6 +9,7 @@ import com.google.android.gms.ads.AdView;
 /**
  * Created by breber on 6/22/13.
  */
+@SuppressLint("Registered")
 public class AdListActivity extends ListActivity {
 
     private boolean mAdsHidden = Util.shouldHideAds;

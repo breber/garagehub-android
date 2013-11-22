@@ -21,9 +21,9 @@ public class UserFuelAdapter extends ArrayAdapter<UserFuelRecord> {
 
     private int layoutResourceId;
 
-    public UserFuelAdapter(Context context, int layoutResourceId, List<UserFuelRecord> data) {
-        super(context, layoutResourceId, data);
-        this.layoutResourceId = layoutResourceId;
+    public UserFuelAdapter(Context context, List<UserFuelRecord> data) {
+        super(context, R.layout.fouritemrow, data);
+        this.layoutResourceId = R.layout.fouritemrow;
     }
 
     @Override

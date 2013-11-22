@@ -21,9 +21,9 @@ public class GasPriceAdapter extends ArrayAdapter<GasPriceRecord>{
     private int layoutResourceId;
     private List<GasPriceRecord> data = null;
 
-    public GasPriceAdapter(Context context, int layoutResourceId, List<GasPriceRecord> data) {
-        super(context, layoutResourceId, data);
-        this.layoutResourceId = layoutResourceId;
+    public GasPriceAdapter(Context context, List<GasPriceRecord> data) {
+        super(context, R.layout.gaspricerowlayout, data);
+        this.layoutResourceId = R.layout.gaspricerowlayout;
         this.context = context;
         this.data = data;
     }

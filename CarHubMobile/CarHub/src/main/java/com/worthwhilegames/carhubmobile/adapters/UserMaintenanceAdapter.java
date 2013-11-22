@@ -21,9 +21,9 @@ public class UserMaintenanceAdapter extends ArrayAdapter<UserMaintenanceRecord> 
 
     private int layoutResourceId;
 
-    public UserMaintenanceAdapter(Context context, int layoutResourceId, List<UserMaintenanceRecord> data) {
-        super(context, layoutResourceId, data);
-        this.layoutResourceId = layoutResourceId;
+    public UserMaintenanceAdapter(Context context, List<UserMaintenanceRecord> data) {
+        super(context, R.layout.fouritemrow, data);
+        this.layoutResourceId = R.layout.fouritemrow;
     }
 
     @Override

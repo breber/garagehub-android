@@ -21,9 +21,9 @@ public class UserExpenseAdapter extends ArrayAdapter<UserBaseExpenseRecord> {
 
     private int layoutResourceId;
 
-    public UserExpenseAdapter(Context context, int layoutResourceId, List<UserBaseExpenseRecord> data) {
-        super(context, layoutResourceId, data);
-        this.layoutResourceId = layoutResourceId;
+    public UserExpenseAdapter(Context context, List<UserBaseExpenseRecord> data) {
+        super(context, R.layout.fouritemrow, data);
+        this.layoutResourceId = R.layout.fouritemrow;
     }
 
     @Override
