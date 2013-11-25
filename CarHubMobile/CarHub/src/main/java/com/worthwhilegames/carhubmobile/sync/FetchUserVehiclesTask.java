@@ -92,7 +92,7 @@ public class FetchUserVehiclesTask implements ISyncTask {
 
                 if (toSend.getServerId() != null &&
                         !"".equals(toSend.getServerId())) {
-                    sent = mService.vehicle().update(toSend.getServerId(), toSend).execute();
+                    sent = mService.vehicle().update(toSend).execute();
                 } else {
                     sent = mService.vehicle().add(toSend).execute();
                 }

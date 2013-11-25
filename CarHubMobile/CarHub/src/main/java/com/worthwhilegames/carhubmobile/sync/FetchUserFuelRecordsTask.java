@@ -99,7 +99,7 @@ public class FetchUserFuelRecordsTask implements ISyncTask {
 
                 if (toSend.getServerId() != null &&
                         !"".equals(toSend.getServerId())) {
-                    sent = mService.fuel().update(toSend.getServerId(), toSend).execute();
+                    sent = mService.fuel().update(toSend).execute();
                 } else {
                     sent = mService.fuel().add(toSend).execute();
                 }

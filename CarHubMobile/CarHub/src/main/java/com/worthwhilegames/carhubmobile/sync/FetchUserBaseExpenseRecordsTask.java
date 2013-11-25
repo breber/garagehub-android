@@ -100,7 +100,7 @@ public class FetchUserBaseExpenseRecordsTask implements ISyncTask {
 
                 if (toSend.getServerId() != null &&
                         !"".equals(toSend.getServerId())) {
-                    sent = mService.expense().update(toSend.getServerId(), toSend).execute();
+                    sent = mService.expense().update(toSend).execute();
                 } else {
                     sent = mService.expense().add(toSend).execute();
                 }

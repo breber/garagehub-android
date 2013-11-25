@@ -99,7 +99,7 @@ public class FetchUserMaintenanceRecordsTask implements ISyncTask {
 
                 if (toSend.getServerId() != null &&
                         !"".equals(toSend.getServerId())) {
-                    sent = mService.maintenance().update(toSend.getServerId(), toSend).execute();
+                    sent = mService.maintenance().update(toSend).execute();
                 } else {
                     sent = mService.maintenance().add(toSend).execute();
                 }
