@@ -104,8 +104,14 @@ public class Util {
     }
 
     public static String getAccountName(Context ctx) {
-        SharedPreferences settings = getSharedPrefs(ctx);
+        SharedPreferences settings = Util.getSharedPrefs(ctx);
         return settings.getString(Util.PREF_ACCOUNT_NAME, "");
     }
 
+    public static void setAccountName(Context ctx, String name) {
+        SharedPreferences settings = Util.getSharedPrefs(ctx);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(Util.PREF_ACCOUNT_NAME, name);
+        editor.commit();
+    }
 }

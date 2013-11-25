@@ -53,11 +53,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         getContext().sendBroadcast(new Intent(SYNC_STARTED_BROADCAST));
 
         // Inside your Activity class onCreate method
-        SharedPreferences settings = Util.getSharedPrefs(getContext());
         mCreds = GoogleAccountCredential.usingAudience(getContext(), CarHubKeys.CARHUB_KEY);
-        setAccountName(settings.getString(Util.PREF_ACCOUNT_NAME, null));
+        mCreds.setSelectedAccountName(Util.getAccountName(getContext()));
+
+        if (Util.isDebugBuild) {
+            Log.d("SyncAdapter", "AccountName: " + mCreds.getSelectedAccountName());
+        }
 
         Carhub.Builder bl = new Carhub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCreds);
+        bl.setApplicationName("CarHub Mobile");
         mService = bl.build();
 
         if (mCreds.getSelectedAccountName() != null) {
@@ -93,13 +97,5 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         // Send a message saying we finished syncing
         getContext().sendBroadcast(new Intent(SYNC_FINISHED_BROADCAST));
-    }
-
-    private void setAccountName(String accountName) {
-        SharedPreferences settings = Util.getSharedPrefs(getContext());
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(Util.PREF_ACCOUNT_NAME, accountName);
-        editor.commit();
-        mCreds.setSelectedAccountName(accountName);
     }
 }

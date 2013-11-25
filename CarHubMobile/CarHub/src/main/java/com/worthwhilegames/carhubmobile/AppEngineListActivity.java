@@ -1,6 +1,7 @@
 package com.worthwhilegames.carhubmobile;
 
 import android.accounts.AccountManager;
+import android.app.ProgressDialog;
 import android.content.*;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -22,6 +23,10 @@ public abstract class AppEngineListActivity extends AdListActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             updateUi();
+
+            if (mDialog != null) {
+                mDialog.dismiss();
+            }
         }
     };
 
@@ -34,6 +39,11 @@ public abstract class AppEngineListActivity extends AdListActivity {
      * The Carhub service for interacting with AppEngine
      */
     protected Carhub mService;
+
+    /**
+     * The progress dialog for initial loading
+     */
+    private ProgressDialog mDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,9 +59,10 @@ public abstract class AppEngineListActivity extends AdListActivity {
 
         // Inside your Activity class onCreate method
         mCreds = GoogleAccountCredential.usingAudience(this, CarHubKeys.CARHUB_KEY);
-        setAccountName(Util.getAccountName(this));
+        mCreds.setSelectedAccountName(Util.getAccountName(this));
 
         Carhub.Builder bl = new Carhub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCreds);
+        bl.setApplicationName("CarHub Mobile");
         mService = bl.build();
 
         if (mCreds.getSelectedAccountName() == null) {
@@ -68,14 +79,22 @@ public abstract class AppEngineListActivity extends AdListActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_ACCOUNT_PICKER:
-                if (data != null && data.getExtras() != null) {
-                    String accountName = data.getExtras().getString(AccountManager.KEY_ACCOUNT_NAME);
-                    if (accountName != null) {
-                        setAccountName(accountName);
+                if (resultCode == RESULT_OK) {
+                    if (data != null && data.getExtras() != null) {
+                        String accountName = data.getExtras().getString(AccountManager.KEY_ACCOUNT_NAME);
+                        if (accountName != null) {
+                            mDialog = ProgressDialog.show(AppEngineListActivity.this, "",
+                                    "Loading. Please wait...", true);
 
-                        Util.startSync(this, true);
-                        updateUi();
+                            Util.setAccountName(this, accountName);
+                            Util.startSync(this, true);
+                            mCreds.setSelectedAccountName(accountName);
+                        }
                     }
+                } else {
+                    // If we don't get a successful account, finish the activity
+                    setResult(RESULT_CANCELED);
+                    finish();
                 }
                 break;
         }
@@ -111,15 +130,6 @@ public abstract class AppEngineListActivity extends AdListActivity {
 
     private void chooseAccount() {
         startActivityForResult(mCreds.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
-    }
-
-    // setAccountName definition
-    private void setAccountName(String accountName) {
-        SharedPreferences settings = Util.getSharedPrefs(this);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(Util.PREF_ACCOUNT_NAME, accountName);
-        editor.commit();
-        mCreds.setSelectedAccountName(accountName);
     }
 
     protected abstract void updateUi();
