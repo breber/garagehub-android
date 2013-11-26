@@ -1,8 +1,6 @@
 package com.worthwhilegames.carhubmobile;
 
-import android.accounts.AccountManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,8 +21,6 @@ import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
  * @author breber
  */
 public class UserVehicleActivity extends AdActivity {
-
-    private static final int REQUEST_ACCOUNT_PICKER = 2;
 
     /**
      * Current credentials
@@ -78,34 +74,19 @@ public class UserVehicleActivity extends AdActivity {
 
         // Inside your Activity class onCreate method
         mCreds = GoogleAccountCredential.usingAudience(this, CarHubKeys.CARHUB_KEY);
-        setAccountName(Util.getAccountName(this));
+        mCreds.setSelectedAccountName(Util.getAccountName(this));
+
+        // If we don't have an account, we shouldn't be in the UserVehicleActivity anyways
+        if (mCreds.getSelectedAccountName() == null) {
+            setResult(RESULT_CANCELED);
+            finish();
+            return;
+        }
 
         Carhub.Builder bl = new Carhub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCreds);
         mService = bl.build();
 
-        if (mCreds.getSelectedAccountName() == null) {
-            // Not signed in, show login window or request an account.
-            chooseAccount();
-        }
-
         updateUi();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case REQUEST_ACCOUNT_PICKER:
-                if (data != null && data.getExtras() != null) {
-                    String accountName = data.getExtras().getString(AccountManager.KEY_ACCOUNT_NAME);
-                    if (accountName != null) {
-                        setAccountName(accountName);
-
-                        Util.startSync(this, true);
-                    }
-                }
-                break;
-        }
     }
 
     /* (non-Javadoc)
@@ -116,19 +97,6 @@ public class UserVehicleActivity extends AdActivity {
         super.onResume();
 
         updateUi();
-    }
-
-    private void chooseAccount() {
-        startActivityForResult(mCreds.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
-    }
-
-    // setAccountName definition
-    private void setAccountName(String accountName) {
-        SharedPreferences settings = Util.getSharedPrefs(this);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(Util.PREF_ACCOUNT_NAME, accountName);
-        editor.commit();
-        mCreds.setSelectedAccountName(accountName);
     }
 
     private void updateUi() {

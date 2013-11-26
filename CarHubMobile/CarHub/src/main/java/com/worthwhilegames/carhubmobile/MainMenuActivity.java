@@ -44,9 +44,21 @@ public class MainMenuActivity extends AdActivity {
         // This should fix syncing issues after database upgrade
         SharedPreferences prefs = Util.getSharedPrefs(this);
         try {
-            if (prefs.getInt("PACKAGE_VERSION", 0) != 1) {
-                prefs.edit().clear().commit();
-                prefs.edit().putInt("PACKAGE_VERSION", 1).commit();
+            int versionCode = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+            if (prefs.getInt("PACKAGE_VERSION", 0) != versionCode) {
+                SharedPreferences.Editor editor = prefs.edit();
+
+                // Migrate old preferences to new consolidated preferences
+                SharedPreferences oldPrefs = getSharedPreferences("CarHubMobile", 0);
+                if (oldPrefs.contains(Util.PREF_ACCOUNT_NAME)) {
+                    // Add key to new preferences
+                    editor.putString(Util.PREF_ACCOUNT_NAME, oldPrefs.getString(Util.PREF_ACCOUNT_NAME, ""));
+
+                    // Clear the old preferences
+                    oldPrefs.edit().clear().commit();
+                }
+                editor.putInt("PACKAGE_VERSION", versionCode);
+                editor.commit();
             }
         } catch (Exception e) {
             e.printStackTrace();

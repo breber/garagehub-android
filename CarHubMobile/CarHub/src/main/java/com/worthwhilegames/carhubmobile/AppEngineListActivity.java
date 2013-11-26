@@ -65,6 +65,8 @@ public abstract class AppEngineListActivity extends AdListActivity {
         bl.setApplicationName("CarHub Mobile");
         mService = bl.build();
 
+        updateUi();
+
         if (mCreds.getSelectedAccountName() == null) {
             // Not signed in, show login window or request an account.
             chooseAccount();
@@ -83,12 +85,15 @@ public abstract class AppEngineListActivity extends AdListActivity {
                     if (data != null && data.getExtras() != null) {
                         String accountName = data.getExtras().getString(AccountManager.KEY_ACCOUNT_NAME);
                         if (accountName != null) {
+                            Util.setAccountName(this, accountName);
+                            mCreds.setSelectedAccountName(accountName);
+
+                            // Show a loading dialog for the first sync
                             mDialog = ProgressDialog.show(AppEngineListActivity.this, "",
                                     "Loading. Please wait...", true);
 
-                            Util.setAccountName(this, accountName);
+                            // Start the sync
                             Util.startSync(this, true);
-                            mCreds.setSelectedAccountName(accountName);
                         }
                     }
                 } else {
