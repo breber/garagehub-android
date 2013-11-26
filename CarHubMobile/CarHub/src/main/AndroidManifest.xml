@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.worthwhilegames.carhubmobile"
           android:installLocation="auto"
-          android:versionCode="13"
-          android:versionName="1.1.4" >
+          android:versionCode="14"
+          android:versionName="1.1.4-beta2" >
 
     <uses-sdk
         android:minSdkVersion="9"
@@ -25,7 +25,8 @@
         android:allowBackup="true"
         android:icon="@drawable/carhub"
         android:label="@string/app_name"
-        android:theme="@style/CarHub" >
+        android:theme="@style/CarHub"
+        android:debuggable="false">
         <activity
             android:name=".FindGasPricesActivity"
             android:label="@string/gasPrices" />

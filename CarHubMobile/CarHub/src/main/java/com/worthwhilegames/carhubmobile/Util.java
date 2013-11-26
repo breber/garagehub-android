@@ -6,6 +6,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -94,6 +95,7 @@ public class Util {
     }
 
     public static void updateSyncAutomatically(Context ctx) {
+        Log.d("UPDATE_SYNC_AUTO", "update sync automatically");
         // Set whether accounts sync automatically based on whether
         // we have it in our preferences
         String accountName = Util.getAccountName(ctx);
@@ -102,8 +104,14 @@ public class Util {
             Account[] accounts = manager.getAccountsByType("com.google");
             for (Account a : accounts) {
                 if (a.name.equals(accountName)) {
+                    if (Util.isDebugBuild) {
+                        Log.d("SYNC_AUTO", "account: " + a.name + " true");
+                    }
                     ContentResolver.setSyncAutomatically(a, Util.AUTHORITY, true);
                 } else {
+                    if (Util.isDebugBuild) {
+                        Log.d("SYNC_AUTO", "account: " + a.name + " false");
+                    }
                     ContentResolver.setSyncAutomatically(a, Util.AUTHORITY, false);
                 }
             }
