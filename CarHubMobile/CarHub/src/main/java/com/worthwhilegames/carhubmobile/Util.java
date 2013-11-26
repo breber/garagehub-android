@@ -86,6 +86,25 @@ public class Util {
                     }
                     ContentResolver.requestSync(a, Util.AUTHORITY, b);
                     ContentResolver.setSyncAutomatically(a, AUTHORITY, true);
+                } else {
+                    ContentResolver.setSyncAutomatically(a, AUTHORITY, false);
+                }
+            }
+        }
+    }
+
+    public static void updateSyncAutomatically(Context ctx) {
+        // Set whether accounts sync automatically based on whether
+        // we have it in our preferences
+        String accountName = Util.getAccountName(ctx);
+        AccountManager manager = AccountManager.get(ctx);
+        if (manager != null) {
+            Account[] accounts = manager.getAccountsByType("com.google");
+            for (Account a : accounts) {
+                if (a.name.equals(accountName)) {
+                    ContentResolver.setSyncAutomatically(a, Util.AUTHORITY, true);
+                } else {
+                    ContentResolver.setSyncAutomatically(a, Util.AUTHORITY, false);
                 }
             }
         }
@@ -93,13 +112,13 @@ public class Util {
 
     public static String getAccountName(Context ctx) {
         SharedPreferences settings = Util.getSharedPrefs(ctx);
-        return settings.getString(Util.PREF_ACCOUNT_NAME, "");
+        return settings.getString(Util.PREF_ACCOUNT_NAME, null);
     }
 
     public static void setAccountName(Context ctx, String name) {
         SharedPreferences settings = Util.getSharedPrefs(ctx);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(Util.PREF_ACCOUNT_NAME, name);
-        editor.commit();
+        editor.apply();
     }
 }

@@ -32,11 +32,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
+
+        Util.updateSyncAutomatically(context);
     }
 
     @TargetApi(11)
     public SyncAdapter(Context context, boolean autoInitialize, boolean allowParallelSyncs) {
         super(context, autoInitialize, allowParallelSyncs);
+
+        Util.updateSyncAutomatically(context);
     }
 
     @Override
@@ -46,7 +50,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                               ContentProviderClient contentProviderClient,
                               SyncResult syncResult) {
         if (Util.isDebugBuild) {
-            Log.d("SyncAdapter", "onPerformSync");
+            Log.d("SyncAdapter", "onPerformSync - " + account.name);
         }
 
         // Send a message saying we finished syncing
@@ -54,7 +58,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         // Inside your Activity class onCreate method
         mCreds = GoogleAccountCredential.usingAudience(getContext(), CarHubKeys.CARHUB_KEY);
-        mCreds.setSelectedAccountName(Util.getAccountName(getContext()));
+        mCreds.setSelectedAccountName(account.name);
 
         if (Util.isDebugBuild) {
             Log.d("SyncAdapter", "AccountName: " + mCreds.getSelectedAccountName());
