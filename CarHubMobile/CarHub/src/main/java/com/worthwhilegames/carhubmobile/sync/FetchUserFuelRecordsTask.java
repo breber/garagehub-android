@@ -42,7 +42,7 @@ public class FetchUserFuelRecordsTask implements ISyncTask {
 
         try {
             // Handle all records deleted on the server
-            List<UserFuelRecord> allLocal = UserFuelRecord.listAll(UserFuelRecord.class);
+            List<UserFuelRecord> allLocal = UserFuelRecord.getRecordsForVehicle(UserFuelRecord.class, mVehicle);
             List<UserFuelRecord> toDelete = new ArrayList<UserFuelRecord>();
             ModelsActiveRecords active = mService.fuel().active(Long.parseLong(mVehicle.getRemoteId())).execute();
             List<String> activeList = active.getActive();
