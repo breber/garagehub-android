@@ -74,7 +74,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/descriptionText"
-            android:inputType="textCapSentences"/>
+            android:lines="5"
+            android:minLines="1"
+            android:gravity="top|left"
+            android:maxLines="10"
+            android:scrollbars="none"
+            android:inputType="textMultiLine|textCapSentences"/>
 
     </LinearLayout>
 </ScrollView>

@@ -63,20 +63,6 @@
             android:inputType="numberDecimal"/>
 
         <TextView
-            android:id="@+id/descriptionLabel"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/descriptionHint"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/descriptionText"
-            android:inputType="textCapSentences"/>
-
-        <TextView
             android:id="@+id/odometerLabel"
             android:textStyle="bold"
             android:textSize="20sp"
@@ -89,6 +75,25 @@
             android:layout_height="wrap_content"
             android:id="@+id/odometerText"
             android:inputType="number"/>
+
+        <TextView
+            android:id="@+id/descriptionLabel"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/descriptionHint"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/descriptionText"
+            android:lines="5"
+            android:minLines="1"
+            android:gravity="top|left"
+            android:maxLines="10"
+            android:scrollbars="none"
+            android:inputType="textMultiLine|textCapSentences"/>
 
     </LinearLayout>
 </ScrollView>
