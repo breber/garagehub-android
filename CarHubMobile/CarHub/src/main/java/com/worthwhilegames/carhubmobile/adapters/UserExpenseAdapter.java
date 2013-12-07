@@ -11,8 +11,8 @@ import android.widget.TextView;
 import com.worthwhilegames.carhubmobile.R;
 import com.worthwhilegames.carhubmobile.models.UserBaseExpenseRecord;
 
-import java.util.Date;
 import java.util.List;
+import java.util.Date;
 
 /**
  * @author breber
@@ -22,8 +22,8 @@ public class UserExpenseAdapter extends ArrayAdapter<UserBaseExpenseRecord> {
     private int layoutResourceId;
 
     public UserExpenseAdapter(Context context, List<UserBaseExpenseRecord> data) {
-        super(context, R.layout.fouritemrow, data);
-        this.layoutResourceId = R.layout.fouritemrow;
+        super(context, R.layout.expenserow, data);
+        this.layoutResourceId = R.layout.expenserow;
     }
 
     @Override
@@ -35,10 +35,10 @@ public class UserExpenseAdapter extends ArrayAdapter<UserBaseExpenseRecord> {
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new ExpenseHolder();
-            holder.topLeft = (TextView) row.findViewById(R.id.topRowLeft);
-            holder.topRight = (TextView) row.findViewById(R.id.topRowRight);
-            holder.bottomLeft = (TextView) row.findViewById(R.id.bottomRowLeft);
-            holder.bottomRight = (TextView) row.findViewById(R.id.bottomRowRight);
+            holder.locationName = (TextView) row.findViewById(R.id.locationName);
+            holder.priceLabel = (TextView) row.findViewById(R.id.priceLabel);
+            holder.dateLabel = (TextView) row.findViewById(R.id.dateLabel);
+            holder.descriptionLabel = (TextView) row.findViewById(R.id.descriptionLabel);
 
             row.setTag(holder);
         } else {
@@ -47,19 +47,19 @@ public class UserExpenseAdapter extends ArrayAdapter<UserBaseExpenseRecord> {
 
         UserBaseExpenseRecord expense = getItem(position);
 
-        holder.topLeft.setText(expense.getLocation());
-        holder.topRight.setText(expense.getDescription());
-        holder.bottomLeft.setText(DateFormat.format("MM/dd/yyyy", new Date(expense.getDate())));
-        holder.bottomRight.setText(String.format("$%.2f", expense.getAmount()));
+        holder.locationName.setText(expense.getLocation());
+        holder.priceLabel.setText(String.format("$%.2f", expense.getAmount()));
+        holder.dateLabel.setText(DateFormat.format("MM/dd/yyyy", new Date(expense.getDate())));
+        holder.descriptionLabel.setText(expense.getDescription());
 
         return row;
     }
 
     static class ExpenseHolder
     {
-        TextView topLeft;
-        TextView topRight;
-        TextView bottomLeft;
-        TextView bottomRight;
+        TextView locationName;
+        TextView priceLabel;
+        TextView dateLabel;
+        TextView descriptionLabel;
     }
 }

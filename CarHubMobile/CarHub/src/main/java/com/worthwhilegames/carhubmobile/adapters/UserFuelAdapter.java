@@ -22,8 +22,8 @@ public class UserFuelAdapter extends ArrayAdapter<UserFuelRecord> {
     private int layoutResourceId;
 
     public UserFuelAdapter(Context context, List<UserFuelRecord> data) {
-        super(context, R.layout.fouritemrow, data);
-        this.layoutResourceId = R.layout.fouritemrow;
+        super(context, R.layout.fuelrow, data);
+        this.layoutResourceId = R.layout.fuelrow;
     }
 
     @Override
@@ -35,10 +35,10 @@ public class UserFuelAdapter extends ArrayAdapter<UserFuelRecord> {
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new FuelHolder();
-            holder.topLeft = (TextView) row.findViewById(R.id.topRowLeft);
-            holder.topRight = (TextView) row.findViewById(R.id.topRowRight);
-            holder.bottomLeft = (TextView) row.findViewById(R.id.bottomRowLeft);
-            holder.bottomRight = (TextView) row.findViewById(R.id.bottomRowRight);
+            holder.locationName = (TextView) row.findViewById(R.id.locationName);
+            holder.priceLabel = (TextView) row.findViewById(R.id.priceLabel);
+            holder.dateLabel = (TextView) row.findViewById(R.id.dateLabel);
+            holder.odometer = (TextView) row.findViewById(R.id.odometerLabel);
 
             row.setTag(holder);
         } else {
@@ -47,23 +47,24 @@ public class UserFuelAdapter extends ArrayAdapter<UserFuelRecord> {
 
         UserFuelRecord fuelRecord = getItem(position);
 
-        holder.bottomLeft.setText(DateFormat.format("MM/dd/yyyy", new Date(fuelRecord.getDate())));
-        holder.topLeft.setText(fuelRecord.getLocation());
-        if (fuelRecord.getOdometerStart() != -1) {
-            holder.topRight.setText(fuelRecord.getOdometerStart() + " - " + fuelRecord.getOdometerEnd());
+        holder.locationName.setText(fuelRecord.getLocation());
+        holder.priceLabel.setText(String.format("$%.2f", fuelRecord.getCostPerGallon()));
+        holder.dateLabel.setText(DateFormat.format("MM/dd/yyyy", new Date(fuelRecord.getDate())));
+        if ((fuelRecord.getOdometerStart() != -1) &&
+                (fuelRecord.getOdometerStart() != fuelRecord.getOdometerEnd())) {
+            holder.odometer.setText("Odometer: " + fuelRecord.getOdometerStart() + " - " + fuelRecord.getOdometerEnd());
         } else {
-            holder.topRight.setText(fuelRecord.getOdometerEnd() + "");
+            holder.odometer.setText("Odometer: " + fuelRecord.getOdometerEnd());
         }
-        holder.bottomRight.setText(String.format("$%.2f", fuelRecord.getCostPerGallon()));
 
         return row;
     }
 
     static class FuelHolder
     {
-        TextView topLeft;
-        TextView topRight;
-        TextView bottomLeft;
-        TextView bottomRight;
+        TextView locationName;
+        TextView priceLabel;
+        TextView dateLabel;
+        TextView odometer;
     }
 }

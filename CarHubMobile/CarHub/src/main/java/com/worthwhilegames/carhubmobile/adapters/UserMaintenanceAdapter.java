@@ -11,8 +11,8 @@ import android.widget.TextView;
 import com.worthwhilegames.carhubmobile.R;
 import com.worthwhilegames.carhubmobile.models.UserMaintenanceRecord;
 
-import java.util.Date;
 import java.util.List;
+import java.util.Date;
 
 /**
  * @author breber
@@ -22,44 +22,47 @@ public class UserMaintenanceAdapter extends ArrayAdapter<UserMaintenanceRecord> 
     private int layoutResourceId;
 
     public UserMaintenanceAdapter(Context context, List<UserMaintenanceRecord> data) {
-        super(context, R.layout.fouritemrow, data);
-        this.layoutResourceId = R.layout.fouritemrow;
+        super(context, R.layout.maintenancerow, data);
+        this.layoutResourceId = R.layout.maintenancerow;
     }
 
     @Override
     public View getView(int position, View row, ViewGroup parent) {
-        FuelHolder holder;
+        MaintenanceHolder holder;
 
         if (row == null) {
             LayoutInflater inflater = ((Activity) getContext()).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
 
-            holder = new FuelHolder();
-            holder.topLeft = (TextView) row.findViewById(R.id.topRowLeft);
-            holder.topRight = (TextView) row.findViewById(R.id.topRowRight);
-            holder.bottomLeft = (TextView) row.findViewById(R.id.bottomRowLeft);
-            holder.bottomRight = (TextView) row.findViewById(R.id.bottomRowRight);
+            holder = new MaintenanceHolder();
+            holder.locationName = (TextView) row.findViewById(R.id.locationName);
+            holder.priceLabel = (TextView) row.findViewById(R.id.priceLabel);
+            holder.dateLabel = (TextView) row.findViewById(R.id.dateLabel);
+            holder.descriptionLabel = (TextView) row.findViewById(R.id.descriptionLabel);
+            holder.odometerLabel = (TextView) row.findViewById(R.id.odometerLabel);
 
             row.setTag(holder);
         } else {
-            holder = (FuelHolder) row.getTag();
+            holder = (MaintenanceHolder) row.getTag();
         }
 
         UserMaintenanceRecord record = getItem(position);
 
-        holder.bottomLeft.setText(DateFormat.format("MM/dd/yyyy", new Date(record.getDate())));
-        holder.topLeft.setText(record.getLocation());
-        holder.topRight.setText(record.getOdometer() + "");
-        holder.bottomRight.setText(record.getDescription());
+        holder.locationName.setText(record.getLocation());
+        holder.dateLabel.setText(DateFormat.format("MM/dd/yyyy", new Date(record.getDate())));
+        holder.descriptionLabel.setText(record.getDescription());
+        holder.odometerLabel.setText("Odometer: " + record.getOdometer());
+        holder.priceLabel.setText(String.format("$%.2f", record.getAmount()));
 
         return row;
     }
 
-    static class FuelHolder
+    static class MaintenanceHolder
     {
-        TextView topLeft;
-        TextView topRight;
-        TextView bottomLeft;
-        TextView bottomRight;
+        TextView locationName;
+        TextView priceLabel;
+        TextView dateLabel;
+        TextView odometerLabel;
+        TextView descriptionLabel;
     }
 }
