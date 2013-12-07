@@ -19,7 +19,7 @@
 package com.appspot.car_hub.carhub.model;
 
 /**
- * Model definition for ModelsActiveRecords.
+ * Model definition for ModelsStringRequest.
  *
  * <p> This is the Java data model class that specifies how to parse/serialize into the JSON that is
  * transmitted over HTTP when working with the carhub. For a detailed explanation see:
@@ -29,37 +29,37 @@ package com.appspot.car_hub.carhub.model;
  * @author Google, Inc.
  */
 @SuppressWarnings("javadoc")
-public final class ModelsActiveRecords extends com.google.api.client.json.GenericJson {
+public final class ModelsStringRequest extends com.google.api.client.json.GenericJson {
 
   /**
    * The value may be {@code null}.
    */
-  @com.google.api.client.util.Key
-  private java.util.List<java.lang.String> active;
+  @com.google.api.client.util.Key("string")
+  private java.lang.String carhubString;
 
   /**
    * @return value or {@code null} for none
    */
-  public java.util.List<java.lang.String> getActive() {
-    return active;
+  public java.lang.String getString() {
+    return carhubString;
   }
 
   /**
-   * @param active active or {@code null} for none
+   * @param carhubString carhubString or {@code null} for none
    */
-  public ModelsActiveRecords setActive(java.util.List<java.lang.String> active) {
-    this.active = active;
+  public ModelsStringRequest setString(java.lang.String carhubString) {
+    this.carhubString = carhubString;
     return this;
   }
 
   @Override
-  public ModelsActiveRecords set(String fieldName, Object value) {
-    return (ModelsActiveRecords) super.set(fieldName, value);
+  public ModelsStringRequest set(String fieldName, Object value) {
+    return (ModelsStringRequest) super.set(fieldName, value);
   }
 
   @Override
-  public ModelsActiveRecords clone() {
-    return (ModelsActiveRecords) super.clone();
+  public ModelsStringRequest clone() {
+    return (ModelsStringRequest) super.clone();
   }
 
 }
