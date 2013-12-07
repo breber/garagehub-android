@@ -20,7 +20,7 @@
         android:layout_alignParentRight="true"
         android:gravity="left"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#00a334"
+        android:textColor="@color/green"
         android:textStyle="italic" />
 
     <LinearLayout
