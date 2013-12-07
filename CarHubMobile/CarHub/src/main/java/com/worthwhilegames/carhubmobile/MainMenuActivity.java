@@ -28,6 +28,8 @@ public class MainMenuActivity extends AdActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
 
+        Util.updateSyncAutomatically(this);
+
         GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(new MenuImageAdapter(this, mImageTextWrappers));
 

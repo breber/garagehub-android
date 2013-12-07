@@ -49,16 +49,25 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                               String s,
                               ContentProviderClient contentProviderClient,
                               SyncResult syncResult) {
-        // Only do the sync if the account given is the same one
-        // the user selected to sync
-        String accountName = Util.getAccountName(getContext());
-        if ((accountName == null) ||
-            (account.name != accountName)) {
-            return;
-        }
-
         if (Util.isDebugBuild) {
             Log.d("SyncAdapter", "onPerformSync - " + account.name);
+        }
+
+        // If this sync wasn't started by Util.startSync, make sure that the
+        // user has an account selected. If this is from Util.startSync, we
+        // know that the user has an account selected
+        if (!bundle.getBoolean(Util.FROM_START_SYNC)) {
+            // Only do the sync if the account given is the same one
+            // the user selected to sync
+            String accountName = Util.getAccountName(getContext());
+            if ((accountName == null) ||
+                (!account.name.equals(accountName))) {
+                if (Util.isDebugBuild) {
+                    Log.d("SyncAdapter", "onPerformSync - " + account.name + " - CANCELLED: " + accountName);
+                }
+
+                return;
+            }
         }
 
         // Send a message saying we finished syncing

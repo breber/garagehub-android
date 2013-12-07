@@ -18,6 +18,8 @@ import java.io.UnsupportedEncodingException;
  */
 public class Util {
 
+    private static SharedPreferences mSharedPreferences = null;
+
     /**
      * A boolean to represent if the current build is a debug build
      */
@@ -37,13 +39,22 @@ public class Util {
     public static final String PREF_ACCOUNT_NAME = "accountName";
 
     /**
+     * Indicates this sync was started from startSync
+     */
+    public static final String FROM_START_SYNC = "fromStartSync";
+
+    /**
      * Utility method for getting the SharedPreferences instance for the app
      *
      * @param ctx
      * @return
      */
     public static SharedPreferences getSharedPrefs(Context ctx) {
-        return ctx.getSharedPreferences("Preferences", 0);
+        if (mSharedPreferences == null) {
+            mSharedPreferences = ctx.getApplicationContext().getSharedPreferences("Preferences", 0);
+        }
+
+        return mSharedPreferences;
     }
 
     /**
@@ -79,26 +90,31 @@ public class Util {
             Account[] accounts = manager.getAccountsByType("com.google");
             for (Account a : accounts) {
                 if (a.name.equals(accountName)) {
+                    if (Util.isDebugBuild) {
+                        Log.d("STARTSYNC", "account: " + a.name);
+                    }
+
                     Bundle b = new Bundle();
                     b.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+                    b.putBoolean(FROM_START_SYNC, true);
                     if (important) {
                         // Disable sync backoff and ignore sync preferences. In other words...perform sync NOW!
                         b.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
                     }
                     ContentResolver.requestSync(a, Util.AUTHORITY, b);
-                    ContentResolver.setSyncAutomatically(a, AUTHORITY, true);
-                } else {
-                    ContentResolver.setSyncAutomatically(a, AUTHORITY, false);
                 }
             }
         }
     }
 
     public static void updateSyncAutomatically(Context ctx) {
-        Log.d("UPDATE_SYNC_AUTO", "update sync automatically");
         // Set whether accounts sync automatically based on whether
         // we have it in our preferences
         String accountName = Util.getAccountName(ctx);
+        updateSyncAutomatically(ctx, accountName);
+    }
+
+    public static void updateSyncAutomatically(Context ctx, String accountName) {
         AccountManager manager = AccountManager.get(ctx);
         if (manager != null) {
             Account[] accounts = manager.getAccountsByType("com.google");
@@ -128,5 +144,7 @@ public class Util {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(Util.PREF_ACCOUNT_NAME, name);
         editor.apply();
+
+        Util.updateSyncAutomatically(ctx, name);
     }
 }
