@@ -49,6 +49,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                               String s,
                               ContentProviderClient contentProviderClient,
                               SyncResult syncResult) {
+        // Only do the sync if the account given is the same one
+        // the user selected to sync
+        String accountName = Util.getAccountName(getContext());
+        if ((accountName == null) ||
+            (account.name != accountName)) {
+            return;
+        }
+
         if (Util.isDebugBuild) {
             Log.d("SyncAdapter", "onPerformSync - " + account.name);
         }

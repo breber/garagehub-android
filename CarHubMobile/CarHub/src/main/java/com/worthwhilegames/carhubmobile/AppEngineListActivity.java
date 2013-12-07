@@ -70,9 +70,6 @@ public abstract class AppEngineListActivity extends AdListActivity {
         if (mCreds.getSelectedAccountName() == null) {
             // Not signed in, show login window or request an account.
             chooseAccount();
-        } else {
-            // Signed in, so start a sync
-            Util.startSync(this, false);
         }
     }
 
