@@ -29,13 +29,6 @@
         android:paddingLeft="60dp" >
 
         <TextView
-            android:id="@+id/gasStationName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/blue" />
-
-        <TextView
             android:id="@+id/gasStationAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -65,19 +58,6 @@
 
         <TextView
             android:id="@+id/gasStationLastUpdated"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/gradeLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/updatedLayout"
-        android:paddingLeft="60dp" >
-
-        <TextView
-            android:id="@+id/gasStationPriceGrade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

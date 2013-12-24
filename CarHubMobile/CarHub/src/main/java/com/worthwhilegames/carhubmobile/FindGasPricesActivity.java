@@ -22,10 +22,10 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
+import com.mobsandgeeks.adapters.InstantAdapter;
+import com.worthwhilegames.carhubmobile.models.GasPriceRecord;
 import com.worthwhilegames.carhubmobile.sync.FetchGasPricesTask;
 import com.worthwhilegames.carhubmobile.sync.FetchGasPricesTask.FetchGasPricesTaskCallback;
-import com.worthwhilegames.carhubmobile.adapters.GasPriceAdapter;
-import com.worthwhilegames.carhubmobile.models.GasPriceRecord;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -164,7 +164,8 @@ public class FindGasPricesActivity extends AdListActivity implements FetchGasPri
      */
     @SuppressLint("DefaultLocale")
     private String getLocationFromZip() {
-        String zipCode = ((EditText)findViewById(R.id.zipCode)).getText().toString();
+        EditText zipCodeInput = (EditText)findViewById(R.id.zipCode);
+        String zipCode = zipCodeInput.getText().toString();
 
         // pattern to match for the zip code
         Pattern pattern = Pattern.compile("[0-9]{5}");
@@ -239,7 +240,8 @@ public class FindGasPricesActivity extends AdListActivity implements FetchGasPri
         }
 
         data.addAll(naData);
-        setListAdapter(new GasPriceAdapter(FindGasPricesActivity.this, data));
+
+        setListAdapter(new InstantAdapter<GasPriceRecord>(this, R.layout.gaspricerowlayout, GasPriceRecord.class, data));
 
         setProgressBarIndeterminateVisibility(false);
     }

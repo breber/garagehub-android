@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
-import com.worthwhilegames.carhubmobile.adapters.UserFuelAdapter;
+import com.mobsandgeeks.adapters.InstantAdapter;
 import com.worthwhilegames.carhubmobile.models.UserFuelRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
@@ -89,7 +89,6 @@ public class UserFuelListActivity extends AppEngineListActivity {
             }
         });
 
-        UserFuelAdapter adapter = new UserFuelAdapter(UserFuelListActivity.this, fuelRecords);
-        setListAdapter(adapter);
+        setListAdapter(new InstantAdapter<UserFuelRecord>(this, R.layout.fuelrow, UserFuelRecord.class, fuelRecords));
     }
 }

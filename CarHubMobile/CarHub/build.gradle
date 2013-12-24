@@ -1,7 +1,12 @@
 apply plugin: 'android'
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     compile 'com.google.android.gms:play-services:4.0.30'
+    compile 'com.mobsandgeeks:adapter-kit:0.5.+'
 
     compile files('libs/sugar-1.3_beta.jar')
     compile files('libs/svg-android.jar')
