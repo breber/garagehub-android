@@ -1,8 +1,9 @@
 package com.worthwhilegames.carhubmobile.models;
 
 import android.content.Context;
-
+import com.mobsandgeeks.adapters.InstantText;
 import com.orm.SugarRecord;
+import com.worthwhilegames.carhubmobile.R;
 
 public class GasPriceRecord extends SugarRecord<GasPriceRecord> {
 
@@ -38,6 +39,7 @@ public class GasPriceRecord extends SugarRecord<GasPriceRecord> {
     /**
      * @return the station
      */
+    @InstantText(viewId = R.id.gasStationName)
     public String getStation() {
         return mStation;
     }
@@ -52,6 +54,7 @@ public class GasPriceRecord extends SugarRecord<GasPriceRecord> {
     /**
      * @return the Address
      */
+    @InstantText(viewId = R.id.gasStationAddress, formatString = "%s, ")
     public String getAddress() {
         return mAddress;
     }
@@ -66,6 +69,7 @@ public class GasPriceRecord extends SugarRecord<GasPriceRecord> {
     /**
      * @return the mPrice
      */
+    @InstantText(viewId = R.id.gasStationPrice)
     public String getPrice() {
         return mPrice;
     }
@@ -80,6 +84,7 @@ public class GasPriceRecord extends SugarRecord<GasPriceRecord> {
     /**
      * @return the mDistance
      */
+    @InstantText(viewId = R.id.gasStationDistance, formatString = "%s away - ")
     public String getDistance() {
         return mDistance;
     }
@@ -94,6 +99,7 @@ public class GasPriceRecord extends SugarRecord<GasPriceRecord> {
     /**
      * @return the mLastUpdated
      */
+    @InstantText(viewId = R.id.gasStationLastUpdated, formatString = "Updated: %s")
     public String getLastUpdated() {
         return mLastUpdated;
     }
@@ -136,6 +142,7 @@ public class GasPriceRecord extends SugarRecord<GasPriceRecord> {
     /**
      * @return the mCity
      */
+    @InstantText(viewId = R.id.gasStationAddressCity, formatString = "%s, ")
     public String getCity() {
         return mCity;
     }
@@ -150,6 +157,7 @@ public class GasPriceRecord extends SugarRecord<GasPriceRecord> {
     /**
      * @return the mRegion
      */
+    @InstantText(viewId = R.id.gasStationAddressRegion)
     public String getRegion() {
         return mRegion;
     }
