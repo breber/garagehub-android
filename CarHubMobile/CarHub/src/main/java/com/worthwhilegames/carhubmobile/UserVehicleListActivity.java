@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import com.worthwhilegames.carhubmobile.adapters.UserVehicleAdapter;
+import com.mobsandgeeks.adapters.InstantAdapter;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
 import java.util.Collections;
@@ -70,6 +70,6 @@ public class UserVehicleListActivity extends AppEngineListActivity {
             }
         });
 
-        setListAdapter(new UserVehicleAdapter(this, vehicles));
+        setListAdapter(new InstantAdapter<UserVehicleRecord>(this, R.layout.simple_list_item, UserVehicleRecord.class, vehicles));
     }
 }

@@ -2,7 +2,9 @@ package com.worthwhilegames.carhubmobile.models;
 
 import android.content.Context;
 import com.appspot.car_hub.carhub.model.MaintenanceRecord;
+import com.mobsandgeeks.adapters.InstantText;
 import com.orm.StringUtil;
+import com.worthwhilegames.carhubmobile.R;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -52,6 +54,7 @@ public class UserMaintenanceRecord extends UserBaseExpenseRecord {
     /**
      * @return the mOdometer
      */
+    @InstantText(viewId = R.id.odometerLabel, formatString = "Odometer: %d")
     public int getOdometer() {
         return mOdometer;
     }

@@ -1,9 +1,12 @@
 package com.worthwhilegames.carhubmobile.models;
 
 import android.content.Context;
+import android.text.format.DateFormat;
 import com.appspot.car_hub.carhub.model.UserExpenseRecord;
+import com.mobsandgeeks.adapters.InstantText;
 import com.orm.StringUtil;
 import com.orm.dsl.Ignore;
+import com.worthwhilegames.carhubmobile.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -83,6 +86,14 @@ public class UserBaseExpenseRecord extends SyncableRecord {
     }
 
     /**
+     * @return the date as a string
+     */
+    @InstantText(viewId = R.id.dateLabel)
+    public String getFormattedDate() {
+        return DateFormat.format("MM/dd/yyyy", new Date(getDate())).toString();
+    }
+
+    /**
      * @param aDate the mlong to set
      */
     public void setDate(Long aDate) {
@@ -106,6 +117,7 @@ public class UserBaseExpenseRecord extends SyncableRecord {
     /**
      * @return the mLocation
      */
+    @InstantText(viewId = R.id.locationName)
     public String getLocation() {
         return mLocation;
     }
@@ -120,6 +132,7 @@ public class UserBaseExpenseRecord extends SyncableRecord {
     /**
      * @return the mDescription
      */
+    @InstantText(viewId = R.id.descriptionLabel)
     public String getDescription() {
         return mDescription;
     }
@@ -134,6 +147,7 @@ public class UserBaseExpenseRecord extends SyncableRecord {
     /**
      * @return the mAmount
      */
+    @InstantText(viewId = R.id.priceLabel, formatString = "$%.2f")
     public float getAmount() {
         return mAmount;
     }

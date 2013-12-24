@@ -23,23 +23,25 @@
         android:textColor="@color/green"
         android:textStyle="italic" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/odometerLabel"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/locationName" >
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/locationName" />
 
-        <TextView
-            android:id="@+id/odometerLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true" />
+    <TextView
+        android:id="@+id/dateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="left"
+        android:layout_below="@+id/priceLabel" />
 
-        <TextView
-            android:id="@+id/dateLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:gravity="left" />
-    </RelativeLayout>
-
+    <!-- Unused -->
+    <TextView
+        android:layout_width="0dip"
+        android:layout_height="0dip"
+        android:visibility="gone"
+        android:id="@+id/descriptionLabel"/>
 </RelativeLayout>

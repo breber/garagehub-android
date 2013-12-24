@@ -2,7 +2,9 @@ package com.worthwhilegames.carhubmobile.models;
 
 import android.content.Context;
 import com.appspot.car_hub.carhub.model.FuelRecord;
+import com.mobsandgeeks.adapters.InstantText;
 import com.orm.StringUtil;
+import com.worthwhilegames.carhubmobile.R;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -76,6 +78,19 @@ public class UserFuelRecord extends UserBaseExpenseRecord {
      */
     public void setMpg(float aMpg) {
         this.mMpg = aMpg;
+    }
+
+    /**
+     * @return a string odometer reading
+     */
+    @InstantText(viewId = R.id.odometerLabel)
+    public String getOdometerString() {
+        if ((getOdometerStart() != -1) &&
+            (getOdometerStart() != getOdometerEnd())) {
+            return "Odometer: " + getOdometerStart() + " - " + getOdometerEnd();
+        } else {
+            return "Odometer: " + getOdometerEnd();
+        }
     }
 
     /**

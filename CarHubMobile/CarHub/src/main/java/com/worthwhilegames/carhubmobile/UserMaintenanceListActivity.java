@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
-import com.worthwhilegames.carhubmobile.adapters.UserMaintenanceAdapter;
+import com.mobsandgeeks.adapters.InstantAdapter;
 import com.worthwhilegames.carhubmobile.models.UserMaintenanceRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
@@ -89,8 +89,7 @@ public class UserMaintenanceListActivity extends AppEngineListActivity {
             }
         });
 
-        UserMaintenanceAdapter adapter = new UserMaintenanceAdapter(UserMaintenanceListActivity.this, maintRecords);
-        setListAdapter(adapter);
+        setListAdapter(new InstantAdapter<UserMaintenanceRecord>(this, R.layout.maintenancerow, UserMaintenanceRecord.class, maintRecords));
     }
 
 }

@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
-import com.worthwhilegames.carhubmobile.adapters.UserExpenseAdapter;
+import com.mobsandgeeks.adapters.InstantAdapter;
 import com.worthwhilegames.carhubmobile.models.UserBaseExpenseRecord;
 import com.worthwhilegames.carhubmobile.models.UserFuelRecord;
 import com.worthwhilegames.carhubmobile.models.UserMaintenanceRecord;
@@ -103,7 +103,6 @@ public class UserExpenseManagerActivity extends AppEngineListActivity {
             }
         });
 
-        UserExpenseAdapter adapter = new UserExpenseAdapter(UserExpenseManagerActivity.this, expenseRecords);
-        setListAdapter(adapter);
+        setListAdapter(new InstantAdapter<UserBaseExpenseRecord>(this, R.layout.expenserow, UserBaseExpenseRecord.class, expenseRecords));
     }
 }
