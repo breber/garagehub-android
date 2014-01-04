@@ -64,6 +64,21 @@
             android:inputType="numberDecimal"/>
 
         <TextView
+            android:id="@+id/numGallonLabel"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/numGallonHint"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/numGallonText"
+            android:inputType="numberDecimal"
+            android:enabled="false"/>
+
+        <TextView
             android:id="@+id/odometerLabel"
             android:textStyle="bold"
             android:textSize="20sp"

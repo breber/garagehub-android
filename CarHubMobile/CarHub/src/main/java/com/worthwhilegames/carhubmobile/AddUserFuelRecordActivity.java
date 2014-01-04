@@ -1,6 +1,8 @@
 package com.worthwhilegames.carhubmobile;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.*;
@@ -22,7 +24,40 @@ public class AddUserFuelRecordActivity extends AdActivity {
     private EditText mAmount;
     private EditText mOdometerEndEditText;
     private EditText mCostPerGallonEditText;
+    private EditText mNumGallonEditText;
     private Spinner mFuelGradeSpinner;
+
+    private TextWatcher mTextChangedListener = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            // Nothing
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            // Nothing
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            String amountText = mAmount.getText().toString();
+            String cpgText = mCostPerGallonEditText.getText().toString();
+
+            if (!"".equals(amountText) && !"".equals(cpgText)) {
+                float amountVal = 0;
+                float cpgVal = 0;
+                try {
+                    amountVal = Float.parseFloat(amountText);
+                    cpgVal = Float.parseFloat(cpgText);
+                } catch (Exception e) {
+                    // Ignore this, just don't try calculating
+                    return;
+                }
+
+                mNumGallonEditText.setText(String.format("%.2f", amountVal / cpgVal));
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +80,14 @@ public class AddUserFuelRecordActivity extends AdActivity {
         mAmount = (EditText) findViewById(R.id.amountText);
         mOdometerEndEditText = (EditText) findViewById(R.id.odometerText);
         mCostPerGallonEditText = (EditText) findViewById(R.id.costPerGallonText);
+        mNumGallonEditText = (EditText) findViewById(R.id.numGallonText);
         mFuelGradeSpinner = (Spinner) findViewById(R.id.fuelGradeSpinner);
+
+        // Add onChange listeners to the amount and cost per gallon fields
+        // so that we can update the num gallons field
+        mAmount.addTextChangedListener(mTextChangedListener);
+        mCostPerGallonEditText.addTextChangedListener(mTextChangedListener);
+        
 
         // Fill in the fuel types
         String[] fuelTypesArray = getResources().getStringArray(R.array.fuelGradeArray);
@@ -63,6 +105,7 @@ public class AddUserFuelRecordActivity extends AdActivity {
             mAmount.setText(String.format("%.2f", mRecord.getAmount()));
             mOdometerEndEditText.setText(mRecord.getOdometerEnd() + "");
             mCostPerGallonEditText.setText(String.format("%.2f", mRecord.getCostPerGallon()));
+            mNumGallonEditText.setText(String.format("%.2f", mRecord.getAmount() / mRecord.getCostPerGallon()));
 
             int selectedPosition = adapter.getPosition(mRecord.getFuelGrade());
             mFuelGradeSpinner.setSelection(selectedPosition);

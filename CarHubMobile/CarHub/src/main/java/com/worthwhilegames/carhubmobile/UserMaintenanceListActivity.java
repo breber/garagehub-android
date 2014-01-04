@@ -41,9 +41,6 @@ public class UserMaintenanceListActivity extends AppEngineListActivity {
             @Override
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                 UserMaintenanceRecord model = (UserMaintenanceRecord) a.getItemAtPosition(position);
-                if (Util.isDebugBuild) {
-                    Toast.makeText(UserMaintenanceListActivity.this, model.getId() + "", Toast.LENGTH_LONG).show();
-                }
 
                 Intent i = new Intent(UserMaintenanceListActivity.this, AddMaintenanceRecordActivity.class);
                 i.putExtra(Constants.INTENT_DATA_VEHICLE, mVehicle.getId());
