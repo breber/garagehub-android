@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
 /**
@@ -13,26 +15,20 @@ public class AddVehicleActivity extends AdActivity {
 
     private UserVehicleRecord mVehicle;
 
-    private EditText mYearEditText;
-    private EditText mMakeEditText;
-    private EditText mModelEditText;
-    private EditText mColorEditText;
-    private EditText mPlateEditText;
+    @InjectView(R.id.yearText) private EditText mYearEditText;
+    @InjectView(R.id.makeText) private EditText mMakeEditText;
+    @InjectView(R.id.modelText) private EditText mModelEditText;
+    @InjectView(R.id.colorText) private EditText mColorEditText;
+    @InjectView(R.id.plateText) private EditText mPlateEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.addvehicle);
+        ButterKnife.inject(this);
 
         Long vehicleId = getIntent().getLongExtra(Constants.INTENT_DATA_VEHICLE, -1);
         mVehicle = UserVehicleRecord.findById(UserVehicleRecord.class, vehicleId);
-
-        // Set up the UI elements
-        mYearEditText = (EditText) findViewById(R.id.yearText);
-        mMakeEditText = (EditText) findViewById(R.id.makeText);
-        mModelEditText = (EditText) findViewById(R.id.modelText);
-        mColorEditText = (EditText) findViewById(R.id.colorText);
-        mPlateEditText = (EditText) findViewById(R.id.plateText);
 
         if (mVehicle != null) {
             // Fill in the UI fields if we are editing a record

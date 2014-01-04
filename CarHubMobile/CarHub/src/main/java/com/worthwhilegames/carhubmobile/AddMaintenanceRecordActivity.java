@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.*;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import com.worthwhilegames.carhubmobile.models.CategoryRecord;
 import com.worthwhilegames.carhubmobile.models.UserMaintenanceRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
@@ -20,12 +22,13 @@ public class AddMaintenanceRecordActivity extends AdActivity {
     private UserMaintenanceRecord mRecord;
 
     private ArrayAdapter<CategoryRecord> mAdapter;
-    private DatePicker mDatePicker;
-    private Spinner mCategorySpinner;
-    private EditText mLocationEditText;
-    private EditText mDescriptionEditText;
-    private EditText mAmount;
-    private EditText mOdometer;
+
+    @InjectView(R.id.datePicker) private DatePicker mDatePicker;
+    @InjectView(R.id.categorySpinner) private Spinner mCategorySpinner;
+    @InjectView(R.id.locationText) private EditText mLocationEditText;
+    @InjectView(R.id.descriptionText) private EditText mDescriptionEditText;
+    @InjectView(R.id.amountText) private EditText mAmount;
+    @InjectView(R.id.odometerText) private EditText mOdometer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +45,7 @@ public class AddMaintenanceRecordActivity extends AdActivity {
             return;
         }
 
-        // Set up the UI elements
-        mDatePicker = (DatePicker) findViewById(R.id.datePicker);
-        mCategorySpinner = (Spinner) findViewById(R.id.categorySpinner);
-        mLocationEditText = (EditText) findViewById(R.id.locationText);
-        mDescriptionEditText = (EditText) findViewById(R.id.descriptionText);
-        mAmount = (EditText) findViewById(R.id.amountText);
-        mOdometer = (EditText) findViewById(R.id.odometerText);
+        ButterKnife.inject(this);
 
         // Fill in the categories
         List<CategoryRecord> categoryRecords = CategoryRecord.getMaintenanceCategories(CategoryRecord.class);

@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * @author jamiekujawa
@@ -18,17 +20,17 @@ public class SettingsActivity extends AdActivity {
     /**
      * A Spinner to represent the different distance options
      */
-    private Spinner distanceSpinner;
+    @InjectView(R.id.spinnerradius) private Spinner distanceSpinner;
 
     /**
      * A Spinner to represent the different fuel types
      */
-    private Spinner fuelTypeSpinner;
+    @InjectView(R.id.spinnerfueltype) private Spinner fuelTypeSpinner;
 
     /**
      * A Spinner to represent the different sorting options
      */
-    private Spinner sortBySpinner;
+    @InjectView(R.id.spinnersortby) private Spinner sortBySpinner;
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -37,13 +39,10 @@ public class SettingsActivity extends AdActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
+        ButterKnife.inject(this);
 
         // create the shared preferences object
         sharedPref = Util.getSharedPrefs(this);
-
-        distanceSpinner = (Spinner) findViewById(R.id.spinnerradius);
-        fuelTypeSpinner = (Spinner) findViewById(R.id.spinnerfueltype);
-        sortBySpinner = (Spinner) findViewById(R.id.spinnersortby);
 
         if (distanceSpinner != null) {
             // get the value from shared preferences
@@ -93,7 +92,7 @@ public class SettingsActivity extends AdActivity {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.app.Activity#onBackPressed()
      */
     @Override

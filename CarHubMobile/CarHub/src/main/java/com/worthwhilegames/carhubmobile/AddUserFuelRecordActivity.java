@@ -6,6 +6,8 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.*;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import com.worthwhilegames.carhubmobile.models.UserFuelRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
@@ -19,13 +21,13 @@ public class AddUserFuelRecordActivity extends AdActivity {
     private UserVehicleRecord mVehicle;
     private UserFuelRecord mRecord;
 
-    private DatePicker mDatePicker;
-    private EditText mLocationEditText;
-    private EditText mAmount;
-    private EditText mOdometerEndEditText;
-    private EditText mCostPerGallonEditText;
-    private EditText mNumGallonEditText;
-    private Spinner mFuelGradeSpinner;
+    @InjectView(R.id.datePicker) private DatePicker mDatePicker;
+    @InjectView(R.id.locationText) private EditText mLocationEditText;
+    @InjectView(R.id.amountText) private EditText mAmount;
+    @InjectView(R.id.odometerText) private EditText mOdometerEndEditText;
+    @InjectView(R.id.costPerGallonText) private EditText mCostPerGallonEditText;
+    @InjectView(R.id.numGallonText) private EditText mNumGallonEditText;
+    @InjectView(R.id.fuelGradeSpinner) private Spinner mFuelGradeSpinner;
 
     private TextWatcher mTextChangedListener = new TextWatcher() {
         @Override
@@ -74,20 +76,13 @@ public class AddUserFuelRecordActivity extends AdActivity {
             return;
         }
 
-        // Set up the UI elements
-        mDatePicker = (DatePicker) findViewById(R.id.datePicker);
-        mLocationEditText = (EditText) findViewById(R.id.locationText);
-        mAmount = (EditText) findViewById(R.id.amountText);
-        mOdometerEndEditText = (EditText) findViewById(R.id.odometerText);
-        mCostPerGallonEditText = (EditText) findViewById(R.id.costPerGallonText);
-        mNumGallonEditText = (EditText) findViewById(R.id.numGallonText);
-        mFuelGradeSpinner = (Spinner) findViewById(R.id.fuelGradeSpinner);
+        ButterKnife.inject(this);
 
         // Add onChange listeners to the amount and cost per gallon fields
         // so that we can update the num gallons field
         mAmount.addTextChangedListener(mTextChangedListener);
         mCostPerGallonEditText.addTextChangedListener(mTextChangedListener);
-        
+
 
         // Fill in the fuel types
         String[] fuelTypesArray = getResources().getStringArray(R.array.fuelGradeArray);
