@@ -23,12 +23,12 @@ public class AddMaintenanceRecordActivity extends AdActivity {
 
     private ArrayAdapter<CategoryRecord> mAdapter;
 
-    @InjectView(R.id.datePicker) private DatePicker mDatePicker;
-    @InjectView(R.id.categorySpinner) private Spinner mCategorySpinner;
-    @InjectView(R.id.locationText) private EditText mLocationEditText;
-    @InjectView(R.id.descriptionText) private EditText mDescriptionEditText;
-    @InjectView(R.id.amountText) private EditText mAmount;
-    @InjectView(R.id.odometerText) private EditText mOdometer;
+    @InjectView(R.id.datePicker) protected DatePicker mDatePicker;
+    @InjectView(R.id.categorySpinner) protected Spinner mCategorySpinner;
+    @InjectView(R.id.locationText) protected EditText mLocationEditText;
+    @InjectView(R.id.descriptionText) protected EditText mDescriptionEditText;
+    @InjectView(R.id.amountText) protected EditText mAmount;
+    @InjectView(R.id.odometerText) protected EditText mOdometer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

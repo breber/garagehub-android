@@ -15,11 +15,11 @@ public class AddVehicleActivity extends AdActivity {
 
     private UserVehicleRecord mVehicle;
 
-    @InjectView(R.id.yearText) private EditText mYearEditText;
-    @InjectView(R.id.makeText) private EditText mMakeEditText;
-    @InjectView(R.id.modelText) private EditText mModelEditText;
-    @InjectView(R.id.colorText) private EditText mColorEditText;
-    @InjectView(R.id.plateText) private EditText mPlateEditText;
+    @InjectView(R.id.yearText) protected EditText mYearEditText;
+    @InjectView(R.id.makeText) protected EditText mMakeEditText;
+    @InjectView(R.id.modelText) protected EditText mModelEditText;
+    @InjectView(R.id.colorText) protected EditText mColorEditText;
+    @InjectView(R.id.plateText) protected EditText mPlateEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -21,13 +21,13 @@ public class AddUserFuelRecordActivity extends AdActivity {
     private UserVehicleRecord mVehicle;
     private UserFuelRecord mRecord;
 
-    @InjectView(R.id.datePicker) private DatePicker mDatePicker;
-    @InjectView(R.id.locationText) private EditText mLocationEditText;
-    @InjectView(R.id.amountText) private EditText mAmount;
-    @InjectView(R.id.odometerText) private EditText mOdometerEndEditText;
-    @InjectView(R.id.costPerGallonText) private EditText mCostPerGallonEditText;
-    @InjectView(R.id.numGallonText) private EditText mNumGallonEditText;
-    @InjectView(R.id.fuelGradeSpinner) private Spinner mFuelGradeSpinner;
+    @InjectView(R.id.datePicker) protected DatePicker mDatePicker;
+    @InjectView(R.id.locationText) protected EditText mLocationEditText;
+    @InjectView(R.id.amountText) protected EditText mAmount;
+    @InjectView(R.id.odometerText) protected EditText mOdometerEndEditText;
+    @InjectView(R.id.costPerGallonText) protected EditText mCostPerGallonEditText;
+    @InjectView(R.id.numGallonText) protected EditText mNumGallonEditText;
+    @InjectView(R.id.fuelGradeSpinner) protected Spinner mFuelGradeSpinner;
 
     private TextWatcher mTextChangedListener = new TextWatcher() {
         @Override

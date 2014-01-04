@@ -20,17 +20,17 @@ public class SettingsActivity extends AdActivity {
     /**
      * A Spinner to represent the different distance options
      */
-    @InjectView(R.id.spinnerradius) private Spinner distanceSpinner;
+    @InjectView(R.id.spinnerradius) protected Spinner distanceSpinner;
 
     /**
      * A Spinner to represent the different fuel types
      */
-    @InjectView(R.id.spinnerfueltype) private Spinner fuelTypeSpinner;
+    @InjectView(R.id.spinnerfueltype) protected Spinner fuelTypeSpinner;
 
     /**
      * A Spinner to represent the different sorting options
      */
-    @InjectView(R.id.spinnersortby) private Spinner sortBySpinner;
+    @InjectView(R.id.spinnersortby) protected Spinner sortBySpinner;
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
