@@ -60,9 +60,9 @@ public class AddUserFuelRecordActivity extends AdActivity {
             c.setTimeInMillis(mRecord.getDate());
             mDatePicker.updateDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
             mLocationEditText.setText(mRecord.getLocation());
-            mAmount.setText(mRecord.getAmount() + "");
+            mAmount.setText(String.format("%.2f", mRecord.getAmount()));
             mOdometerEndEditText.setText(mRecord.getOdometerEnd() + "");
-            mCostPerGallonEditText.setText(mRecord.getCostPerGallon() + "");
+            mCostPerGallonEditText.setText(String.format("%.2f", mRecord.getCostPerGallon()));
 
             int selectedPosition = adapter.getPosition(mRecord.getFuelGrade());
             mFuelGradeSpinner.setSelection(selectedPosition);

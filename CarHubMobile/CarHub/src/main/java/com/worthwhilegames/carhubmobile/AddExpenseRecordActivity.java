@@ -64,7 +64,7 @@ public class AddExpenseRecordActivity extends AdActivity {
             mDatePicker.updateDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
             mLocationEditText.setText(mRecord.getLocation());
             mDescriptionEditText.setText(mRecord.getDescription());
-            mAmount.setText(mRecord.getAmount() + "");
+            mAmount.setText(String.format("%.2f", mRecord.getAmount()));
 
             int selectedPosition = mAdapter.getPosition(mRecord.getCategory());
             mCategorySpinner.setSelection(selectedPosition);

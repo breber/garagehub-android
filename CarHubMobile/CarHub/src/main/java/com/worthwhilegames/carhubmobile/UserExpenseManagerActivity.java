@@ -43,19 +43,14 @@ public class UserExpenseManagerActivity extends AppEngineListActivity {
             @Override
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                 UserBaseExpenseRecord model = (UserBaseExpenseRecord) a.getItemAtPosition(position);
-                if (Util.isDebugBuild) {
-                    Toast.makeText(UserExpenseManagerActivity.this, model.getId() + "", Toast.LENGTH_LONG).show();
-                }
-
-                Intent i;
+                Intent i = new Intent(UserExpenseManagerActivity.this, AddExpenseRecordActivity.class);
 
                 if (model.getClass() == UserFuelRecord.class) {
                     i = new Intent(UserExpenseManagerActivity.this, AddUserFuelRecordActivity.class);
                 } else if (model.getClass() == UserMaintenanceRecord.class) {
                     i = new Intent(UserExpenseManagerActivity.this, AddMaintenanceRecordActivity.class);
-                } else {
-                    i = new Intent(UserExpenseManagerActivity.this, AddExpenseRecordActivity.class);
                 }
+
                 i.putExtra(Constants.INTENT_DATA_VEHICLE, mVehicle.getId());
                 i.putExtra(Constants.INTENT_DATA_RECORD, model.getId());
                 startActivity(i);
