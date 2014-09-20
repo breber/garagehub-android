@@ -1,13 +1,21 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
-repositories {
-    mavenCentral()
+android {
+    compileSdkVersion "android-L"
+    buildToolsVersion "20.0.0"
+
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion "android-L"
+        versionCode 18
+        versionName "1.1.6"
+    }
 }
 
 dependencies {
-    compile 'com.google.android.gms:play-services:4.0.30'
+    compile 'com.google.android.gms:play-services:5.2.08'
     compile 'com.mobsandgeeks:adapter-kit:0.5.+'
-    compile 'com.jakewharton:butterknife:4.0.+'
+    compile 'com.jakewharton:butterknife:5.1.+'
 
     compile files('libs/sugar-1.3_beta.jar')
     compile files('libs/svg-android.jar')
@@ -20,14 +28,4 @@ dependencies {
     compile files('libs/google-oauth-client-1.17.0-rc.jar')
     compile files('libs/gson-2.1.jar')
     compile files('libs/jsr305-1.3.9.jar')
-}
-
-android {
-    compileSdkVersion 19
-    buildToolsVersion "19"
-
-    defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 19
-    }
 }
