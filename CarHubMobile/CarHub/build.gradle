@@ -1,19 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion "android-L"
+    compileSdkVersion 19
     buildToolsVersion "20.0.0"
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion "android-L"
-        versionCode 18
-        versionName "1.1.6"
+        targetSdkVersion 19
+        versionCode 19
+        versionName "1.1.7"
     }
 }
 
 dependencies {
-    compile 'com.google.android.gms:play-services:5.2.08'
+    compile 'com.google.android.gms:play-services:5.0.89'
     compile 'com.mobsandgeeks:adapter-kit:0.5.+'
     compile 'com.jakewharton:butterknife:5.1.+'
 
