@@ -220,7 +220,7 @@ public class FindGasPricesActivity extends AdListActivity implements FetchGasPri
 
             String url = String.format("http://api.mygasfeed.com/stations/radius/%f/%f/%d/%s/%s/zax22arsix.json",
                     lat, lon, distance, fuelType.trim().toLowerCase(), sortBy.toLowerCase());
-            request.execute(url);
+            request.execute(url, fuelType.trim().toLowerCase());
         }
     }
 

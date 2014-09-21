@@ -31,5 +31,6 @@ proguard/
 .idea/
 
 .gradle/
+CarHubMobile/build/
 CarHubMobile/CarHub/build/
 CarHubMobile/google-play-services_lib/build/

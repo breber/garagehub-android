@@ -62,7 +62,7 @@ public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
      *
      * @param r
      */
-    private void processData(String r) {
+    private void processData(String r, String fuelType) {
         try {
             JSONObject result = new JSONObject(r);
             JSONArray stations = result.getJSONArray("stations");
@@ -83,13 +83,30 @@ public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
                     newRecord.setAddress(row.getString("address"));
                     newRecord.setStationId(row.getString("id"));
                     newRecord.setStation(row.getString("station"));
-                    newRecord.setPrice(row.getString("price"));
                     newRecord.setDistance(row.getString("distance"));
-                    newRecord.setLastUpdated(row.getString("date"));
                     newRecord.setRegion(row.getString("region"));
                     newRecord.setCity(row.getString("city"));
                     newRecord.setLat(row.getString("lat"));
                     newRecord.setLng(row.getString("lng"));
+
+                    String price;
+                    String date;
+                    if ("mid".equalsIgnoreCase(fuelType)) {
+                        price = row.getString("mid_price");
+                        date = row.getString("mid_date");
+                    } else if ("pre".equalsIgnoreCase(fuelType)) {
+                        price = row.getString("pre_price");
+                        date = row.getString("pre_date");
+                    } else if ("diesel".equalsIgnoreCase(fuelType)) {
+                        price = row.getString("diesel_price");
+                        date = row.getString("diesel_date");
+                    } else {
+                        price = row.getString("reg_price");
+                        date = row.getString("reg_date");
+                    }
+
+                    newRecord.setPrice(price);
+                    newRecord.setLastUpdated(date);
                     newRecord.save();
 
                     if (Util.isDebugBuild) {
@@ -111,6 +128,14 @@ public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
     @Override
     protected String doInBackground(String... params) {
         String result = null;
+
+        if (params.length < 2) {
+            if (Util.isDebugBuild) {
+                Log.d(FetchGasPricesTask.class.getSimpleName(), "Not enough parameters");
+            }
+            return result;
+        }
+
         HttpClient client = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(params[0]);
         try {
@@ -118,7 +143,7 @@ public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
 
             if (HttpURLConnection.HTTP_OK == response.getStatusLine().getStatusCode()) {
                 result = Util.readStreamAsString(response.getEntity().getContent());
-                processData(result);
+                processData(result, params[1]);
             }
         } catch (ClientProtocolException e) {
             e.printStackTrace();
