@@ -68,7 +68,7 @@ public class FetchUserVehiclesTask implements ISyncTask {
 
                         // If one can't be found, create a new one
                         if (toUpdate == null) {
-                            toUpdate = new UserVehicleRecord(mContext);
+                            toUpdate = new UserVehicleRecord();
                         }
 
                         // Update the local copy with the server information

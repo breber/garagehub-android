@@ -79,7 +79,7 @@ public class FetchGasPricesTask extends AsyncTask<String, Integer, String> {
                 for (int i = 0; i < stations.length(); i++) {
                     JSONObject row = stations.getJSONObject(i);
 
-                    GasPriceRecord newRecord = new GasPriceRecord(mContext);
+                    GasPriceRecord newRecord = new GasPriceRecord();
                     newRecord.setAddress(row.getString("address"));
                     newRecord.setStationId(row.getString("id"));
                     newRecord.setStation(row.getString("station"));

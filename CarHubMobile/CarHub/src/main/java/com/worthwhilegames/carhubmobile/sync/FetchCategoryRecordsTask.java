@@ -54,7 +54,7 @@ public class FetchCategoryRecordsTask implements ISyncTask {
 
                         // If one can't be found, create a new one
                         if (toUpdate == null) {
-                            toUpdate = new CategoryRecord(mContext);
+                            toUpdate = new CategoryRecord();
                         }
 
                         // Update the local copy with the server information

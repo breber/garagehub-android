@@ -5,13 +5,19 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.*;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
+
 import com.worthwhilegames.carhubmobile.models.UserFuelRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
 import java.util.Calendar;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * Created by breber on 6/29/13.
@@ -143,7 +149,7 @@ public class AddUserFuelRecordActivity extends AdActivity {
                 }
 
                 if (mRecord == null) {
-                    mRecord = new UserFuelRecord(this);
+                    mRecord = new UserFuelRecord();
                 }
 
                 mRecord.setDate(calendar.getTimeInMillis());

@@ -1,7 +1,7 @@
 package com.worthwhilegames.carhubmobile.models;
 
-import android.content.Context;
 import android.util.Log;
+
 import com.orm.StringUtil;
 import com.orm.SugarRecord;
 import com.worthwhilegames.carhubmobile.Util;
@@ -17,10 +17,6 @@ public abstract class SyncableRecord extends SugarRecord<SyncableRecord> {
 
     protected String mRemoteId;
     protected int mDirty;
-
-    public SyncableRecord(Context arg0) {
-        super(arg0);
-    }
 
     public abstract void fromAPI(Object veh);
 

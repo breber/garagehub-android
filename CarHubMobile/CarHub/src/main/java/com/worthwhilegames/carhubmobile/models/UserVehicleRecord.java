@@ -16,10 +16,6 @@ public class UserVehicleRecord extends SyncableRecord {
     private String mColor;
     private String mPlates;
 
-    public UserVehicleRecord(Context arg0) {
-        super(arg0);
-    }
-
     @Override
     public void fromAPI(Object oth) {
         UserVehicle veh = (UserVehicle) oth;

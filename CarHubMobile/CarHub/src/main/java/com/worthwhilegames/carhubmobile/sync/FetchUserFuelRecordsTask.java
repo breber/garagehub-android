@@ -75,7 +75,7 @@ public class FetchUserFuelRecordsTask implements ISyncTask {
 
                         // If one can't be found, create a new one
                         if (toUpdate == null) {
-                            toUpdate = new UserFuelRecord(mContext);
+                            toUpdate = new UserFuelRecord();
                         }
 
                         // Update the local copy with the server information

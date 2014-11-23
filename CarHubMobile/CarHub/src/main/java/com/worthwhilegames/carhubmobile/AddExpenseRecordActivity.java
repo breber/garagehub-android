@@ -3,15 +3,21 @@ package com.worthwhilegames.carhubmobile;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.*;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
+
 import com.worthwhilegames.carhubmobile.models.CategoryRecord;
 import com.worthwhilegames.carhubmobile.models.UserBaseExpenseRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
 import java.util.Calendar;
 import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * Add expense activity
@@ -94,7 +100,7 @@ public class AddExpenseRecordActivity extends AdActivity {
                 String amount = mAmount.getText().toString();
 
                 if (mRecord == null) {
-                    mRecord = new UserBaseExpenseRecord(this);
+                    mRecord = new UserBaseExpenseRecord();
                 }
 
                 mRecord.setCategoryId(mAdapter.getItem(mCategorySpinner.getSelectedItemPosition()));

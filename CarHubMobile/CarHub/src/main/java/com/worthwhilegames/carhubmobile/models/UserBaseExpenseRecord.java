@@ -28,8 +28,7 @@ public class UserBaseExpenseRecord extends SyncableRecord {
     protected float mAmount;
     protected String mPictureUrl;
 
-    public UserBaseExpenseRecord(Context arg0) {
-        super(arg0);
+    public UserBaseExpenseRecord() {
         cDateFormat.setTimeZone(TimeZone.getDefault());
     }
 

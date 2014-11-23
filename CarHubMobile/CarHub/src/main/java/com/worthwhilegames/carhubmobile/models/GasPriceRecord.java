@@ -1,6 +1,5 @@
 package com.worthwhilegames.carhubmobile.models;
 
-import android.content.Context;
 import com.mobsandgeeks.adapters.InstantText;
 import com.orm.SugarRecord;
 import com.worthwhilegames.carhubmobile.R;
@@ -17,10 +16,6 @@ public class GasPriceRecord extends SugarRecord<GasPriceRecord> {
     private String mRegion;
     private String mLat;
     private String mLng;
-
-    public GasPriceRecord(Context arg0) {
-        super(arg0);
-    }
 
     /**
      * @return the stationId

@@ -19,10 +19,6 @@ public class UserFuelRecord extends UserBaseExpenseRecord {
     private float mCostPerGallon;
     private String mFuelGrade;
 
-    public UserFuelRecord(Context arg0) {
-        super(arg0);
-    }
-
     @Override
     public void fromAPI(Object rec) {
         FuelRecord oth = (FuelRecord) rec;

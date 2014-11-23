@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+
+import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
 /**
  * Created by breber on 6/29/13.
@@ -68,7 +70,7 @@ public class AddVehicleActivity extends AdActivity {
                 }
 
                 if (mVehicle == null) {
-                    mVehicle = new UserVehicleRecord(this);
+                    mVehicle = new UserVehicleRecord();
                 }
 
                 mVehicle.setYear(year);

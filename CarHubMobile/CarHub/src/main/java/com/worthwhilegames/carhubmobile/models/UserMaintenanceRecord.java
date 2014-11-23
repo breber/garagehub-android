@@ -14,10 +14,6 @@ public class UserMaintenanceRecord extends UserBaseExpenseRecord {
 
     private int mOdometer;
 
-    public UserMaintenanceRecord(Context arg0) {
-        super(arg0);
-    }
-
     @Override
     public void fromAPI(Object rec) {
         MaintenanceRecord oth = (MaintenanceRecord) rec;

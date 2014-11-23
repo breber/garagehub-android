@@ -3,15 +3,21 @@ package com.worthwhilegames.carhubmobile;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.*;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
+
 import com.worthwhilegames.carhubmobile.models.CategoryRecord;
 import com.worthwhilegames.carhubmobile.models.UserMaintenanceRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
 import java.util.Calendar;
 import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * Created by breber on 6/29/13.
@@ -94,7 +100,7 @@ public class AddMaintenanceRecordActivity extends AdActivity {
                 String odometer = mOdometer.getText().toString();
 
                 if (mRecord == null) {
-                    mRecord = new UserMaintenanceRecord(this);
+                    mRecord = new UserMaintenanceRecord();
                 }
 
                 mRecord.setCategoryId(mAdapter.getItem(mCategorySpinner.getSelectedItemPosition()));

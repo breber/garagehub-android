@@ -11,10 +11,6 @@ public class CategoryRecord extends SyncableRecord {
     private String mCategory;
     private String mSubcategory;
 
-    public CategoryRecord(Context arg0) {
-        super(arg0);
-    }
-
     @Override
     public void fromAPI(Object rec) {
         ExpenseCategory oth = (ExpenseCategory) rec;
