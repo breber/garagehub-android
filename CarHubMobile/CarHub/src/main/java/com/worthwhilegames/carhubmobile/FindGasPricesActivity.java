@@ -19,9 +19,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.mobsandgeeks.adapters.InstantAdapter;
 import com.worthwhilegames.carhubmobile.models.GasPriceRecord;
 import com.worthwhilegames.carhubmobile.sync.FetchGasPricesTask;
@@ -38,9 +38,12 @@ import java.util.regex.Pattern;
  * @author jamiekujawa
  */
 @SuppressLint("DefaultLocale")
-public class FindGasPricesActivity extends AdListActivity implements FetchGasPricesTaskCallback, GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener {
+public class FindGasPricesActivity extends AdListActivity implements FetchGasPricesTaskCallback,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener
+{
 
-    private LocationClient mLocationClient;
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +52,11 @@ public class FindGasPricesActivity extends AdListActivity implements FetchGasPri
         setContentView(R.layout.find_gas_prices);
 
         // Get an instance of the location client from Google Play Services
-        mLocationClient = new LocationClient(this, this, this);
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
 
         // search button listener
         Button search = (Button) findViewById(R.id.goButton);
@@ -105,7 +112,7 @@ public class FindGasPricesActivity extends AdListActivity implements FetchGasPri
         updateUi();
 
         // Connect the client.
-        mLocationClient.connect();
+        mGoogleApiClient.connect();
     }
 
     /*
@@ -114,7 +121,7 @@ public class FindGasPricesActivity extends AdListActivity implements FetchGasPri
     @Override
     protected void onStop() {
         // Disconnecting the client invalidates it.
-        mLocationClient.disconnect();
+        mGoogleApiClient.disconnect();
         super.onStop();
     }
 
@@ -147,8 +154,8 @@ public class FindGasPricesActivity extends AdListActivity implements FetchGasPri
     }
 
     private String getLocationFromGoogle() {
-        if (mLocationClient != null) {
-            Location l = mLocationClient.getLastLocation();
+        if ((mGoogleApiClient != null) && mGoogleApiClient.isConnected()) {
+            Location l = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (l != null) {
                 return l.getLatitude() + "~~" + l.getLongitude();
             } else {
@@ -257,12 +264,12 @@ public class FindGasPricesActivity extends AdListActivity implements FetchGasPri
     }
 
     @Override
-    public void onConnected(Bundle arg0) {
+    public void onConnected(Bundle bundle) {
         getGasPrices();
     }
 
     @Override
-    public void onDisconnected() {
+    public void onConnectionSuspended(int i) {
         // Do nothing
     }
 }
