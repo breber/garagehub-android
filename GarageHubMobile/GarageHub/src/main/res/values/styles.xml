@@ -1,0 +1,5 @@
+<resources>
+
+    <style name="GarageHub" parent="android:Theme.Light" />
+
+</resources>
