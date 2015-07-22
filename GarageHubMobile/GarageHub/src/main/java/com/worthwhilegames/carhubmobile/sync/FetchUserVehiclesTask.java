@@ -1,10 +1,10 @@
 package com.worthwhilegames.carhubmobile.sync;
 
 import android.content.Context;
-import com.appspot.car_hub.carhub.Carhub;
-import com.appspot.car_hub.carhub.model.ModelsActiveRecords;
-import com.appspot.car_hub.carhub.model.UserVehicle;
-import com.appspot.car_hub.carhub.model.UserVehicleCollection;
+import com.appspot.car_hub.garagehub.Garagehub;
+import com.appspot.car_hub.garagehub.model.ModelsActiveRecords;
+import com.appspot.car_hub.garagehub.model.UserVehicle;
+import com.appspot.car_hub.garagehub.model.UserVehicleCollection;
 import com.worthwhilegames.carhubmobile.Util;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
@@ -21,9 +21,9 @@ public class FetchUserVehiclesTask implements ISyncTask {
     /**
      * The GarageHub service for interacting with AppEngine
      */
-    protected Carhub mService;
+    protected Garagehub mService;
 
-    public FetchUserVehiclesTask(Context ctx, Carhub service) {
+    public FetchUserVehiclesTask(Context ctx, Garagehub service) {
         mContext = ctx;
         mService = service;
     }
@@ -53,7 +53,7 @@ public class FetchUserVehiclesTask implements ISyncTask {
             // Get a list of all records currently on the server
             String pageToken = null;
             do {
-                Carhub.Vehicle.List query = mService.vehicle().list();
+                Garagehub.Vehicle.List query = mService.vehicle().list();
                 if (prevLastModified != 0) {
                     query = query.setModifiedSince(prevLastModified + "");
                 }

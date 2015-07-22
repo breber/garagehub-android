@@ -1,7 +1,7 @@
 package com.worthwhilegames.carhubmobile.models;
 
 import android.content.Context;
-import com.appspot.car_hub.carhub.model.MaintenanceRecord;
+import com.appspot.car_hub.garagehub.model.MaintenanceRecord;
 import com.mobsandgeeks.adapters.InstantText;
 import com.orm.util.NamingHelper;
 import com.worthwhilegames.carhubmobile.R;

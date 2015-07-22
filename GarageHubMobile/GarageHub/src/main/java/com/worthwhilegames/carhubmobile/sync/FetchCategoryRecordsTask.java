@@ -1,9 +1,9 @@
 package com.worthwhilegames.carhubmobile.sync;
 
 import android.content.Context;
-import com.appspot.car_hub.carhub.Carhub;
-import com.appspot.car_hub.carhub.model.ExpenseCategory;
-import com.appspot.car_hub.carhub.model.ExpenseCategoryCollection;
+import com.appspot.car_hub.garagehub.Garagehub;
+import com.appspot.car_hub.garagehub.model.ExpenseCategory;
+import com.appspot.car_hub.garagehub.model.ExpenseCategoryCollection;
 import com.worthwhilegames.carhubmobile.Util;
 import com.worthwhilegames.carhubmobile.models.CategoryRecord;
 
@@ -19,9 +19,9 @@ public class FetchCategoryRecordsTask implements ISyncTask {
     /**
      * The GarageHub service for interacting with AppEngine
      */
-    protected Carhub mService;
+    protected Garagehub mService;
 
-    public FetchCategoryRecordsTask(Context ctx, Carhub service) {
+    public FetchCategoryRecordsTask(Context ctx, Garagehub service) {
         mContext = ctx;
         mService = service;
     }
@@ -41,7 +41,7 @@ public class FetchCategoryRecordsTask implements ISyncTask {
             String pageToken = null;
 
             do {
-                Carhub.Category.List query = mService.category().list();
+                Garagehub.Category.List query = mService.category().list();
 
                 query = query.setPageToken(pageToken);
 

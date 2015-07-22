@@ -8,7 +8,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.appspot.car_hub.carhub.Carhub;
+import com.appspot.car_hub.garagehub.Garagehub;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.json.gson.GsonFactory;
@@ -30,7 +30,7 @@ public class UserVehicleActivity extends AdActivity {
     /**
      * The GarageHub service for interacting with AppEngine
      */
-    protected Carhub mService;
+    protected Garagehub mService;
 
 
     private UserVehicleRecord mVehicle;
@@ -83,7 +83,7 @@ public class UserVehicleActivity extends AdActivity {
             return;
         }
 
-        Carhub.Builder bl = new Carhub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCreds);
+        Garagehub.Builder bl = new Garagehub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCreds);
         mService = bl.build();
 
         updateUi();

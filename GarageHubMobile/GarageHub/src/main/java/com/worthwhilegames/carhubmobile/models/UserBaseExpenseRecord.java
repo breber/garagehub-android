@@ -2,7 +2,7 @@ package com.worthwhilegames.carhubmobile.models;
 
 import android.content.Context;
 import android.text.format.DateFormat;
-import com.appspot.car_hub.carhub.model.UserExpenseRecord;
+import com.appspot.car_hub.garagehub.model.UserExpenseRecord;
 import com.mobsandgeeks.adapters.InstantText;
 import com.orm.dsl.Ignore;
 import com.orm.util.NamingHelper;

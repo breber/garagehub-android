@@ -1,10 +1,10 @@
 package com.worthwhilegames.carhubmobile.sync;
 
 import android.content.Context;
-import com.appspot.car_hub.carhub.Carhub;
-import com.appspot.car_hub.carhub.model.ModelsActiveRecords;
-import com.appspot.car_hub.carhub.model.UserExpenseRecord;
-import com.appspot.car_hub.carhub.model.UserExpenseRecordCollection;
+import com.appspot.car_hub.garagehub.Garagehub;
+import com.appspot.car_hub.garagehub.model.ModelsActiveRecords;
+import com.appspot.car_hub.garagehub.model.UserExpenseRecord;
+import com.appspot.car_hub.garagehub.model.UserExpenseRecordCollection;
 import com.worthwhilegames.carhubmobile.Util;
 import com.worthwhilegames.carhubmobile.models.UserBaseExpenseRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
@@ -28,9 +28,9 @@ public class FetchUserBaseExpenseRecordsTask implements ISyncTask {
     /**
      * The GarageHub service for interacting with AppEngine
      */
-    protected Carhub mService;
+    protected Garagehub mService;
 
-    public FetchUserBaseExpenseRecordsTask(Context ctx, Carhub service, UserVehicleRecord vehicle) {
+    public FetchUserBaseExpenseRecordsTask(Context ctx, Garagehub service, UserVehicleRecord vehicle) {
         mContext = ctx;
         mService = service;
         mVehicle = vehicle;
@@ -61,7 +61,7 @@ public class FetchUserBaseExpenseRecordsTask implements ISyncTask {
             // Get a list of all records currently on the server
             String pageToken = null;
             do {
-                Carhub.Expense.List query = mService.expense().list(Long.parseLong(mVehicle.getRemoteId()));
+                Garagehub.Expense.List query = mService.expense().list(Long.parseLong(mVehicle.getRemoteId()));
                 if (prevLastModified != 0) {
                     query = query.setModifiedSince(prevLastModified + "");
                 }

@@ -5,7 +5,7 @@ import android.annotation.TargetApi;
 import android.content.*;
 import android.os.Bundle;
 import android.util.Log;
-import com.appspot.car_hub.carhub.Carhub;
+import com.appspot.car_hub.garagehub.Garagehub;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.json.gson.GsonFactory;
@@ -28,7 +28,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     /**
      * The GarageHub service for interacting with AppEngine
      */
-    protected Carhub mService;
+    protected Garagehub mService;
 
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -81,7 +81,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             Log.d("SyncAdapter", "AccountName: " + mCreds.getSelectedAccountName());
         }
 
-        Carhub.Builder bl = new Carhub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCreds);
+        Garagehub.Builder bl = new Garagehub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCreds);
         bl.setApplicationName("GarageHub");
         mService = bl.build();
 

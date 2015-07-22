@@ -1,7 +1,7 @@
 package com.worthwhilegames.carhubmobile.models;
 
 import android.content.Context;
-import com.appspot.car_hub.carhub.model.ExpenseCategory;
+import com.appspot.car_hub.garagehub.model.ExpenseCategory;
 import com.orm.util.NamingHelper;
 
 import java.util.List;
