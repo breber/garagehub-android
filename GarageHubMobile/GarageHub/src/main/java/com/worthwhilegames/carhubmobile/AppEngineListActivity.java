@@ -36,7 +36,7 @@ public abstract class AppEngineListActivity extends AdListActivity {
     protected GoogleAccountCredential mCreds;
 
     /**
-     * The Carhub service for interacting with AppEngine
+     * The GarageHub service for interacting with AppEngine
      */
     protected Carhub mService;
 
@@ -62,7 +62,7 @@ public abstract class AppEngineListActivity extends AdListActivity {
         mCreds.setSelectedAccountName(Util.getAccountName(this));
 
         Carhub.Builder bl = new Carhub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCreds);
-        bl.setApplicationName("CarHub Mobile");
+        bl.setApplicationName("GarageHub");
         mService = bl.build();
 
         updateUi();

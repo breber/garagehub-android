@@ -17,7 +17,7 @@ public class FetchCategoryRecordsTask implements ISyncTask {
     private Context mContext;
 
     /**
-     * The Carhub service for interacting with AppEngine
+     * The GarageHub service for interacting with AppEngine
      */
     protected Carhub mService;
 

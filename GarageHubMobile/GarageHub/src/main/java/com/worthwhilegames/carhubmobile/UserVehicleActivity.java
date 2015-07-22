@@ -28,7 +28,7 @@ public class UserVehicleActivity extends AdActivity {
     protected GoogleAccountCredential mCreds;
 
     /**
-     * The Carhub service for interacting with AppEngine
+     * The GarageHub service for interacting with AppEngine
      */
     protected Carhub mService;
 

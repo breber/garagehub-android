@@ -26,7 +26,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     protected GoogleAccountCredential mCreds;
 
     /**
-     * The Carhub service for interacting with AppEngine
+     * The GarageHub service for interacting with AppEngine
      */
     protected Carhub mService;
 
@@ -82,7 +82,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
 
         Carhub.Builder bl = new Carhub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCreds);
-        bl.setApplicationName("CarHub Mobile");
+        bl.setApplicationName("GarageHub");
         mService = bl.build();
 
         if (mCreds.getSelectedAccountName() != null) {
