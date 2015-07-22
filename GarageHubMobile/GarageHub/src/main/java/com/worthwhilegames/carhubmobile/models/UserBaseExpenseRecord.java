@@ -4,8 +4,8 @@ import android.content.Context;
 import android.text.format.DateFormat;
 import com.appspot.car_hub.carhub.model.UserExpenseRecord;
 import com.mobsandgeeks.adapters.InstantText;
-import com.orm.StringUtil;
 import com.orm.dsl.Ignore;
+import com.orm.util.NamingHelper;
 import com.worthwhilegames.carhubmobile.R;
 
 import java.text.ParseException;
@@ -180,8 +180,15 @@ public class UserBaseExpenseRecord extends SyncableRecord {
      * @return
      */
     public static <T extends UserBaseExpenseRecord> List<T> getRecordsForVehicle(Class<T> type, UserVehicleRecord vehicle) {
-        if (vehicle != null) {
-            return UserBaseExpenseRecord.find(type, StringUtil.toSQLName("mVehicle") + " = ?", vehicle.getId() + "");
+        String sqlName = null;
+        try {
+            sqlName = NamingHelper.toSQLName(type.getField("mVehicle"));
+        } catch (Exception e) {
+            // Nothing to do
+        }
+
+        if (sqlName != null && vehicle != null) {
+            return UserBaseExpenseRecord.find(type, sqlName + " = ?", vehicle.getId() + "");
         } else {
             return new ArrayList<T>();
         }

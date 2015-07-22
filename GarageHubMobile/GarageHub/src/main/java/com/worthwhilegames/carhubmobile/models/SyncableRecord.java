@@ -2,8 +2,8 @@ package com.worthwhilegames.carhubmobile.models;
 
 import android.util.Log;
 
-import com.orm.StringUtil;
 import com.orm.SugarRecord;
+import com.orm.util.NamingHelper;
 import com.worthwhilegames.carhubmobile.Util;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author breber
  */
-public abstract class SyncableRecord extends SugarRecord<SyncableRecord> {
+public abstract class SyncableRecord extends SugarRecord {
 
     protected String mRemoteId;
     protected int mDirty;
@@ -58,7 +58,14 @@ public abstract class SyncableRecord extends SugarRecord<SyncableRecord> {
      * @return
      */
     public static <T extends SyncableRecord> List<T> findAllDirty(Class<T> type) {
-        return T.find(type, StringUtil.toSQLName("mDirty") + " != 0");
+        String sqlName = null;
+        try {
+            sqlName = NamingHelper.toSQLName(type.getField("mDirty"));
+        } catch (Exception e) {
+            // Nothing to do
+        }
+
+        return T.find(type, sqlName + " != 0");
     }
 
     /**
@@ -70,8 +77,15 @@ public abstract class SyncableRecord extends SugarRecord<SyncableRecord> {
      * @return
      */
     public static <T extends SyncableRecord> T findByRemoteId(Class<T> type, String remoteId) {
-        if (remoteId != null) {
-            List<T> found = T.find(type, StringUtil.toSQLName("mRemoteId") + " = ? LIMIT 1", remoteId);
+        String sqlName = null;
+        try {
+            sqlName = NamingHelper.toSQLName(type.getField("mRemoteId"));
+        } catch (Exception e) {
+            // Nothing to do
+        }
+
+        if (sqlName != null && remoteId != null) {
+            List<T> found = T.find(type, sqlName + " = ? LIMIT 1", remoteId);
             if (!found.isEmpty()) {
                 if (found.size() != 1) {
                     for (int i = 1; i < found.size(); i++) {

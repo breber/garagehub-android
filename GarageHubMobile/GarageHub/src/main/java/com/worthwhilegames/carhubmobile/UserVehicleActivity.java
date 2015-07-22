@@ -14,7 +14,7 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.json.gson.GsonFactory;
 import com.worthwhilegames.carhubmobile.adapters.MenuImageAdapter;
 import com.worthwhilegames.carhubmobile.adapters.MenuImageAdapter.ImageTextWrapper;
-import com.worthwhilegames.carhubmobile.carhubkeys.CarHubKeys;
+import com.worthwhilegames.carhubmobile.garagehubkeys.GarageHubKeys;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
 /**
@@ -73,7 +73,7 @@ public class UserVehicleActivity extends AdActivity {
         });
 
         // Inside your Activity class onCreate method
-        mCreds = GoogleAccountCredential.usingAudience(this, CarHubKeys.CARHUB_KEY);
+        mCreds = GoogleAccountCredential.usingAudience(this, GarageHubKeys.GARAGEHUB_KEY);
         mCreds.setSelectedAccountName(Util.getAccountName(this));
 
         // If we don't have an account, we shouldn't be in the UserVehicleActivity anyways

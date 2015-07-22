@@ -2,7 +2,7 @@ package com.worthwhilegames.carhubmobile.models;
 
 import android.content.Context;
 import com.appspot.car_hub.carhub.model.ExpenseCategory;
-import com.orm.StringUtil;
+import com.orm.util.NamingHelper;
 
 import java.util.List;
 
@@ -60,7 +60,8 @@ public class CategoryRecord extends SyncableRecord {
      * @return
      */
     public static <T extends SyncableRecord> T fuelCategory(Class<T> type) {
-        List<T> toRet = T.find(type, StringUtil.toSQLName("mCategory") + " = 'Fuel Up'");
+        String categoryName = getCategoryName(type);
+        List<T> toRet = T.find(type, categoryName + " = 'Fuel Up'");
         if (!toRet.isEmpty()) {
             return toRet.get(0);
         }
@@ -75,7 +76,8 @@ public class CategoryRecord extends SyncableRecord {
      * @return
      */
     public static <T extends SyncableRecord> List<T> getExpenseCategories(Class<T> type) {
-        return T.find(type, StringUtil.toSQLName("mCategory") + " != 'Maintenance'");
+        String categoryName = getCategoryName(type);
+        return T.find(type, categoryName + " != 'Maintenance'");
     }
 
     /**
@@ -86,6 +88,18 @@ public class CategoryRecord extends SyncableRecord {
      * @return
      */
     public static <T extends SyncableRecord> List<T> getMaintenanceCategories(Class<T> type) {
-        return T.find(type, StringUtil.toSQLName("mCategory") + " == 'Maintenance'");
+        String categoryName = getCategoryName(type);
+        return T.find(type, categoryName + " == 'Maintenance'");
+    }
+
+    private static <T extends SyncableRecord> String getCategoryName(Class<T> type) {
+        String sqlName = null;
+        try {
+            sqlName = NamingHelper.toSQLName(type.getField("mCategory"));
+        } catch (Exception e) {
+            // Nothing to do
+        }
+
+        return sqlName;
     }
 }

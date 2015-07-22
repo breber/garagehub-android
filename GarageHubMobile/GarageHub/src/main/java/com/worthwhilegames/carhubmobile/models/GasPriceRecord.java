@@ -4,7 +4,7 @@ import com.mobsandgeeks.adapters.InstantText;
 import com.orm.SugarRecord;
 import com.worthwhilegames.carhubmobile.R;
 
-public class GasPriceRecord extends SugarRecord<GasPriceRecord> {
+public class GasPriceRecord extends SugarRecord {
 
     private String mStationId;
     private String mStation;

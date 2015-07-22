@@ -9,7 +9,7 @@ import com.appspot.car_hub.carhub.Carhub;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.json.gson.GsonFactory;
-import com.worthwhilegames.carhubmobile.carhubkeys.CarHubKeys;
+import com.worthwhilegames.carhubmobile.garagehubkeys.GarageHubKeys;
 import com.worthwhilegames.carhubmobile.sync.SyncAdapter;
 
 /**
@@ -58,7 +58,7 @@ public abstract class AppEngineListActivity extends AdListActivity {
         tv.setText(emptyResource);
 
         // Inside your Activity class onCreate method
-        mCreds = GoogleAccountCredential.usingAudience(this, CarHubKeys.CARHUB_KEY);
+        mCreds = GoogleAccountCredential.usingAudience(this, GarageHubKeys.GARAGEHUB_KEY);
         mCreds.setSelectedAccountName(Util.getAccountName(this));
 
         Carhub.Builder bl = new Carhub.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), mCreds);

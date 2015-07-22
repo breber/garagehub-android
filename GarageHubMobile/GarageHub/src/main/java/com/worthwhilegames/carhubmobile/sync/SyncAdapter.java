@@ -10,7 +10,7 @@ import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.json.gson.GsonFactory;
 import com.worthwhilegames.carhubmobile.Util;
-import com.worthwhilegames.carhubmobile.carhubkeys.CarHubKeys;
+import com.worthwhilegames.carhubmobile.garagehubkeys.GarageHubKeys;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
 import java.util.List;
@@ -74,7 +74,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         getContext().sendBroadcast(new Intent(SYNC_STARTED_BROADCAST));
 
         // Inside your Activity class onCreate method
-        mCreds = GoogleAccountCredential.usingAudience(getContext(), CarHubKeys.CARHUB_KEY);
+        mCreds = GoogleAccountCredential.usingAudience(getContext(), GarageHubKeys.GARAGEHUB_KEY);
         mCreds.setSelectedAccountName(account.name);
 
         if (Util.isDebugBuild) {
