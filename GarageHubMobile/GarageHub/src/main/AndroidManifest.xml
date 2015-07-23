@@ -1,0 +1,105 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.worthwhilegames.carhubmobile" >
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+
+    <!-- Sync Information -->
+    <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+
+    <application
+        android:name="com.orm.SugarApp"
+        android:allowBackup="true"
+        android:icon="@drawable/garagehub"
+        android:label="@string/app_name"
+        android:theme="@style/GarageHub">
+        <activity
+            android:name=".FindGasPricesActivity"
+            android:label="@string/gasPrices" />
+        <activity
+            android:name=".UserVehicleListActivity"
+            android:label="@string/userVehicleList" />
+        <activity android:name=".UserVehicleActivity" />
+        <activity
+            android:name=".UserMaintenanceListActivity"
+            android:label="@string/maintenanceRecords" />
+        <activity
+            android:name=".UserExpenseManagerActivity"
+            android:label="@string/expenseManager" />
+        <activity
+            android:name=".UserFuelListActivity"
+            android:label="@string/fuelRecords" />
+        <activity
+            android:name=".AddUserFuelRecordActivity"
+            android:label="@string/addFuelRecord" />
+        <activity
+            android:name=".AddMaintenanceRecordActivity"
+            android:label="@string/addMaintenanceRecord" />
+        <activity
+            android:name=".AddExpenseRecordActivity"
+            android:label="@string/addExpenseRecord" />
+        <activity
+            android:name=".AddVehicleActivity"
+            android:label="@string/addVehicle" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/menu_settings" />
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/about" />
+        <activity
+            android:name=".UpdatePriceActivity"
+            android:label="@string/updatePrice" />
+        <activity android:name=".MainMenuActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Sync Stuff -->
+        <provider
+            android:name="com.worthwhilegames.carhubmobile.sync.StubProvider"
+            android:authorities="com.worthwhilegames.carhubmobile.provider"
+            android:exported="false"
+            android:syncable="true"/>
+
+        <service android:name=".sync.SyncService"
+                 android:exported="true"
+                 android:process=":sync">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data android:name="android.content.SyncAdapter"
+                       android:resource="@xml/syncadapter" />
+        </service>
+
+        <meta-data
+            android:name="DATABASE"
+            android:value="carhub.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="6" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="false" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="com.worthwhilegames.carhubmobile.models" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
+    </application>
+
+</manifest>
