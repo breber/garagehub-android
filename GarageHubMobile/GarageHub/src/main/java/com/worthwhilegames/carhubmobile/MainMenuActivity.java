@@ -57,10 +57,10 @@ public class MainMenuActivity extends AdActivity {
                     editor.putString(Util.PREF_ACCOUNT_NAME, oldPrefs.getString(Util.PREF_ACCOUNT_NAME, ""));
 
                     // Clear the old preferences
-                    oldPrefs.edit().clear().commit();
+                    oldPrefs.edit().clear().apply();
                 }
                 editor.putInt("PACKAGE_VERSION", versionCode);
-                editor.commit();
+                editor.apply();
             }
         } catch (Exception e) {
             e.printStackTrace();
