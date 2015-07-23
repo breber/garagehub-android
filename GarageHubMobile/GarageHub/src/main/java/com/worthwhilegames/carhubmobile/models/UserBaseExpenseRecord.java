@@ -180,15 +180,8 @@ public class UserBaseExpenseRecord extends SyncableRecord {
      * @return
      */
     public static <T extends UserBaseExpenseRecord> List<T> getRecordsForVehicle(Class<T> type, UserVehicleRecord vehicle) {
-        String sqlName = null;
-        try {
-            sqlName = NamingHelper.toSQLName(type.getField("mVehicle"));
-        } catch (Exception e) {
-            // Nothing to do
-        }
-
-        if (sqlName != null && vehicle != null) {
-            return UserBaseExpenseRecord.find(type, sqlName + " = ?", vehicle.getId() + "");
+        if (vehicle != null) {
+            return UserBaseExpenseRecord.find(type, NamingHelper.toSQLNameDefault("mVehicle") + " = ?", vehicle.getId() + "");
         } else {
             return new ArrayList<T>();
         }

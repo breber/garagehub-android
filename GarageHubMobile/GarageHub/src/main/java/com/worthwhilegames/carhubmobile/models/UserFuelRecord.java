@@ -168,19 +168,10 @@ public class UserFuelRecord extends UserBaseExpenseRecord {
      * @return
      */
     public static UserFuelRecord getLatest(UserVehicleRecord vehicle) {
-        String vehicleName = null;
-        String odoName = null;
-        try {
-            vehicleName = NamingHelper.toSQLName(UserFuelRecord.class.getField("mVehicle"));
-            odoName = NamingHelper.toSQLName(UserFuelRecord.class.getField("mOdometerEnd"));
-        } catch (Exception e) {
-            // Nothing to do
-        }
-
         List<UserFuelRecord> list = UserFuelRecord.findWithQuery(UserFuelRecord.class,
                 "select * from " + NamingHelper.toSQLName(UserFuelRecord.class) +
-                        " where " + vehicleName + " = '" + vehicle.getId() + "'" +
-                        " order by " + odoName + " desc limit 1");
+                        " where " + NamingHelper.toSQLNameDefault("mVehicle") + " = '" + vehicle.getId() + "'" +
+                        " order by " + NamingHelper.toSQLNameDefault("mOdometerEnd") + " desc limit 1");
         if (!list.isEmpty()) {
             return list.get(0);
         }

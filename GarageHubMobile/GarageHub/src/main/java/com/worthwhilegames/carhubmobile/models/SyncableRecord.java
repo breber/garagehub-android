@@ -58,14 +58,7 @@ public abstract class SyncableRecord extends SugarRecord {
      * @return
      */
     public static <T extends SyncableRecord> List<T> findAllDirty(Class<T> type) {
-        String sqlName = null;
-        try {
-            sqlName = NamingHelper.toSQLName(type.getField("mDirty"));
-        } catch (Exception e) {
-            // Nothing to do
-        }
-
-        return T.find(type, sqlName + " != 0");
+        return T.find(type, NamingHelper.toSQLNameDefault("mDirty") + " != 0");
     }
 
     /**
@@ -77,15 +70,8 @@ public abstract class SyncableRecord extends SugarRecord {
      * @return
      */
     public static <T extends SyncableRecord> T findByRemoteId(Class<T> type, String remoteId) {
-        String sqlName = null;
-        try {
-            sqlName = NamingHelper.toSQLName(type.getField("mRemoteId"));
-        } catch (Exception e) {
-            // Nothing to do
-        }
-
-        if (sqlName != null && remoteId != null) {
-            List<T> found = T.find(type, sqlName + " = ? LIMIT 1", remoteId);
+        if (remoteId != null) {
+            List<T> found = T.find(type, NamingHelper.toSQLNameDefault("mRemoteId") + " = ? LIMIT 1", remoteId);
             if (!found.isEmpty()) {
                 if (found.size() != 1) {
                     for (int i = 1; i < found.size(); i++) {

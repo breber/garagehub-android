@@ -60,8 +60,7 @@ public class CategoryRecord extends SyncableRecord {
      * @return
      */
     public static <T extends SyncableRecord> T fuelCategory(Class<T> type) {
-        String categoryName = getCategoryName(type);
-        List<T> toRet = T.find(type, categoryName + " = 'Fuel Up'");
+        List<T> toRet = T.find(type, NamingHelper.toSQLNameDefault("mCategory") + " = 'Fuel Up'");
         if (!toRet.isEmpty()) {
             return toRet.get(0);
         }
@@ -76,8 +75,7 @@ public class CategoryRecord extends SyncableRecord {
      * @return
      */
     public static <T extends SyncableRecord> List<T> getExpenseCategories(Class<T> type) {
-        String categoryName = getCategoryName(type);
-        return T.find(type, categoryName + " != 'Maintenance'");
+        return T.find(type, NamingHelper.toSQLNameDefault("mCategory") + " != 'Maintenance'");
     }
 
     /**
@@ -88,18 +86,6 @@ public class CategoryRecord extends SyncableRecord {
      * @return
      */
     public static <T extends SyncableRecord> List<T> getMaintenanceCategories(Class<T> type) {
-        String categoryName = getCategoryName(type);
-        return T.find(type, categoryName + " == 'Maintenance'");
-    }
-
-    private static <T extends SyncableRecord> String getCategoryName(Class<T> type) {
-        String sqlName = null;
-        try {
-            sqlName = NamingHelper.toSQLName(type.getField("mCategory"));
-        } catch (Exception e) {
-            // Nothing to do
-        }
-
-        return sqlName;
+        return T.find(type, NamingHelper.toSQLNameDefault("mCategory") + " == 'Maintenance'");
     }
 }
