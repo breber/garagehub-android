@@ -17,7 +17,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 /**
  * Created by breber on 6/29/13.
@@ -29,12 +29,12 @@ public class AddMaintenanceRecordActivity extends AdActivity {
 
     private ArrayAdapter<CategoryRecord> mAdapter;
 
-    @InjectView(R.id.datePicker) protected DatePicker mDatePicker;
-    @InjectView(R.id.categorySpinner) protected Spinner mCategorySpinner;
-    @InjectView(R.id.locationText) protected EditText mLocationEditText;
-    @InjectView(R.id.descriptionText) protected EditText mDescriptionEditText;
-    @InjectView(R.id.amountText) protected EditText mAmount;
-    @InjectView(R.id.odometerText) protected EditText mOdometer;
+    @BindView(R.id.datePicker) protected DatePicker mDatePicker;
+    @BindView(R.id.categorySpinner) protected Spinner mCategorySpinner;
+    @BindView(R.id.locationText) protected EditText mLocationEditText;
+    @BindView(R.id.descriptionText) protected EditText mDescriptionEditText;
+    @BindView(R.id.amountText) protected EditText mAmount;
+    @BindView(R.id.odometerText) protected EditText mOdometer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,7 @@ public class AddMaintenanceRecordActivity extends AdActivity {
             return;
         }
 
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         // Fill in the categories
         List<CategoryRecord> categoryRecords = CategoryRecord.getMaintenanceCategories(CategoryRecord.class);

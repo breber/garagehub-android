@@ -17,7 +17,7 @@ import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 import java.util.Calendar;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 /**
  * Created by breber on 6/29/13.
@@ -27,13 +27,13 @@ public class AddUserFuelRecordActivity extends AdActivity {
     private UserVehicleRecord mVehicle;
     private UserFuelRecord mRecord;
 
-    @InjectView(R.id.datePicker) protected DatePicker mDatePicker;
-    @InjectView(R.id.locationText) protected EditText mLocationEditText;
-    @InjectView(R.id.amountText) protected EditText mAmount;
-    @InjectView(R.id.odometerText) protected EditText mOdometerEndEditText;
-    @InjectView(R.id.costPerGallonText) protected EditText mCostPerGallonEditText;
-    @InjectView(R.id.numGallonText) protected EditText mNumGallonEditText;
-    @InjectView(R.id.fuelGradeSpinner) protected Spinner mFuelGradeSpinner;
+    @BindView(R.id.datePicker) protected DatePicker mDatePicker;
+    @BindView(R.id.locationText) protected EditText mLocationEditText;
+    @BindView(R.id.amountText) protected EditText mAmount;
+    @BindView(R.id.odometerText) protected EditText mOdometerEndEditText;
+    @BindView(R.id.costPerGallonText) protected EditText mCostPerGallonEditText;
+    @BindView(R.id.numGallonText) protected EditText mNumGallonEditText;
+    @BindView(R.id.fuelGradeSpinner) protected Spinner mFuelGradeSpinner;
 
     private TextWatcher mTextChangedListener = new TextWatcher() {
         @Override
@@ -82,7 +82,7 @@ public class AddUserFuelRecordActivity extends AdActivity {
             return;
         }
 
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         // Add onChange listeners to the amount and cost per gallon fields
         // so that we can update the num gallons field

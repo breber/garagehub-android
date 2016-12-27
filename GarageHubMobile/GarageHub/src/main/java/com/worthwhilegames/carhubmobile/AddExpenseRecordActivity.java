@@ -17,7 +17,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 /**
  * Add expense activity
@@ -31,11 +31,11 @@ public class AddExpenseRecordActivity extends AdActivity {
 
     private ArrayAdapter<CategoryRecord> mAdapter;
 
-    @InjectView(R.id.datePicker) protected DatePicker mDatePicker;
-    @InjectView(R.id.categorySpinner) protected Spinner mCategorySpinner;
-    @InjectView(R.id.locationText) protected EditText mLocationEditText;
-    @InjectView(R.id.descriptionText) protected EditText mDescriptionEditText;
-    @InjectView(R.id.amountText) protected EditText mAmount;
+    @BindView(R.id.datePicker) protected DatePicker mDatePicker;
+    @BindView(R.id.categorySpinner) protected Spinner mCategorySpinner;
+    @BindView(R.id.locationText) protected EditText mLocationEditText;
+    @BindView(R.id.descriptionText) protected EditText mDescriptionEditText;
+    @BindView(R.id.amountText) protected EditText mAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class AddExpenseRecordActivity extends AdActivity {
             return;
         }
 
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
 
         // Fill in the categories

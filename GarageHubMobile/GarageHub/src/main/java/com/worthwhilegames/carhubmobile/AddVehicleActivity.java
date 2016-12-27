@@ -8,7 +8,7 @@ import android.widget.EditText;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 /**
  * Created by breber on 6/29/13.
@@ -17,17 +17,17 @@ public class AddVehicleActivity extends AdActivity {
 
     private UserVehicleRecord mVehicle;
 
-    @InjectView(R.id.yearText) protected EditText mYearEditText;
-    @InjectView(R.id.makeText) protected EditText mMakeEditText;
-    @InjectView(R.id.modelText) protected EditText mModelEditText;
-    @InjectView(R.id.colorText) protected EditText mColorEditText;
-    @InjectView(R.id.plateText) protected EditText mPlateEditText;
+    @BindView(R.id.yearText) protected EditText mYearEditText;
+    @BindView(R.id.makeText) protected EditText mMakeEditText;
+    @BindView(R.id.modelText) protected EditText mModelEditText;
+    @BindView(R.id.colorText) protected EditText mColorEditText;
+    @BindView(R.id.plateText) protected EditText mPlateEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.addvehicle);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         Long vehicleId = getIntent().getLongExtra(Constants.INTENT_DATA_VEHICLE, -1);
         mVehicle = UserVehicleRecord.findById(UserVehicleRecord.class, vehicleId);
