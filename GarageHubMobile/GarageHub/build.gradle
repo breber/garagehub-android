@@ -12,6 +12,13 @@ android {
     }
 }
 
+// For some reason Gradle/Android Studio doesn't work with this jar file.
+// So extract it into the source tree
+copy {
+    from(zipTree("libs/car_hub_appspot_com-garagehub-v1-20150722012447-java-1.20.0-sources.jar"))
+    into("src/main/java")
+}
+
 dependencies {
     // AppEngine
     compile 'com.google.code.gson:gson:2.1'
