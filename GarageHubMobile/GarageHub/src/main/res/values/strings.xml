@@ -2,27 +2,8 @@
 
     <string name="ad_unit_id">ca-app-pub-7851995014179009/3752544851</string>
     <string name="app_name">GarageHub</string>
-    <string name="menu_settings">Settings</string>
     <string name="title_activity_main">GarageHub</string>
-    <string name="zipcodehint">Zip Code</string>
-    <string name="pricehint">Enter a new price.</string>
-    <string name="search">Search</string>
-    <string name="fueltype">Fuel Type:</string>
-    <string name="gasPrices">Gas Prices</string>
-    <string name="about">About</string>
-    <string name="findNearbyGasPrices">Find Nearby Gas Prices</string>
-    <string name="fuelType">Fuel Type: </string>
-    <string name="distance">Distance: </string>
-    <string name="sortBy">Sort By: </string>
-    <string name="station">Station: </string>
-    <string name="results">Results</string>
-    <string name="address">Address: </string>
-    <string name="price">Price: </string>
-    <string name="updatePrice">Update Price</string>
-    <string name="useCurrentLocation">Use Current Location</string>
     <string name="settings">Settings</string>
-    <string name="aboutInformation">This application uses the information from myGasFeed.com to display nearby gas price information. Users will have the option to search by their current location or enter a zip code. The application will get information about nearby gas prices based on the input.</string>
-    <string name="noGasPrices">No gas prices available</string>
     <string name="userVehicleList">Vehicles</string>
     <string name="noVehiclesRegistered">No vehicles registered</string>
     <string name="noFuelRecords">No fuel records</string>
@@ -66,31 +47,4 @@
         <item>Premium</item>
         <item>Diesel</item>
     </string-array>
-    <string-array name="fueltype_array">
-        <item>Reg</item>
-        <item>Mid</item>
-        <item>Pre</item>
-        <item>Diesel</item>
-    </string-array>
-    <string-array name="distance_array">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-        <item>15</item>
-        <item>20</item>
-        <item>25</item>
-        <item>30</item>
-    </string-array>
-    <string-array name="sort_array">
-        <item>Price</item>
-        <item>Distance</item>
-    </string-array>
-
 </resources>

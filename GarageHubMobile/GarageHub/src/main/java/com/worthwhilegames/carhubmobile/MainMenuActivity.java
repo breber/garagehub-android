@@ -15,9 +15,7 @@ import com.worthwhilegames.carhubmobile.adapters.MenuImageAdapter.ImageTextWrapp
 public class MainMenuActivity extends AdActivity {
 
     private ImageTextWrapper[] mImageTextWrappers = {
-            new MenuImageAdapter.ImageTextWrapper(R.raw.fuel, R.string.findNearbyGasPrices, FindGasPricesActivity.class),
-            new MenuImageAdapter.ImageTextWrapper(R.raw.vehicle, R.string.userVehicleList, UserVehicleListActivity.class),
-            new MenuImageAdapter.ImageTextWrapper(R.raw.info, R.string.about, AboutActivity.class),
+            new MenuImageAdapter.ImageTextWrapper(R.raw.vehicle, R.string.userVehicleList, UserVehicleListActivity.class)
     };
 
     /* (non-Javadoc)

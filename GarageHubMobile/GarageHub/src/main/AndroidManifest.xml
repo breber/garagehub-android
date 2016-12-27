@@ -1,7 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.worthwhilegames.carhubmobile" >
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -18,9 +17,6 @@
         android:icon="@drawable/garagehub"
         android:label="@string/app_name"
         android:theme="@style/GarageHub">
-        <activity
-            android:name=".FindGasPricesActivity"
-            android:label="@string/gasPrices" />
         <activity
             android:name=".UserVehicleListActivity"
             android:label="@string/userVehicleList" />
@@ -46,15 +42,6 @@
         <activity
             android:name=".AddVehicleActivity"
             android:label="@string/addVehicle" />
-        <activity
-            android:name=".SettingsActivity"
-            android:label="@string/menu_settings" />
-        <activity
-            android:name=".AboutActivity"
-            android:label="@string/about" />
-        <activity
-            android:name=".UpdatePriceActivity"
-            android:label="@string/updatePrice" />
         <activity android:name=".MainMenuActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

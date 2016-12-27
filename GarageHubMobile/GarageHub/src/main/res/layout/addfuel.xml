@@ -104,6 +104,6 @@
             android:id="@+id/fuelGradeSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/fueltype_array" />
+            android:entries="@array/fuelGradeArray" />
     </LinearLayout>
 </ScrollView>
