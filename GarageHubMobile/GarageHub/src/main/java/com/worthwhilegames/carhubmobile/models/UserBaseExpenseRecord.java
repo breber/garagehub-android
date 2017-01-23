@@ -1,11 +1,11 @@
 package com.worthwhilegames.carhubmobile.models;
 
-import android.content.Context;
 import android.text.format.DateFormat;
+
 import com.appspot.car_hub.garagehub.model.UserExpenseRecord;
 import com.mobsandgeeks.adapters.InstantText;
-import com.orm.dsl.Ignore;
-import com.orm.util.NamingHelper;
+import com.orm.annotation.Ignore;
+import com.orm.helper.NamingHelper;
 import com.worthwhilegames.carhubmobile.R;
 
 import java.text.ParseException;

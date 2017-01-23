@@ -3,7 +3,7 @@ package com.worthwhilegames.carhubmobile.models;
 import android.util.Log;
 
 import com.orm.SugarRecord;
-import com.orm.util.NamingHelper;
+import com.orm.helper.NamingHelper;
 import com.worthwhilegames.carhubmobile.Util;
 
 import java.util.List;

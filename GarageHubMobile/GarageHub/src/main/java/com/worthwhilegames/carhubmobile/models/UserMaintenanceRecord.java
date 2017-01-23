@@ -1,9 +1,8 @@
 package com.worthwhilegames.carhubmobile.models;
 
-import android.content.Context;
 import com.appspot.car_hub.garagehub.model.MaintenanceRecord;
 import com.mobsandgeeks.adapters.InstantText;
-import com.orm.util.NamingHelper;
+import com.orm.helper.NamingHelper;
 import com.worthwhilegames.carhubmobile.R;
 
 import java.text.ParseException;
@@ -73,7 +72,7 @@ public class UserMaintenanceRecord extends UserBaseExpenseRecord {
      */
     public static UserMaintenanceRecord getLatest(UserVehicleRecord vehicle) {
         List<UserMaintenanceRecord> list = UserFuelRecord.findWithQuery(UserMaintenanceRecord.class,
-                "select * from " + NamingHelper.toSQLName(UserMaintenanceRecord.class) +
+                "select * from " + NamingHelper.toTableName(UserMaintenanceRecord.class) +
                         " where " + NamingHelper.toSQLNameDefault("mVehicle") + " = '" + vehicle.getId() + "'" +
                         " order by " + NamingHelper.toSQLNameDefault("mOdometer") + " desc limit 1");
         if (!list.isEmpty()) {
