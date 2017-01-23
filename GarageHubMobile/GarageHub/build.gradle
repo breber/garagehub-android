@@ -34,7 +34,10 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.1.0'
     compile 'com.mobsandgeeks:adapter-kit:0.5.3'
     compile 'com.jakewharton:butterknife:8.4.0'
-    compile 'com.github.satyan:sugar:1.5'
+    // Official Sugar v1.5 has issues, so we use a compiled
+    // jar from commit a1c3ee3a47549f04554a75f058e4e18bbb0bd643
+    // of https://github.com/breber/sugar
+    //compile 'com.github.satyan:sugar:1.5'
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
