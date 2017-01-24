@@ -4,11 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
-import com.mobsandgeeks.adapters.InstantAdapter;
+
 import com.worthwhilegames.carhubmobile.models.UserMaintenanceRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
@@ -19,7 +16,7 @@ import java.util.List;
 /**
  * @author breber
  */
-public class UserMaintenanceListActivity extends AppEngineListActivity {
+public class UserMaintenanceListActivity extends AppEngineActivity {
 
     private UserVehicleRecord mVehicle;
 
@@ -37,17 +34,17 @@ public class UserMaintenanceListActivity extends AppEngineListActivity {
 
         super.onCreate(savedInstanceState, R.string.noMaintRecords);
 
-        getListView().setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                UserMaintenanceRecord model = (UserMaintenanceRecord) a.getItemAtPosition(position);
-
-                Intent i = new Intent(UserMaintenanceListActivity.this, AddMaintenanceRecordActivity.class);
-                i.putExtra(Constants.INTENT_DATA_VEHICLE, mVehicle.getId());
-                i.putExtra(Constants.INTENT_DATA_RECORD, model.getId());
-                startActivity(i);
-            }
-        });
+//        getListView().setOnItemClickListener(new OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+//                UserMaintenanceRecord model = (UserMaintenanceRecord) a.getItemAtPosition(position);
+//
+//                Intent i = new Intent(UserMaintenanceListActivity.this, AddMaintenanceRecordActivity.class);
+//                i.putExtra(Constants.INTENT_DATA_VEHICLE, mVehicle.getId());
+//                i.putExtra(Constants.INTENT_DATA_RECORD, model.getId());
+//                startActivity(i);
+//            }
+//        });
     }
 
     /* (non-Javadoc)
@@ -86,7 +83,7 @@ public class UserMaintenanceListActivity extends AppEngineListActivity {
             }
         });
 
-        setListAdapter(new InstantAdapter<UserMaintenanceRecord>(this, R.layout.maintenancerow, UserMaintenanceRecord.class, maintRecords));
+//        setListAdapter(new InstantAdapter<UserMaintenanceRecord>(this, R.layout.maintenancerow, UserMaintenanceRecord.class, maintRecords));
     }
 
 }

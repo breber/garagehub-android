@@ -3,13 +3,16 @@ package com.worthwhilegames.carhubmobile;
 import android.Manifest;
 import android.accounts.AccountManager;
 import android.app.ProgressDialog;
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.widget.TextView;
+
 import com.appspot.car_hub.garagehub.Garagehub;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -20,7 +23,7 @@ import com.worthwhilegames.carhubmobile.sync.SyncAdapter;
 /**
  * @author breber
  */
-public abstract class AppEngineListActivity extends AdListActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
+public abstract class AppEngineActivity extends AdActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final int REQUEST_ACCOUNT_PICKER = 2;
     private static final int REQUEST_ACCOUNT_PERM = 3;
@@ -58,10 +61,6 @@ public abstract class AppEngineListActivity extends AdListActivity implements Ac
 
     public void onCreate(Bundle savedInstanceState, int emptyResource) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.user_vehicle_list);
-
-        TextView tv = (TextView) findViewById(android.R.id.empty);
-        tv.setText(emptyResource);
 
         // Inside your Activity class onCreate method
         mCreds = GoogleAccountCredential.usingAudience(this, GarageHubKeys.GARAGEHUB_KEY);
@@ -96,7 +95,7 @@ public abstract class AppEngineListActivity extends AdListActivity implements Ac
                             mCreds.setSelectedAccountName(accountName);
 
                             // Show a loading dialog for the first sync
-                            mDialog = ProgressDialog.show(AppEngineListActivity.this, "",
+                            mDialog = ProgressDialog.show(AppEngineActivity.this, "",
                                     "Loading. Please wait...", true);
 
                             // Start the sync

@@ -4,11 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
-import com.mobsandgeeks.adapters.InstantAdapter;
+
 import com.worthwhilegames.carhubmobile.models.UserBaseExpenseRecord;
 import com.worthwhilegames.carhubmobile.models.UserFuelRecord;
 import com.worthwhilegames.carhubmobile.models.UserMaintenanceRecord;
@@ -21,7 +18,7 @@ import java.util.List;
 /**
  * @author breber
  */
-public class UserExpenseManagerActivity extends AppEngineListActivity {
+public class UserExpenseManagerActivity extends AppEngineActivity {
 
     private UserVehicleRecord mVehicle;
 
@@ -39,23 +36,23 @@ public class UserExpenseManagerActivity extends AppEngineListActivity {
 
         super.onCreate(savedInstanceState, R.string.noExpenseRecords);
 
-        getListView().setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                UserBaseExpenseRecord model = (UserBaseExpenseRecord) a.getItemAtPosition(position);
-                Intent i = new Intent(UserExpenseManagerActivity.this, AddExpenseRecordActivity.class);
-
-                if (model.getClass() == UserFuelRecord.class) {
-                    i = new Intent(UserExpenseManagerActivity.this, AddUserFuelRecordActivity.class);
-                } else if (model.getClass() == UserMaintenanceRecord.class) {
-                    i = new Intent(UserExpenseManagerActivity.this, AddMaintenanceRecordActivity.class);
-                }
-
-                i.putExtra(Constants.INTENT_DATA_VEHICLE, mVehicle.getId());
-                i.putExtra(Constants.INTENT_DATA_RECORD, model.getId());
-                startActivity(i);
-            }
-        });
+//        getListView().setOnItemClickListener(new OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+//                UserBaseExpenseRecord model = (UserBaseExpenseRecord) a.getItemAtPosition(position);
+//                Intent i = new Intent(UserExpenseManagerActivity.this, AddExpenseRecordActivity.class);
+//
+//                if (model.getClass() == UserFuelRecord.class) {
+//                    i = new Intent(UserExpenseManagerActivity.this, AddUserFuelRecordActivity.class);
+//                } else if (model.getClass() == UserMaintenanceRecord.class) {
+//                    i = new Intent(UserExpenseManagerActivity.this, AddMaintenanceRecordActivity.class);
+//                }
+//
+//                i.putExtra(Constants.INTENT_DATA_VEHICLE, mVehicle.getId());
+//                i.putExtra(Constants.INTENT_DATA_RECORD, model.getId());
+//                startActivity(i);
+//            }
+//        });
 
         updateUi();
     }
@@ -98,6 +95,6 @@ public class UserExpenseManagerActivity extends AppEngineListActivity {
             }
         });
 
-        setListAdapter(new InstantAdapter<UserBaseExpenseRecord>(this, R.layout.expenserow, UserBaseExpenseRecord.class, expenseRecords));
+//        setListAdapter(new InstantAdapter<UserBaseExpenseRecord>(this, R.layout.expenserow, UserBaseExpenseRecord.class, expenseRecords));
     }
 }

@@ -17,10 +17,13 @@
         android:icon="@drawable/garagehub"
         android:label="@string/app_name"
         android:theme="@style/GarageHub">
-        <activity
-            android:name=".UserVehicleListActivity"
-            android:label="@string/userVehicleList" />
-        <activity android:name=".UserVehicleActivity" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".UserMaintenanceListActivity"
             android:label="@string/maintenanceRecords" />
@@ -42,13 +45,6 @@
         <activity
             android:name=".AddVehicleActivity"
             android:label="@string/addVehicle" />
-        <activity android:name=".MainMenuActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
         <!-- Sync Stuff -->
         <provider

@@ -4,11 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
-import com.mobsandgeeks.adapters.InstantAdapter;
+
 import com.worthwhilegames.carhubmobile.models.UserFuelRecord;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
@@ -19,7 +16,7 @@ import java.util.List;
 /**
  * @author breber
  */
-public class UserFuelListActivity extends AppEngineListActivity {
+public class UserFuelListActivity extends AppEngineActivity {
 
     private UserVehicleRecord mVehicle;
 
@@ -37,17 +34,17 @@ public class UserFuelListActivity extends AppEngineListActivity {
 
         super.onCreate(savedInstanceState, R.string.noFuelRecords);
 
-        getListView().setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                UserFuelRecord model = (UserFuelRecord) a.getItemAtPosition(position);
-
-                Intent i = new Intent(UserFuelListActivity.this, AddUserFuelRecordActivity.class);
-                i.putExtra(Constants.INTENT_DATA_VEHICLE, mVehicle.getId());
-                i.putExtra(Constants.INTENT_DATA_RECORD, model.getId());
-                startActivity(i);
-            }
-        });
+//        getListView().setOnItemClickListener(new OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+//                UserFuelRecord model = (UserFuelRecord) a.getItemAtPosition(position);
+//
+//                Intent i = new Intent(UserFuelListActivity.this, AddUserFuelRecordActivity.class);
+//                i.putExtra(Constants.INTENT_DATA_VEHICLE, mVehicle.getId());
+//                i.putExtra(Constants.INTENT_DATA_RECORD, model.getId());
+//                startActivity(i);
+//            }
+//        });
     }
 
     /* (non-Javadoc)
@@ -86,6 +83,6 @@ public class UserFuelListActivity extends AppEngineListActivity {
             }
         });
 
-        setListAdapter(new InstantAdapter<UserFuelRecord>(this, R.layout.fuelrow, UserFuelRecord.class, fuelRecords));
+//        setListAdapter(new InstantAdapter<UserFuelRecord>(this, R.layout.fuelrow, UserFuelRecord.class, fuelRecords));
     }
 }
