@@ -1,9 +1,14 @@
 package com.worthwhilegames.carhubmobile;
 
+import android.Manifest;
 import android.accounts.AccountManager;
 import android.app.ProgressDialog;
 import android.content.*;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.widget.TextView;
 import com.appspot.car_hub.garagehub.Garagehub;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -15,9 +20,10 @@ import com.worthwhilegames.carhubmobile.sync.SyncAdapter;
 /**
  * @author breber
  */
-public abstract class AppEngineListActivity extends AdListActivity {
+public abstract class AppEngineListActivity extends AdListActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final int REQUEST_ACCOUNT_PICKER = 2;
+    private static final int REQUEST_ACCOUNT_PERM = 3;
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -69,7 +75,11 @@ public abstract class AppEngineListActivity extends AdListActivity {
 
         if (mCreds.getSelectedAccountName() == null) {
             // Not signed in, show login window or request an account.
-            chooseAccount();
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.GET_ACCOUNTS}, REQUEST_ACCOUNT_PERM);
+            } else {
+                chooseAccount();
+            }
         }
     }
 
@@ -128,6 +138,14 @@ public abstract class AppEngineListActivity extends AdListActivity {
 
         // Unregister
         unregisterReceiver(broadcastReceiver);
+    }
+
+    /* (non-Javadoc)
+     * @see ActivityCompat.OnRequestPermissionsResultCallback#onRequestPermissionsResult()
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        chooseAccount();
     }
 
     private void chooseAccount() {

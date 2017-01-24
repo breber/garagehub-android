@@ -28,7 +28,7 @@ dependencies {
     compile 'com.google.http-client:google-http-client:1.22.0'
     compile 'com.google.http-client:google-http-client-android:1.22.0'
     compile 'com.google.http-client:google-http-client-gson:1.22.0'
-
+    compile 'com.google.android.gms:play-services-auth:10.0.1'
     compile 'com.google.android.gms:play-services-ads:10.0.1'
     compile 'com.mobsandgeeks:adapter-kit:0.5.3'
     compile 'com.jakewharton:butterknife:8.4.0'
