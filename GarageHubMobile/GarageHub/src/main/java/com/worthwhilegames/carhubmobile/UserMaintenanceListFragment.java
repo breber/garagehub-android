@@ -4,6 +4,9 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -54,9 +57,30 @@ public class UserMaintenanceListFragment extends Fragment {
         }
     }
 
-//    Intent i = new Intent(this, AddMaintenanceRecordActivity.class);
-//    i.putExtra(Constants.INTENT_DATA_VEHICLE, mVehicle.getId());
-//    startActivity(i);
+    /* (non-Javadoc)
+     * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+     */
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.activity_maintenance_list, menu);
+    }
+
+    /* (non-Javadoc)
+     * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // This will cover the Android menu button press
+        switch (item.getItemId()) {
+            case R.id.menu_add_maintenance:
+                Intent i = new Intent(getActivity(), AddMaintenanceRecordActivity.class);
+                i.putExtra(Constants.INTENT_DATA_VEHICLE, mVehicle.getId());
+                startActivity(i);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,6 +89,8 @@ public class UserMaintenanceListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_list_view, container, false);
 
         if (mVehicle != null) {
+            setHasOptionsMenu(true);
+
             List<UserMaintenanceRecord> maintRecords = UserMaintenanceRecord.getRecordsForVehicle(UserMaintenanceRecord.class, mVehicle);
             Collections.sort(maintRecords, new Comparator<UserMaintenanceRecord>() {
                 @Override
