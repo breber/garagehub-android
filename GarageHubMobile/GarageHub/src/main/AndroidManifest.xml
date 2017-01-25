@@ -25,15 +25,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UserMaintenanceListActivity"
-            android:label="@string/maintenanceRecords" />
-        <activity
-            android:name=".UserExpenseManagerActivity"
-            android:label="@string/expenseManager" />
-        <activity
-            android:name=".UserFuelListActivity"
-            android:label="@string/fuelRecords" />
-        <activity
             android:name=".AddUserFuelRecordActivity"
             android:label="@string/addFuelRecord" />
         <activity

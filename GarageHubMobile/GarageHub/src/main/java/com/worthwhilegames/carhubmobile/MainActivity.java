@@ -60,6 +60,9 @@ public class MainActivity extends AppEngineActivity {
     }
 
     private void selectItem(int position) {
+//        Intent i = new Intent(this, AddVehicleActivity.class);
+//        startActivity(i);
+
         if (mVehicles == null || position >= mVehicles.size()) {
             setTitle("GarageHub");
         } else {
@@ -67,6 +70,9 @@ public class MainActivity extends AppEngineActivity {
 
             // update the main content by replacing fragments
             Fragment fragment = UserVehicleFragment.newInstance(record.getId());
+//            Fragment fragment = UserExpenseManagerFragment.newInstance(record.getId());
+//            Fragment fragment = UserFuelListFragment.newInstance(record.getId());
+//            Fragment fragment = UserMaintenanceListFragment.newInstance(record.getId());
 
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
@@ -91,7 +97,11 @@ public class MainActivity extends AppEngineActivity {
 
             mDrawerList.setAdapter(new InstantAdapter<UserVehicleRecord>(this, R.layout.simple_list_item, UserVehicleRecord.class, mVehicles));
 
-            selectItem(mDrawerList.getSelectedItemPosition());
+            if (mDrawerList.getSelectedItemPosition() == -1) {
+                selectItem(0);
+            } else {
+                selectItem(mDrawerList.getSelectedItemPosition());
+            }
         }
     }
 
