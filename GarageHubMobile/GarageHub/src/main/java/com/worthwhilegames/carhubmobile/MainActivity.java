@@ -2,15 +2,21 @@ package com.worthwhilegames.carhubmobile;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.mobsandgeeks.adapters.InstantAdapter;
+import com.mobsandgeeks.adapters.InstantText;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -25,8 +31,9 @@ public class MainActivity extends AppEngineActivity {
 
     @BindView(R.id.drawer_layout) protected DrawerLayout mDrawerLayout;
     @BindView(R.id.left_drawer) protected ListView mDrawerList;
-
-    private List<UserVehicleRecord> mVehicles;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private int mSelectedItem = 0;
+    private List<ListItem> mVehicles;
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -42,11 +49,53 @@ public class MainActivity extends AppEngineActivity {
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayUseLogoEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.string.drawer_open, R.string.drawer_close) {
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
             selectItem(0);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // The action bar home/up action should open or close the drawer.
+        // ActionBarDrawerToggle will take care of this.
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig)  {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     /* (non-Javadoc)
@@ -60,45 +109,88 @@ public class MainActivity extends AppEngineActivity {
     }
 
     private void selectItem(int position) {
-//        Intent i = new Intent(this, AddVehicleActivity.class);
-//        startActivity(i);
-
         if (mVehicles == null || position >= mVehicles.size()) {
             setTitle("GarageHub");
         } else {
-            UserVehicleRecord record = mVehicles.get(position);
+            ListItem record = mVehicles.get(position);
 
-            // update the main content by replacing fragments
-            Fragment fragment = UserVehicleFragment.newInstance(record.getId());
-//            Fragment fragment = UserExpenseManagerFragment.newInstance(record.getId());
-//            Fragment fragment = UserFuelListFragment.newInstance(record.getId());
-//            Fragment fragment = UserMaintenanceListFragment.newInstance(record.getId());
+            if (record.fragment != null) {
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, record.fragment).commit();
 
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                // update selected item and title, then close the drawer
+                mDrawerList.setItemChecked(position, true);
+                setTitle(record.name.trim());
+                mDrawerLayout.closeDrawer(mDrawerList);
 
-            // update selected item and title, then close the drawer
-            mDrawerList.setItemChecked(position, true);
-            setTitle(record.getName());
-            mDrawerLayout.closeDrawer(mDrawerList);
+                mSelectedItem = position;
+            } else {
+                // Assume that if the fragment is non-null we want to add a vehicle
+                Intent i = new Intent(this, AddVehicleActivity.class);
+                startActivity(i);
+            }
+        }
+    }
+
+    class ListItem
+    {
+        public UserVehicleRecord vehicle;
+        public Fragment fragment;
+        public String name;
+
+        @InstantText(viewId = R.id.text1)
+        public String getName() {
+            return name;
         }
     }
 
     public void updateUi() {
         if (mDrawerList != null) {
             // Get all Vehicles from the database
-            mVehicles = UserVehicleRecord.listAll(UserVehicleRecord.class);
-            Collections.sort(mVehicles, new Comparator<UserVehicleRecord>() {
+            List<UserVehicleRecord> vehicles = UserVehicleRecord.listAll(UserVehicleRecord.class);
+            Collections.sort(vehicles, new Comparator<UserVehicleRecord>() {
                 @Override
                 public int compare(UserVehicleRecord lhs, UserVehicleRecord rhs) {
                     return lhs.getMake().compareTo(rhs.getMake());
                 }
             });
 
-            mDrawerList.setAdapter(new InstantAdapter<UserVehicleRecord>(this, R.layout.simple_list_item, UserVehicleRecord.class, mVehicles));
+            mVehicles = new ArrayList<ListItem>(vehicles.size() * 4);
+
+            for (UserVehicleRecord v : vehicles) {
+                ListItem infoItem = new ListItem();
+                infoItem.vehicle = v;
+                infoItem.fragment = UserVehicleFragment.newInstance(v.getId());
+                infoItem.name = v.getName();
+                mVehicles.add(infoItem);
+
+                ListItem fuelItem = new ListItem();
+                fuelItem.vehicle = v;
+                fuelItem.fragment = UserFuelListFragment.newInstance(v.getId());
+                fuelItem.name = "  Fuel";
+                mVehicles.add(fuelItem);
+
+                ListItem maintItem = new ListItem();
+                maintItem.vehicle = v;
+                maintItem.fragment = UserMaintenanceListFragment.newInstance(v.getId());
+                maintItem.name = "  Maintenance";
+                mVehicles.add(maintItem);
+
+                ListItem expenseItem = new ListItem();
+                expenseItem.vehicle = v;
+                expenseItem.fragment = UserExpenseManagerFragment.newInstance(v.getId());
+                expenseItem.name = "  Expenses";
+                mVehicles.add(expenseItem);
+            }
+
+            ListItem addVehicleItem = new ListItem();
+            addVehicleItem.name = getResources().getString(R.string.addVehicle);
+            mVehicles.add(addVehicleItem);
+
+            mDrawerList.setAdapter(new InstantAdapter<ListItem>(this, R.layout.simple_list_item, ListItem.class, mVehicles));
 
             if (mDrawerList.getSelectedItemPosition() == -1) {
-                selectItem(0);
+                selectItem(mSelectedItem);
             } else {
                 selectItem(mDrawerList.getSelectedItemPosition());
             }
