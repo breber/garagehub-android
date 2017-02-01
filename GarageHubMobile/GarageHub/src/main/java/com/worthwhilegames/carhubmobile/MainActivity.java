@@ -145,7 +145,7 @@ public class MainActivity extends AppEngineActivity {
     }
 
     public void updateUi() {
-        if (mDrawerList != null) {
+        if (mDrawerList != null && mCreds.getSelectedAccountName() != null) {
             // Get all Vehicles from the database
             List<UserVehicleRecord> vehicles = UserVehicleRecord.listAll(UserVehicleRecord.class);
             Collections.sort(vehicles, new Comparator<UserVehicleRecord>() {
