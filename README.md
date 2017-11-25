@@ -8,7 +8,6 @@
 * Export a signed APK from Eclipse using the key that is in the Dropbox folder
 * Upload the new APK to the Google Play Developer Console
 * Add what changed to the `Recent Changes` section on the Developer Console
-* Copy the signed APK to the `Releases` folder in Dropbox
 * Tag the release in git
 
         git tag v1.1.1
@@ -16,5 +15,4 @@
 
 TODO:
 - [ ] Login screen
-- [ ] Highlight the selected item in nav bar
 - [ ] Rework the main vehicle page

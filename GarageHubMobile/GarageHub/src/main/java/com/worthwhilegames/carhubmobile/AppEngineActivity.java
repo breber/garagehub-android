@@ -56,6 +56,7 @@ public abstract class AppEngineActivity extends AdActivity implements ActivityCo
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         onCreate(savedInstanceState, R.string.noVehiclesRegistered);
     }
 

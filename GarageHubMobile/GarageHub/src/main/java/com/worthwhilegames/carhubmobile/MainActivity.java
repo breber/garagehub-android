@@ -10,10 +10,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.mobsandgeeks.adapters.InstantAdapter;
-import com.mobsandgeeks.adapters.InstantText;
 import com.worthwhilegames.carhubmobile.models.UserVehicleRecord;
 
 import java.util.ArrayList;
@@ -79,11 +78,7 @@ public class MainActivity extends AppEngineActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // The action bar home/up action should open or close the drawer.
         // ActionBarDrawerToggle will take care of this.
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -119,8 +114,11 @@ public class MainActivity extends AppEngineActivity {
                 fragmentManager.beginTransaction().replace(R.id.content_frame, record.fragment).commit();
 
                 // update selected item and title, then close the drawer
-                mDrawerList.setItemChecked(position, true);
-                setTitle(record.name.trim());
+                if (record.vehicle.getName().equals(record.name.trim())) {
+                    setTitle(record.name.trim());
+                } else {
+                    setTitle(record.vehicle.getName() + " " + record.name.trim());
+                }
                 mDrawerLayout.closeDrawer(mDrawerList);
 
                 mSelectedItem = position;
@@ -134,12 +132,11 @@ public class MainActivity extends AppEngineActivity {
 
     class ListItem
     {
-        public UserVehicleRecord vehicle;
-        public Fragment fragment;
-        public String name;
+        UserVehicleRecord vehicle;
+        Fragment fragment;
+        String name;
 
-        @InstantText(viewId = R.id.text1)
-        public String getName() {
+        public String toString() {
             return name;
         }
     }
@@ -187,7 +184,7 @@ public class MainActivity extends AppEngineActivity {
             addVehicleItem.name = getResources().getString(R.string.addVehicle);
             mVehicles.add(addVehicleItem);
 
-            mDrawerList.setAdapter(new InstantAdapter<ListItem>(this, R.layout.simple_list_item, ListItem.class, mVehicles));
+            mDrawerList.setAdapter(new ArrayAdapter<ListItem>(this, R.layout.simple_list_item, mVehicles));
 
             if (mDrawerList.getSelectedItemPosition() == -1) {
                 selectItem(mSelectedItem);
