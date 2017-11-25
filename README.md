@@ -13,3 +13,8 @@
 
         git tag v1.1.1
         git push --tags
+
+TODO:
+- [ ] Login screen
+- [ ] Highlight the selected item in nav bar
+- [ ] Rework the main vehicle page
