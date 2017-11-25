@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.1"
 
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 25
+        minSdkVersion 15
+        targetSdkVersion 27
         versionCode 21
         versionName "2.0.0"
     }
@@ -21,23 +21,27 @@ copy {
 
 dependencies {
     // AppEngine
-    compile 'com.google.code.gson:gson:2.1'
-    compile 'com.google.oauth-client:google-oauth-client:1.22.0'
-    compile 'com.google.api-client:google-api-client:1.22.0'
-    compile 'com.google.api-client:google-api-client-android:1.22.0'
-    compile 'com.google.http-client:google-http-client:1.22.0'
-    compile 'com.google.http-client:google-http-client-android:1.22.0'
-    compile 'com.google.http-client:google-http-client-gson:1.22.0'
-    compile 'com.google.android.gms:play-services-auth:10.0.1'
-    compile 'com.google.android.gms:play-services-ads:10.0.1'
-    compile 'com.mobsandgeeks:adapter-kit:0.5.3'
-    compile 'com.jakewharton:butterknife:8.4.0'
+    implementation('com.google.code.gson:gson:2.1')
+    implementation('com.google.oauth-client:google-oauth-client:1.22.0')
+    implementation('com.google.api-client:google-api-client:1.22.0')
+    implementation('com.google.api-client:google-api-client-android:1.22.0')
+    implementation('com.google.http-client:google-http-client:1.22.0')
+    implementation('com.google.http-client:google-http-client-android:1.22.0')
+    implementation('com.google.http-client:google-http-client-gson:1.22.0')
+    implementation('com.google.android.gms:play-services-auth:11.6.0') {
+        exclude module: 'support-v4'
+    }
+    implementation('com.google.android.gms:play-services-ads:11.6.0') {
+        exclude module: 'support-v4'
+    }
+    implementation('com.mobsandgeeks:adapter-kit:0.5.3')
+    implementation('com.jakewharton:butterknife:8.8.1')
     // Official Sugar v1.5 has issues, so we use a compiled
     // jar from commit a1c3ee3a47549f04554a75f058e4e18bbb0bd643
     // of https://github.com/breber/sugar
-    //compile 'com.github.satyan:sugar:1.5'
+    //implementation 'com.github.satyan:sugar:1.5'
 
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation(fileTree(dir: 'libs', include: ['*.jar']))
 
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    annotationProcessor('com.jakewharton:butterknife-compiler:8.8.1')
 }
