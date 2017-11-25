@@ -184,7 +184,7 @@ public class MainActivity extends AppEngineActivity {
             addVehicleItem.name = getResources().getString(R.string.addVehicle);
             mVehicles.add(addVehicleItem);
 
-            mDrawerList.setAdapter(new ArrayAdapter<ListItem>(this, R.layout.simple_list_item, mVehicles));
+            mDrawerList.setAdapter(new ArrayAdapter<ListItem>(this, android.R.layout.simple_list_item_1, mVehicles));
 
             if (mDrawerList.getSelectedItemPosition() == -1) {
                 selectItem(mSelectedItem);

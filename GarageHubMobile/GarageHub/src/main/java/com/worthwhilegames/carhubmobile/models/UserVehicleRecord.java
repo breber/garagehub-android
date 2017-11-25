@@ -2,7 +2,6 @@ package com.worthwhilegames.carhubmobile.models;
 
 import com.appspot.car_hub.garagehub.model.UserVehicle;
 import com.mobsandgeeks.adapters.InstantText;
-import com.worthwhilegames.carhubmobile.R;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -41,7 +40,7 @@ public class UserVehicleRecord extends SyncableRecord {
     /**
      * @return a vehicle name
      */
-    @InstantText(viewId = R.id.text1)
+    @InstantText(viewId = android.R.id.text1)
     public String getName() {
         return getYear() + " " + getMake() + " " + getModel();
     }
