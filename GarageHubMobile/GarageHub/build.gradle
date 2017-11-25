@@ -12,22 +12,15 @@ android {
     }
 }
 
-// For some reason Gradle/Android Studio doesn't work with this jar file.
-// So extract it into the source tree
-copy {
-    from(zipTree("libs/car_hub_appspot_com-garagehub-v1-20150722012447-java-1.20.0-sources.jar"))
-    into("src/main/java")
-}
-
 dependencies {
     // AppEngine
     implementation('com.google.code.gson:gson:2.1')
-    implementation('com.google.oauth-client:google-oauth-client:1.22.0')
-    implementation('com.google.api-client:google-api-client:1.22.0')
-    implementation('com.google.api-client:google-api-client-android:1.22.0')
-    implementation('com.google.http-client:google-http-client:1.22.0')
-    implementation('com.google.http-client:google-http-client-android:1.22.0')
-    implementation('com.google.http-client:google-http-client-gson:1.22.0')
+    implementation('com.google.oauth-client:google-oauth-client:1.23.0')
+    implementation('com.google.api-client:google-api-client:1.23.0')
+    implementation('com.google.api-client:google-api-client-android:1.23.0')
+    implementation('com.google.http-client:google-http-client:1.23.0')
+    implementation('com.google.http-client:google-http-client-android:1.23.0')
+    implementation('com.google.http-client:google-http-client-gson:1.23.0')
     implementation('com.google.android.gms:play-services-auth:11.6.0') {
         exclude module: 'support-v4'
     }
