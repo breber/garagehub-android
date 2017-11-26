@@ -1,5 +1,11 @@
 apply plugin: 'com.android.application'
 
+configurations {
+    all {
+        exclude module: 'httpclient'
+    }
+}
+
 android {
     compileSdkVersion 27
     buildToolsVersion "27.0.1"
@@ -14,11 +20,8 @@ android {
 
 dependencies {
     // AppEngine
-    implementation('com.google.code.gson:gson:2.1')
     implementation('com.google.oauth-client:google-oauth-client:1.23.0')
-    implementation('com.google.api-client:google-api-client:1.23.0')
     implementation('com.google.api-client:google-api-client-android:1.23.0')
-    implementation('com.google.http-client:google-http-client:1.23.0')
     implementation('com.google.http-client:google-http-client-android:1.23.0')
     implementation('com.google.http-client:google-http-client-gson:1.23.0')
     implementation('com.google.android.gms:play-services-auth:11.6.0') {
