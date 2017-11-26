@@ -103,6 +103,31 @@ public class MainActivity extends AppEngineActivity {
         updateUi();
     }
 
+    public void selectItem(UserVehicleRecord record) {
+        for (int i = 0; i < mVehicles.size(); ++i) {
+            ListItem item = mVehicles.get(i);
+            if (item.vehicle != null) {
+                if (item.vehicle.getRemoteId().equals(record.getRemoteId())) {
+//                    mDrawerList.setSelection(i);
+//                    final View view = mDrawerList.getSelectedView();
+//                    final int position = mDrawerList.getPositionForView(view);
+//                    final long itemId = mDrawerList.getAdapter() != null
+//                            ? mDrawerList.getAdapter().getItemId(position)
+//                            : 0;
+//                    if (position != AdapterView.INVALID_POSITION) {
+//                        mDrawerList.performItemClick(view, position, itemId);
+//                    }
+//
+//                    mDrawerList.performItemClick(mDrawerList, i, mDrawerList.getItemIdAtPosition(i));
+//
+//                    System.out.println("SelectItem: " + mDrawerList.getSelectedItemPosition());
+                    selectItem(i);
+                    break;
+                }
+            }
+        }
+    }
+
     private void selectItem(int position) {
         if (mVehicles == null || position >= mVehicles.size()) {
             setTitle("GarageHub");
@@ -114,16 +139,16 @@ public class MainActivity extends AppEngineActivity {
                 fragmentManager.beginTransaction().replace(R.id.content_frame, record.fragment).commit();
 
                 // update selected item and title, then close the drawer
-                if (record.vehicle.getName().equals(record.name.trim())) {
+                if (record.vehicle == null || record.vehicle.toString().equals(record.name.trim())) {
                     setTitle(record.name.trim());
                 } else {
-                    setTitle(record.vehicle.getName() + " " + record.name.trim());
+                    setTitle(record.vehicle.toString() + " " + record.name.trim());
                 }
                 mDrawerLayout.closeDrawer(mDrawerList);
 
                 mSelectedItem = position;
             } else {
-                // Assume that if the fragment is non-null we want to add a vehicle
+                // Assume that if the fragment is null we want to add a vehicle
                 Intent i = new Intent(this, AddVehicleActivity.class);
                 startActivity(i);
             }
@@ -154,11 +179,16 @@ public class MainActivity extends AppEngineActivity {
 
             mVehicles = new ArrayList<ListItem>(vehicles.size() * 4);
 
+            ListItem overviewItem = new ListItem();
+            overviewItem.fragment = new VehiclesOverviewFragment();
+            overviewItem.name = "Overview";
+            mVehicles.add(overviewItem);
+
             for (UserVehicleRecord v : vehicles) {
                 ListItem infoItem = new ListItem();
                 infoItem.vehicle = v;
                 infoItem.fragment = UserVehicleFragment.newInstance(v.getId());
-                infoItem.name = v.getName();
+                infoItem.name = v.toString();
                 mVehicles.add(infoItem);
 
                 ListItem fuelItem = new ListItem();

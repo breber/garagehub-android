@@ -41,7 +41,7 @@ public class UserVehicleRecord extends SyncableRecord {
      * @return a vehicle name
      */
     @InstantText(viewId = android.R.id.text1)
-    public String getName() {
+    public String toString() {
         return getYear() + " " + getMake() + " " + getModel();
     }
 
